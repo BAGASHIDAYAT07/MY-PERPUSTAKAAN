@@ -10,6 +10,6 @@ class AuthController extends Controller{
     }
 
     public function ViewRegister(){
-        return view('register');
+       return view('register');
     }
 }
