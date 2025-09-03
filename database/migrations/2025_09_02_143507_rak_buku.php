@@ -16,6 +16,7 @@ return new class extends Migration
             $table->integer('BukuID');
             $table->string('NamaRak');
             $table->integer('SlotRak');
+            $table->string('jumlahBuku');
             $table->timestamps();
         });
     }
