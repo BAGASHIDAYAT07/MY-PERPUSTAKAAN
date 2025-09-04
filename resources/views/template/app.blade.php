@@ -42,7 +42,7 @@
             aria-describedby="btnNavbarSearch"
           />
           <button class="btn btn-primary" id="btnNavbarSearch" type="button">
-            <i class="fas fa-search"></i>
+            <i class="fa fa-search" aria-hidden="true"></i>
           </button>
         </div>
       </form>
@@ -56,8 +56,7 @@
             role="button"
             data-bs-toggle="dropdown"
             aria-expanded="false"
-            ><i class="fas fa-user fa-fw"></i
-          ></a>
+            ><i class="fa fa-user-circle-o" aria-hidden="true"></i></a>
           <ul
             class="dropdown-menu dropdown-menu-end"
             aria-labelledby="navbarDropdown"
