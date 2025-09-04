@@ -4,10 +4,15 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
 
-// Route::get('/', [AuthController::class, 'home']);
+// admin
+Route::get('/dashboard', [AdminController::class, 'Dashboard']);
+Route::get('/buku', [AdminController::class, 'Buku']);
+Route::get('/user', [AdminController::class, 'User']);
+
+// auth
 Route::get('/register', [AuthController::class, 'ViewRegister']);
 Route::get('/login', [AuthController::class, 'ViewLogin']);
-Route::get('/dashboard', [AdminController::class, 'Dashboard']);
-Route::get('/pinjaman',[AdminController::class, 'tes']);
-// Route::get('/create',[AdminController::class, 'create']);
-// Route::get('/peminjaman/{id}/edit', [PeminjamanController::class, 'edit'])->name('peminjaman.edit');
+
+
+Route::get('/', [AuthController::class, 'home']);
+Route::get('/testing',[AdminController::class, 'tes']);

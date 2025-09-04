@@ -14,12 +14,11 @@ class AdminController extends Controller
         return view('peminjaman.index');
     }
 
-     public function create(){
-        return view('peminjaman.create');
+    public function Buku(){
+        return view('admin.buku');
     }
-    
-//   public function edit($id) {
-//     $peminjaman = Peminjaman::findOrFail($id);
-//     return view('peminjaman.update', compact('peminjaman'));
-// }
+
+    public function User(){
+        return view('admin.user');
+    }
 }
