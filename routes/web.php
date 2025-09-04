@@ -8,4 +8,6 @@ use App\Http\Controllers\AuthController;
 Route::get('/register', [AuthController::class, 'ViewRegister']);
 Route::get('/login', [AuthController::class, 'ViewLogin']);
 Route::get('/dashboard', [AdminController::class, 'Dashboard']);
-Route::get('/testing',[AdminController::class, 'tes']);
+Route::get('/pinjaman',[AdminController::class, 'tes']);
+// Route::get('/create',[AdminController::class, 'create']);
+// Route::get('/peminjaman/{id}/edit', [PeminjamanController::class, 'edit'])->name('peminjaman.edit');

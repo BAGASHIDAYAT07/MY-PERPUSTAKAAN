@@ -13,4 +13,13 @@ class AdminController extends Controller
     public function tes(){
         return view('peminjaman.index');
     }
+
+     public function create(){
+        return view('peminjaman.create');
+    }
+    
+//   public function edit($id) {
+//     $peminjaman = Peminjaman::findOrFail($id);
+//     return view('peminjaman.update', compact('peminjaman'));
+// }
 }
