@@ -13,4 +13,12 @@ class AdminController extends Controller
     public function tes(){
         return view('peminjaman.index');
     }
+
+    public function Buku(){
+        return view('admin.buku');
+    }
+
+    public function User(){
+        return view('admin.user');
+    }
 }

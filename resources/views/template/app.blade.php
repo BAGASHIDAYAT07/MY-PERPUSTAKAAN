@@ -81,13 +81,13 @@
                 </div>
                 Dashboard
               </a>
-              <a class="nav-link" href="/dashboard">
+              <a class="nav-link" href="/buku">
                 <div class="sb-nav-link-icon">
                   <i class="fa fa-book" aria-hidden="true"></i>
                 </div>
                 Buku
               </a>
-              <a class="nav-link" href="/dashboard">
+              <a class="nav-link" href="/user">
                 <div class="sb-nav-link-icon">
                   <i class="fa fa-user" aria-hidden="true"></i>
                 </div>

@@ -4,8 +4,15 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
 
-Route::get('/', [AuthController::class, 'home']);
+// admin
+Route::get('/dashboard', [AdminController::class, 'Dashboard']);
+Route::get('/buku', [AdminController::class, 'Buku']);
+Route::get('/user', [AdminController::class, 'User']);
+
+// auth
 Route::get('/register', [AuthController::class, 'ViewRegister']);
 Route::get('/login', [AuthController::class, 'ViewLogin']);
-Route::get('/dashboard', [AdminController::class, 'Dashboard']);
+
+
+Route::get('/', [AuthController::class, 'home']);
 Route::get('/testing',[AdminController::class, 'tes']);
