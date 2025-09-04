@@ -7,7 +7,7 @@
             <div class="card mb-4">
               <div class="card-header">
                 <i class="fas fa-table me-1"></i>
-                <a href="" class="btn btn-primary">Tambah Peminjaman</a>
+                <a href="/create" class="btn btn-primary">Tambah Peminjaman</a>
               </div>
               <div class="card-body">
                 <table id="datatablesSimple">
