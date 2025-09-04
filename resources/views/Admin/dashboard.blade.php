@@ -15,6 +15,7 @@
       rel="stylesheet"
     />
     <link href="css/styles.css" rel="stylesheet" />
+    <link href="css/font-awesome.min.css" rel="stylesheet" />
   </head>
   <body class="sb-nav-fixed">
     <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
@@ -75,9 +76,9 @@
           <div class="sb-sidenav-menu">
             <div class="nav">
               <div class="sb-sidenav-menu-heading">Core</div>
-              <a class="nav-link" href="index.html">
+              <a class="nav-link" href="/dashboard">
                 <div class="sb-nav-link-icon">
-                  <i class="fas fa-tachometer-alt"></i>
+                  <i class="fa fa-tachometer" aria-hidden="true"></i>
                 </div>
                 Dashboard
               </a>
