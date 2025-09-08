@@ -2,6 +2,6 @@
 
 @section("konten")
 
-<h1>Enggal Bodoh</h1>
+<h1>Enggal</h1>
 
 @endsection
