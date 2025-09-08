@@ -16,5 +16,3 @@ Route::get('/login', [AuthController::class, 'ViewLogin']);
 
 Route::get('/', [AuthController::class, 'home']);
 Route::get('/testing',[AdminController::class, 'tes']);
-Route::get('/testing2',[AdminController::class, 'tes']);
-Route::get('/testing3',[AdminController::class, 'tes']);
