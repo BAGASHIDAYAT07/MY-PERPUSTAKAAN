@@ -10,20 +10,13 @@
               <li class="breadcrumb-item active">Dashboard</li>
             </ol>
             <div class="row">
-              <div class="col-xl-3 col-md-6">
-                <div class="card text-white mb-4" style="
+              <div class="col-xl-3 col-md-6 b">
+                <div class="card text-white mb-4 order-0" style="
                 background: #2A7B9B;
                 background: linear-gradient(90deg, rgba(42, 123, 155, 1) 0%, rgba(71, 51, 163, 1) 50%, rgba(151, 40, 168, 1) 100%);">
-                  <div class="card-body">JUMLAH BUKU</div>
-                  <div
-                    class="card-footer d-flex align-items-center justify-content-between"
-                  >
-                    <a class="small text-white stretched-link" href="#"
-                      >View Details</a
-                    >
-                    <div class="small text-white">
-                      <i class="fa fa-angle-right" aria-hidden="true"></i>
-                    </div>
+                  <div class="card-body"><i class="fa fa-book mx-1 text-white-50" aria-hidden="true"></i> 
+                    Jumlah Buku
+                    <h3>50 Buku</h3>
                   </div>
                 </div>
               </div>
