@@ -13,8 +13,8 @@ class PinjamanController extends Controller
 
    public function edit($id)
 {
-    $peminjaman = Pinjaman::findOrFail($id);
-    return view('peminjaman.update', compact('peminjaman'));
+    // $peminjaman = Pinjaman::findOrFail($id);
+    return view('peminjaman.update');
 }
 
 

@@ -16,6 +16,6 @@ Route::get('/login', [AuthController::class, 'ViewLogin']);
 
 
 Route::get('/', [AuthController::class, 'home']);
-Route::get('/pinjam',[AdminController::class, 'tes']);
-Route::get('/create',[PinjamanController::class, 'create']);
-Route::get('/peminjaman/{id}/edit', [PinjamanController::class, 'edit']);
+// Route::get('/pinjam',[PinjamanController::class, 'tes']);
+Route::get('/pinjaman_create',[PinjamanController::class, 'create']);
+Route::get('/pinjaman_update/{id}',[PinjamanController::class, 'edit']);
