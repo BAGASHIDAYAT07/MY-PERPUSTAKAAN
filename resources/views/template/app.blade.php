@@ -96,6 +96,12 @@
                 </div>
                 User
               </a>
+              <a class="nav-link" href="/pinjam">
+                <div class="sb-nav-link-icon">
+                  <i class="fa fa-bookmark" aria-hidden="true"></i>
+                </div>
+                Peminjaman
+              </a>
               <div
                 class="collapse"
                 id="collapseLayouts"
