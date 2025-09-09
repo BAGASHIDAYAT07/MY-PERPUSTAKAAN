@@ -2,45 +2,52 @@
 
 @section("konten")
 
-<h1 class="mt-4">Peminjaman Buku</h1>
+<h1 class="mt-4">Update Peminjaman Buku</h1>
 
 <div class="card mb-4">
   <div class="card-header">
-    <i class="fas fa-table me-1"></i>
-    <a href="/create" class="btn btn-primary">Tambah Peminjaman</a>
+    <i class="fas fa-edit me-1"></i>
+    Form Update Peminjaman
   </div>
   <div class="card-body">
-    <table id="datatablesSimple" class="table table-bordered">
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Position</th>
-          <th>Office</th>
-          <th>Age</th>
-          <th>Start date</th>
-          <th>Salary</th>
-          <th>Aksi</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>{{ $peminjaman->name }}</td>
-          <td>{{ $peminjaman->position }}</td>
-          <td>{{ $peminjaman->office }}</td>
-          <td>{{ $peminjaman->age }}</td>
-          <td>{{ $peminjaman->start_date }}</td>
-          <td>{{ $peminjaman->salary }}</td>
-          <td>
-            <a href="{{ url('/peminjaman/'.$peminjaman->id.'/edit') }}" class="btn btn-warning btn-sm">Edit</a>
-            <form action="{{ url('/peminjaman/'.$peminjaman->id) }}" method="POST" style="display:inline-block;">
-              @csrf
-              @method('DELETE')
-              <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Yakin hapus data ini?')">Delete</button>
-            </form>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <form method="POST">
+      @csrf
+      @method('PUT')
+
+      <div class="mb-3">
+        <label for="nama_peminjam" class="form-label">Nama Peminjam</label>
+        <input type="text" name="nama_peminjam" class="form-control" id="nama_peminjam" 
+               value="" required>
+      </div>
+
+      <div class="mb-3">
+        <label for="judul_buku" class="form-label">Judul Buku</label>
+        <input type="text" name="judul_buku" class="form-control" id="judul_buku" 
+               value="" required>
+      </div>
+
+      <div class="mb-3">
+        <label for="tanggal_pinjam" class="form-label">Tanggal Pinjam</label>
+        <input type="date" name="tanggal_pinjam" class="form-control" id="tanggal_pinjam" 
+               value="" required>
+      </div>
+
+      <div class="mb-3">
+        <label for="tanggal_kembali" class="form-label">Tanggal Kembali</label>
+        <input type="date" name="tanggal_kembali" class="form-control" id="tanggal_kembali" 
+               value="" required>
+      </div>
+
+      <div class="mb-3">
+        <label for="status" class="form-label">Status</label>
+        <select name="status" id="status" class="form-control">
+
+        </select>
+      </div>
+
+      <button type="submit" class="btn btn-success">Update</button>
+      <a href="" class="btn btn-secondary">Batal</a>
+    </form>
   </div>
 </div>
 
