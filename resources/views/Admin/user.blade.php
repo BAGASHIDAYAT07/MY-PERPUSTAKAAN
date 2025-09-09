@@ -13,7 +13,7 @@
               <th scope="col">No</th>
               <th scope="col">Nama</th>
               <th scope="col">Email</th>
-              <th scope="col">ID</th>
+              <th scope="col">NIS</th>
               <th scope="col">Jenis Kelamin</th>
               <th scope="col">Status</th>
               <th scope="col">Aksi</th>
@@ -33,6 +33,8 @@
                     &#8942;
                   </button>
                   <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="#">Create</a></li>
+                    <li><a class="dropdown-item" href="#">Update</a></li>
                     <li><a class="dropdown-item text-danger" href="#">Nonaktifkan</a></li>
                   </ul>
                 </div>
@@ -51,6 +53,8 @@
                     &#8942;
                   </button>
                   <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="#">Create</a></li>
+                    <li><a class="dropdown-item" href="#">Update</a></li>
                     <li><a class="dropdown-item text-success" href="#">Aktifkan</a></li>
                   </ul>
                 </div>
@@ -69,6 +73,8 @@
                     &#8942;
                   </button>
                   <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="#">Create</a></li>
+                    <li><a class="dropdown-item" href="#">Update</a></li>
                     <li><a class="dropdown-item text-danger" href="#">Nonaktifkan</a></li>
                   </ul>
                 </div>
