@@ -2,6 +2,8 @@
 
 @section("konten")
 
+<div class="container">
+
 <h1 class="mt-4">Tambah Peminjaman Buku</h1>
 
 <div class="card mb-4">
@@ -37,8 +39,10 @@
           <option value="dipinjam">Dipinjam</option>
           <option value="dikembalikan">Dikembalikan</option>
         </select>
+        <a href="/pinjaman_create" class="btn btn-primary mt-3">Tambah Peminjaman</a>
       </div>
   </div>
+</div>
 </div>
 
 @endsection

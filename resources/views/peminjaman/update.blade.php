@@ -1,7 +1,7 @@
 @extends('template.app')
 
 @section("konten")
-
+<div class="container">
 <h1 class="mt-4">Update Peminjaman Buku</h1>
 
 <div class="card mb-4">
@@ -47,8 +47,10 @@
 
       <button type="submit" class="btn btn-success">Update</button>
       <a href="" class="btn btn-secondary">Batal</a>
+      <a href="/pinjaman_create" class="btn btn-primary mb-3 mt-3">Tambah Peminjaman</a>
     </form>
   </div>
+</div>
 </div>
 
 @endsection
