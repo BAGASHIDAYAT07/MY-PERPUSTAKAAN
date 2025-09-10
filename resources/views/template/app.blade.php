@@ -9,61 +9,133 @@
     />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>Dashboard - SB Admin</title>
+    <title>Dashboard - MY-PERPUSTAKAAN</title>
+
+    <!-- Styles -->
     <link
       href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css"
       rel="stylesheet"
     />
     <link href="{{ asset('css/styles.css') }}" rel="stylesheet" />
     <link href="{{ asset('css/font-awesome.min.css') }}" rel="stylesheet" />
+
+    <!-- Chart.js -->
     <script
       src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"
       crossorigin="anonymous"
     ></script>
+
+    <style>
+      body {
+        background-color: #f5f9fc;
+      }
+
+      /* Sidebar */
+      #sidebar {
+        background-color: #3b8763;
+        min-height: 100vh;
+        border-radius: 15px;
+        margin: 15px 0 15px 15px;
+        padding-top: 20px;
+        transition: all 0.3s ease;
+      }
+
+      #sidebar .nav-link {
+        color: #fff;
+        font-weight: 500;
+        margin: 5px 0;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      #sidebar .nav-link.active {
+        background-color: rgba(255, 255, 255, 0.2);
+        border-radius: 10px;
+      }
+
+      #sidebar .nav-link:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+        border-radius: 10px;
+      }
+
+      #sidebar.hide {
+        margin-left: -250px;
+      }
+    </style>
   </head>
-  <body class="sb-nav-fixed">
-    <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
-      <!-- Navbar Brand-->
-      <a class="navbar-brand ps-3" href="index.html">MY PERPUSHTAKAAN</a>
-      <!-- Sidebar Toggle-->
-      <button
-        class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0"
-        id="sidebarToggle"
-        href="#!"
-      >
-        <i class="fa fa-bars" aria-hidden="true"></i>
-      </button>
-      <!-- Navbar Search-->
+
+  <body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand navbar-light bg-white shadow-sm px-3 m-3" style="border-radius: 15px;">
+      <div class="d-flex align-items-center">
+        <!-- Tombol Sidebar -->
+        <button class="btn btn-link me-2" id="sidebarToggle">
+          <i class="fa fa-bars" style="color: black;"></i>
+        </button>
+
+        <!-- Logo + Nama -->
+        <img
+          src="../img/logo/smk.png"
+          alt="Logo"
+          style="width: 45px; margin-right: 8px;"
+        />
+        <span class="fw-bold">MY-PERPUSTAKAAN</span>
+      </div>
+
+      <!-- Search Box -->
       <form
-        class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0"
+        class="d-none d-md-inline-block mx-auto w-50"
+        style="border: 0.5px solid #ccc; border-radius: 10px;"
       >
         <div class="input-group">
           <input
-            class="form-control"
+            class="form-control border-0 shadow-sm"
             type="text"
-            placeholder="Search for..."
-            aria-label="Search for..."
-            aria-describedby="btnNavbarSearch"
+            placeholder="Search For ....."
           />
-          <button class="btn btn-primary" id="btnNavbarSearch" type="button">
-            <i class="fa fa-search" aria-hidden="true"></i>
+          <button
+            class="btn border-0"
+            type="button"
+            style="background-color: #3b8763; color: #fff;"
+          >
+            <i class="fa fa-search"></i>
           </button>
         </div>
       </form>
-      <!-- Navbar-->
-      <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
-        <li class="nav-item dropdown">
+
+      <!-- Icon + User -->
+      <ul class="navbar-nav ms-auto d-flex align-items-center">
+        <li class="nav-item mx-2">
+          <a class="nav-link" href="#">
+            <i class="fa fa-commenting-o" style="font-size: 20px;"></i>
+          </a>
+        </li>
+        <li class="nav-item mx-2">
+          <a class="nav-link" href="#">
+            <i class="fa fa-bell-o" style="font-size: 20px;"></i>
+          </a>
+        </li>
+        <li class="nav-item dropdown mx-2">
           <a
-            class="nav-link dropdown-toggle"
-            id="navbarDropdown"
+            class="nav-link dropdown-toggle d-flex align-items-center"
             href="#"
+            id="userDropdown"
             role="button"
             data-bs-toggle="dropdown"
             aria-expanded="false"
-            ><i class="fa fa-user-circle-o" aria-hidden="true"></i></a>
+          >
+            <img
+              src="../img/photos/user.jpg"
+              class="rounded-circle me-2"
+              style="width: 35px; height: 35px;"
+              alt="User"
+            />
+            <span>Admin</span>
+          </a>
           <ul
             class="dropdown-menu dropdown-menu-end"
-            aria-labelledby="navbarDropdown"
+            aria-labelledby="userDropdown"
           >
             <li><a class="dropdown-item" href="#!">Settings</a></li>
             <li><a class="dropdown-item" href="#!">Activity Log</a></li>
@@ -73,142 +145,47 @@
         </li>
       </ul>
     </nav>
-    <div id="layoutSidenav">
-      <div id="layoutSidenav_nav">
-        <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
-          <div class="sb-sidenav-menu">
-            <div class="nav">
-              <a class="nav-link" href="/dashboard">
-                <div class="sb-nav-link-icon">
-                  <i class="fa fa-tachometer" aria-hidden="true"></i>
-                </div>
-                Dashboard
-              </a>
-              <a class="nav-link" href="/buku">
-                <div class="sb-nav-link-icon">
-                  <i class="fa fa-book" aria-hidden="true"></i>
-                </div>
-                Buku
-              </a>
-              <a class="nav-link" href="/user">
-                <div class="sb-nav-link-icon">
-                  <i class="fa fa-user" aria-hidden="true"></i>
-                </div>
-                User
-              </a>
-              <div
-                class="collapse"
-                id="collapseLayouts"
-                aria-labelledby="headingOne"
-                data-bs-parent="#sidenavAccordion"
-              >
-                <nav class="sb-sidenav-menu-nested nav">
-                  <a class="nav-link" href="layout-static.html"
-                    >Static Navigation</a
-                  >
-                  <a class="nav-link" href="layout-sidenav-light.html"
-                    >Light Sidenav</a
-                  >
-                </nav>
-              </div>
-              <div
-                class="collapse"
-                id="collapsePages"
-                aria-labelledby="headingTwo"
-                data-bs-parent="#sidenavAccordion"
-              >
-                <nav
-                  class="sb-sidenav-menu-nested nav accordion"
-                  id="sidenavAccordionPages"
-                >
-                  <a
-                    class="nav-link collapsed"
-                    href="#"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#pagesCollapseAuth"
-                    aria-expanded="false"
-                    aria-controls="pagesCollapseAuth"
-                  >
-                    Authentication
-                    <div class="sb-sidenav-collapse-arrow">
-                      <i class="fas fa-angle-down"></i>
-                    </div>
-                  </a>
-                  <div
-                    class="collapse"
-                    id="pagesCollapseAuth"
-                    aria-labelledby="headingOne"
-                    data-bs-parent="#sidenavAccordionPages"
-                  >
-                    <nav class="sb-sidenav-menu-nested nav">
-                      <a class="nav-link" href="login.html">Login</a>
-                      <a class="nav-link" href="register.html">Register</a>
-                      <a class="nav-link" href="password.html"
-                        >Forgot Password</a
-                      >
-                    </nav>
-                  </div>
-                  <a
-                    class="nav-link collapsed"
-                    href="#"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#pagesCollapseError"
-                    aria-expanded="false"
-                    aria-controls="pagesCollapseError"
-                  >
-                    Error
-                    <div class="sb-sidenav-collapse-arrow">
-                      <i class="fas fa-angle-down"></i>
-                    </div>
-                  </a>
-                  <div
-                    class="collapse"
-                    id="pagesCollapseError"
-                    aria-labelledby="headingOne"
-                    data-bs-parent="#sidenavAccordionPages"
-                  >
-                    <nav class="sb-sidenav-menu-nested nav">
-                      <a class="nav-link" href="401.html">401 Page</a>
-                      <a class="nav-link" href="404.html">404 Page</a>
-                      <a class="nav-link" href="500.html">500 Page</a>
-                    </nav>
-                  </div>
-                </nav>
-              </div>
-          </div>
-        </nav>
-      </div>
-      <div id="layoutSidenav_content">
-        <main>
-          @yield("konten")
-        </main>
-        <footer class="py-4 bg-light mt-auto">
-          <div class="container-fluid px-4">
-            <div
-              class="d-flex align-items-center justify-content-between small"
-            >
-              <div class="text-muted">Copyright &copy; Your Website 2023</div>
-              <div>
-                <a href="#">Privacy Policy</a>
-                &middot;
-                <a href="#">Terms &amp; Conditions</a>
-              </div>
-            </div>
-          </div>
-        </footer>
+
+    <!-- Layout -->
+    <div class="container-fluid">
+      <div class="row">
+        <!-- Sidebar -->
+        <div class="col-md-2" id="sidebar">
+          <nav class="nav flex-column">
+            <a class="nav-link active" href="/dashboard">
+              <i class="fa fa-tachometer"></i> Dashboard
+            </a>
+            <a class="nav-link" href="/buku">
+              <i class="fa fa-book"></i> Buku
+            </a>
+            <a class="nav-link" href="/user">
+              <i class="fa fa-user"></i> User
+            </a>
+          </nav>
+        </div>
+
+        <!-- Main Content -->
+        <div class="col-md-10">
+          <main class="p-3">
+            @yield("konten")
+          </main>
+        </div>
       </div>
     </div>
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
-      crossorigin="anonymous"
-    ></script>
-    <script src="{{ asset('js/scripts.js') }}"></script>
-    <script src="{{ asset('js/chart-area-demo.js') }}"></script>
-    <!-- <script src="js/chart-bar-demo.js"></script> -->
-    <script
-      src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js"
-      crossorigin="anonymous"
-    ></script>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js"></script>
     <script src="{{ asset('js/datatables-simple-demo.js') }}"></script>
+
+    <script>
+      // Sidebar toggle
+      document
+        .getElementById("sidebarToggle")
+        .addEventListener("click", () => {
+          document.getElementById("sidebar").classList.toggle("hide");
+        });
+    </script>
   </body>
 </html>
