@@ -15,10 +15,16 @@ Route::get('/user', [AdminController::class, 'User']);
 Route::get('/usecreate', [AdminController::class, 'Usecreate']);
 
 
+//buku
+Route::get('/createbuk', [AdminController::class, 'Bukcreate']);
+Route::get('/updatebuk', [AdminController::class, 'Bukupdate']);
+
+
 // auth
 Route::get('/register', [AuthController::class, 'ViewRegister']);
 Route::get('/login', [AuthController::class, 'ViewLogin']);
 
+//pinjaman
 Route::get('/pinjam',[AdminController::class, 'tes']);
 Route::get('/pinjaman_create',[PinjamanController::class, 'create']);
 Route::get('/pinjaman_update/{id}',[PinjamanController::class, 'edit']);

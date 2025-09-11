@@ -20,6 +20,16 @@
                     <th>Jumlah Halaman</th>
                     <th>Aksi</th>
                 </tr>
+                <tr>
+                    <th>Judul</th>
+                    <th>Jenis Buku</th>
+                    <th>Penerbit</th>
+                    <th>Pencipta</th>
+                    <th>Tempat Terbit</th>
+                    <th>Tahun Terbit</th>
+                    <th>Jumlah Halaman</th>
+                    <th>Aksi</th>
+                </tr>
             </thead>
             <tbody>
                        
@@ -32,4 +42,5 @@
         </table>
     </div>
 </div>
+
 @endsection
