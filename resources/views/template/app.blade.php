@@ -160,13 +160,28 @@
     </nav>
 
     <!-- Sidebar -->
-    <div id="sidebar" class="shadow-sm mt-2">
-      <nav class="nav flex-column">
-        <a class="nav-link active" href="/dashboard"><i class="bi bi-speedometer2"></i> Dashboard</a>
-        <a class="nav-link" href="/buku"><i class="bi bi-book"></i> Buku</a>
-        <a class="nav-link" href="/user"><i class="bi bi-person"></i> User</a>
-      </nav>
-    </div>
+    <div id="sidebar" class="shadow-sm mt-2 p-3 rounded-4xl" style="background-color: #3A9D7A; width: 220px;">
+  <nav class="nav flex-column">
+    <a class="nav-link text-white mb-2 active" href="/dashboard">
+      <i class="bi bi-speedometer2 me-2"></i> Dashboard
+    </a>
+    <a class="nav-link text-white mb-2" href="/buku">
+      <i class="bi bi-book me-2"></i> Koleksi Buku
+    </a>
+    <a class="nav-link text-white mb-2" href="/user">
+      <i class="bi bi-person me-2"></i> Pengguna
+    </a>
+    <a class="nav-link text-white mb-2" href="/rak-buku">
+      <i class="bi bi-journal me-2"></i> Rak Koleksi
+    </a>
+    <a class="nav-link text-white mb-2" href="/verifikasi-user">
+      <i class="bi bi-person-check me-2"></i> Verifikasi Pengguna
+    </a>
+    <a class="nav-link text-white mb-2" href="/verifikasi-peminjaman">
+      <i class="bi bi-clipboard-check me-2"></i> Verifikasi Peminjaman
+    </a>
+  </nav>
+</div>
 
     <!-- Main Content -->
     <div id="main-content">
