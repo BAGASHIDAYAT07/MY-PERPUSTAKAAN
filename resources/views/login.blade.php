@@ -1,74 +1,102 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="id">
 <head>
-	<meta charset="utf-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	<meta name="description" content="Responsive Admin &amp; Dashboard Template based on Bootstrap 5">
-	<meta name="author" content="AdminKit">
-	<meta name="keywords" content="adminkit, bootstrap, bootstrap 5, admin, dashboard, template, responsive, css, sass, html, theme, front-end, ui kit, web">
-
-	<link rel="preconnect" href="https://fonts.gstatic.com">
-	<link rel="shortcut icon" href="img/icons/icon-48x48.png" />
-
-	<title>Sign In | AdminKit Demo</title>
-
-	<link href="css/app.css" rel="stylesheet">
-	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Login Admin My-perpustakaan</title>
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <style>
+    body {
+      background-color: #f5f6f7;
+    }
+    .login-card {
+      max-width: 950px;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    }
+    .login-left {
+      padding: 50px 40px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+    .login-left img.logo {
+      width: 100px;
+      margin-bottom: 20px;
+    }
+    .login-left h6 {
+      font-weight: 600;
+      margin-bottom: 40px;
+      line-height: 1.5;
+    }
+    .form-control {
+      border: none;
+      border-bottom: 2px solid #aaa;
+      border-radius: 0;
+      box-shadow: none;
+      font-size: 1rem;
+      height: 50px; /* tinggi input */
+      margin-bottom: 25px;
+    }
+    .form-control:focus {
+      border-color: #8cc84b;
+      box-shadow: none;
+    }
+    .btn-login {
+      border-radius: 30px;
+      background-color: #8cc84b;
+      color: white;
+      font-weight: 600;
+      height: 50px; /* tinggi tombol */
+      font-size: 1rem;
+      transition: background-color 0.3s ease;
+    }
+    .btn-login:hover {
+      background-color: #7ab33f;
+    }
+    .login-right img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-top-right-radius: 20px;
+      border-bottom-right-radius: 20px;
+    }
+    @media (max-width: 768px) {
+      .login-right img {
+        border-radius: 0 0 20px 20px;
+        height: 250px;
+      }
+    }
+  </style>
 </head>
-
 <body>
-	<main class="d-flex w-100">
-		<div class="container d-flex flex-column">
-			<div class="row vh-100">
-				<div class="col-sm-10 col-md-8 col-lg-6 col-xl-5 mx-auto d-table h-100">
-					<div class="d-table-cell align-middle">
+  <div class="d-flex justify-content-center align-items-center vh-100">
+    <div class="card login-card">
+      <div class="row g-0">
+        <!-- Form kiri -->
+        <div class="col-md-6 login-left">
+          <img src="../img/logo/smk.png" alt="Logo" class="logo" />
+			<h3>Selamat Datang</h3>
+			<h6>Di Halaman Login My-perpustakaan</h6>
+          <form class="w-100">
+            <input type="email" class="form-control" placeholder="Masukan Email" required />
+            <input type="password" class="form-control" placeholder="Masukan Password" required />
+            <button type="submit" class="btn btn-login w-100">Login</button>
+          </form>
+        </div>
+        <!-- Gambar kanan -->
+        <div class="col-md-6 login-right p-2">
+          <img src="../img/photos/perpush.png" alt="Perpustakaan" style="border-radius: 20px;" />
+        </div>
+      </div>
+    </div>
+  </div>
 
-						<div class="text-center mt-4">
-							<h1 class="h2">Selamat Datang Kembali!</h1>
-							<p class="lead">
-								masuk kan akun untuk melanjutkan
-							</p>
-						</div>
-
-						<div class="card">
-							<div class="card-body">
-								<div class="m-sm-3">
-									
-									<form>
-										<div class="mb-3">
-											<label class="form-label">Email</label>
-											<input class="form-control form-control-lg" type="email" name="email" placeholder="Masukan email" />
-										</div>
-										<div class="mb-3">
-											<label class="form-label">Password</label>
-											<input class="form-control form-control-lg" type="password" name="password" placeholder="Masukan password" />
-										</div>
-										<div>
-											<div class="form-check align-items-center">
-												<input id="customControlInline" type="checkbox" class="form-check-input" value="remember-me" name="remember-me" checked>
-												<label class="form-check-label text-small" for="customControlInline">Ingat kan saya</label>
-											</div>
-										</div>
-										<div class="d-grid gap-2 mt-3">
-											<a href="index.html" class="btn btn-lg btn-primary">Masuk</a>
-										</div>
-									</form>
-								</div>
-							</div>
-						</div>
-						<div class="text-center mb-3">
-							Belum punya akun? <a href="/register">Daftar</a>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</main>
-
-	<script src="js/app.js"></script>
-
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-
 </html>
