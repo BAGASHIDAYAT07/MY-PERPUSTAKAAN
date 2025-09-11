@@ -22,25 +22,12 @@
                 </tr>
             </thead>
             <tbody>
-                <!-- @foreach ($buku as $item) -->
-                <tr>
-                    <td>{{ $item->judul }}</td>
-                    <td>{{ $item->jenis_buku }}</td>
-                    <td>{{ $item->penerbit }}</td>
-                    <td>{{ $item->pencipta }}</td>
-                    <td>{{ $item->tempat_terbit }}</td>
-                    <td>{{ $item->tahun_terbit }}</td>
-                    <td>{{ $item->jumlah_halaman }}</td>
-                    <td>
-                        <!-- <a href="{{ route('buku.edit', $item->id) }}" class="btn btn-warning btn-sm">Edit</a> -->
-                        <!-- <form action="{{ route('buku.destroy', $item->id) }}" method="POST" style="display:inline;">
-                            @csrf
-                            @method('DELETE') -->
+                       
                             <button class="btn btn-danger btn-sm" onclick="return confirm('Yakin hapus buku?')">Hapus</button>
-                        <!-- </form> -->
+                      
                     </td>
                 </tr>
-                <!-- @endforeach -->
+               
             </tbody>
         </table>
     </div>
