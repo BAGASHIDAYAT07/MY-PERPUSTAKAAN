@@ -12,9 +12,7 @@
 	<link rel="preconnect" href="https://fonts.gstatic.com">
 	<link rel="shortcut icon" href="img/icons/icon-48x48.png" />
 
-	<title>Login Admin</title>
-
-	<link href="css/app.css" rel="stylesheet">
+	<title>Login Admin</title> <link href="css/app.css" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
 	
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -50,7 +48,7 @@
 
 							<h1 class="h2">Selamat Datang Kembali!</h1>
 							<p class="lead">
-								Daftar Pengguna
+								Update Pengguna
 							</p>
 						</div>
 
@@ -59,19 +57,16 @@
 								<div class="m-sm-3">
 									<form>
 										<div class="mb-3">
-											<label class="form-label">Nama</label>
+											<label class="form-label">Ubah Nama</label>
 											<input class="form-control form-control-lg" type="text" name="nama" placeholder="Nama user" />
 										</div>
+
 										<div class="mb-3">
-											<label class="form-label">Email</label>
-											<input class="form-control form-control-lg" type="email" name="email" placeholder="Email user" />
-										</div>
-										<div class="mb-3">
-											<label class="form-label">Password</label>
+											<label class="form-label">Ubah Password</label>
 											<input class="form-control form-control-lg" type="password" name="password" placeholder="password user" />
 										</div>
 										<div class="mb-3">
-											<label class="form-label">NIS</label>
+											<label class="form-label">Ubah NIS</label>
 											<input class="form-control form-control-lg" type="text" name="nis" placeholder="NIS" />
 										</div>
 										<div class="mb-3">
@@ -90,7 +85,7 @@
 											</div>
 										</div>
 										<div class="d-grid gap-2 mt-3">
-											<a href="index.html" class="btn btn-lg btn-primary">Register</a>
+											<a href="index.html" class="btn btn-lg btn-primary">Update</a>
 										</div>
 									</form>
 								</div>
@@ -107,3 +102,4 @@
 
 </body>
 </html>
+                   
