@@ -10,6 +10,10 @@ Route::get('/dashboard', [AdminController::class, 'Dashboard']);
 Route::get('/buku', [AdminController::class, 'Buku']);
 Route::get('/user', [AdminController::class, 'User']);
 
+//user
+Route::get('/usecreate', [AdminController::class, 'Usecreate']);
+
+
 // auth
 Route::get('/register', [AuthController::class, 'ViewRegister']);
 Route::get('/login', [AuthController::class, 'ViewLogin']);
