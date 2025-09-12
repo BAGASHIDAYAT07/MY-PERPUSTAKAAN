@@ -2,12 +2,12 @@
 
 @section("konten")
 <div class="container">
-<h1 class="mt-4">Update Buku</h1>
+<h1 class="mt-4">Ubah Buku</h1>
 
 <div class="card mb-4">
   <div class="card-header">
     <i class="fas fa-edit me-1"></i>
-    Form Update Peminjaman
+   Formulir Ubah Buku
   </div>
   <div class="card-body">
     <form method="POST">
@@ -63,9 +63,7 @@
         </select>
       </div>
 
-      <button type="submit" class="btn btn-success">Update</button>
-      <a href="" class="btn btn-secondary">Batal</a>
-      <a href="/pinjaman_create" class="btn btn-primary mb-3 mt-3">Tambah Peminjaman</a>
+      <a href="/createbuk" class="btn btn-success">Ubah</a>
     </form>
   </div>
 </div>
