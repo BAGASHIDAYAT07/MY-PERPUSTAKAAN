@@ -1,111 +1,198 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="id">
 <head>
-	<meta charset="utf-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	<meta name="description" content="Responsive Admin &amp; Dashboard Template based on Bootstrap 5">
-	<meta name="author" content="AdminKit">
-	<meta name="keywords" content="adminkit, bootstrap, bootstrap 5, admin, dashboard, template, responsive, css, sass, html, theme, front-end, ui kit, web">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register Admin My-perpustakaan</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
 
-	<link rel="preconnect" href="https://fonts.gstatic.com">
-	<link rel="shortcut icon" href="img/icons/icon-48x48.png" />
+  <style>
+    body {
+      background-color: #f5f6f7;
+    }
+    .register-card {
+      max-width: 850px;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+    }
+    .register-left img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-top-left-radius: 20px;
+      border-bottom-left-radius: 20px;
+    }
+    .register-right {
+      padding: 35px 30px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+    .register-right img.logo {
+      width: 80px;
+      margin-bottom: 15px;
+    }
+    .register-right h3 {
+      margin-bottom: 5px;
+    }
+    .register-right h6 {
+      font-weight: 600;
+      margin-bottom: 30px;
+      line-height: 1.5;
+      font-size: 0.95rem;
+    }
 
-	<title>Login Admin</title>
+    /* Input dengan garis bawah */
+    .input-group {
+      border-bottom: 2px solid #aaa;
+      margin-bottom: 20px;
+    }
+    .input-group:focus-within {
+      border-color: #8cc84b;
+    }
+    .input-group .form-control,
+    .input-group .input-group-text {
+      border: none !important;
+      box-shadow: none !important;
+      background: transparent;
+    }
+    .input-group .form-control {
+      border-radius: 0;
+      height: 45px;
+      font-size: 0.95rem;
+    }
+    .input-group .input-group-text {
+      cursor: pointer;
+    }
 
-	<link href="css/app.css" rel="stylesheet">
-	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
-	
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-	<style>
-		.user-icon {
-			width: 90px;
-			height: 90px;
-			border-radius: 50%;
-			background: #4a90e2;
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			margin: 0 auto 15px auto;
-			color: white;
-			font-size: 45px;
-			box-shadow: 0px 4px 10px rgba(0,0,0,0.15);
-		}
-	</style>
+    /* Select tetap polos */
+    .form-select {
+      border: none;
+      border-bottom: 2px solid #aaa;
+      border-radius: 0;
+      box-shadow: none;
+      font-size: 0.95rem;
+      height: 45px;
+      margin-bottom: 20px;
+      background: transparent;
+    }
+    .form-select:focus {
+      border-color: #8cc84b;
+      box-shadow: none;
+    }
+
+    /* Tombol daftar */
+    .btn-register {
+      border-radius: 25px;
+      background-color: #8cc84b;
+      color: white;
+      font-weight: 600;
+      height: 45px;
+      font-size: 0.95rem;
+      transition: background-color 0.3s ease;
+    }
+    .btn-register:hover {
+      background-color: #7ab33f;
+    }
+
+    @media (max-width: 768px) {
+      .register-left img {
+        border-radius: 20px 20px 0 0;
+        height: 250px;
+      }
+    }
+  </style>
 </head>
-
 <body>
-	<main class="d-flex w-100">
-		<div class="container d-flex flex-column">
-			<div class="row vh-100">
-				<div class="col-sm-10 col-md-8 col-lg-6 col-xl-5 mx-auto d-table h-100">
-					<div class="d-table-cell align-middle">
+  <div class="d-flex justify-content-center align-items-center min-vh-100 p-3">
+    <div class="card register-card">
+      <div class="row g-0">
+        
+        <!-- Gambar kiri -->
+        <div class="col-md-6 register-left p-2">
+          <img src="../img/photos/perpush.png" alt="Foto Register" style="border-radius: 20px;"/>
+        </div>
 
-						<div class="text-center mt-4">
-							
-							<div class="user-icon">
-								<i class="fa-solid fa-user"></i>
-							</div>
+        <!-- Form kanan -->
+        <div class="col-md-6 register-right">
+          <img src="../img/logo/smk.png" alt="Logo" class="logo" />
+          <h3>Selamat Datang</h3>
+          <h6>Buat akun baru untuk My-perpustakaan</h6>
 
-							<h1 class="h2">Selamat Datang Kembali!</h1>
-							<p class="lead">
-								Daftar Pengguna
-							</p>
-						</div>
+          <form class="w-100">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="input-group">
+                  <input type="text" class="form-control" placeholder="Masukkan Nama" required>
+                  <span class="input-group-text"><i class="bi bi-person"></i></span>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="input-group">
+                  <input type="email" class="form-control" placeholder="Masukkan Email" required>
+                  <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+                </div>
+              </div>
+            </div>
 
-						<div class="card">
-							<div class="card-body">
-								<div class="m-sm-3">
-									<form>
-										<div class="mb-3">
-											<label class="form-label">Nama</label>
-											<input class="form-control form-control-lg" type="text" name="nama" placeholder="Masukan Namamu" />
-										</div>
-										<div class="mb-3">
-											<label class="form-label">Email</label>
-											<input class="form-control form-control-lg" type="email" name="email" placeholder="Masukan email" />
-										</div>
-										<div class="mb-3">
-											<label class="form-label">Password</label>
-											<input class="form-control form-control-lg" type="password" name="password" placeholder="Masukan password" />
-										</div>
-										<div class="mb-3">
-											<label class="form-label">NIS</label>
-											<input class="form-control form-control-lg" type="text" name="nis" placeholder="Masukan NIS" />
-										</div>
-										<div class="mb-3">
-											<label for="jenis_kelamin" class="form-label">Jenis Kelamin</label>
-											<select name="jenis_kelamin" id="jenis_kelamin" class="form-control" required>
-												<option value="" disabled selected>Pilih jenis kelamin</option>
-												<option value="Laki-laki">Laki-laki</option>
-												<option value="Perempuan">Perempuan</option>
-											</select>
-										</div>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="input-group">
+                  <input type="password" class="form-control" id="passwordInput" placeholder="Masukkan Password" required>
+                  <button class="input-group-text" type="button" id="togglePassword">
+                    <i class="bi bi-eye-slash" id="toggleIcon"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="input-group">
+                  <input type="text" class="form-control" placeholder="Masukkan NIS" required>
+                  <span class="input-group-text"><i class="bi bi-card-text"></i></span>
+                </div>
+              </div>
+            </div>
 
-										<div>
-											<div class="form-check align-items-center">
-												<input id="customControlInline" type="checkbox" class="form-check-input" value="remember-me" name="remember-me" checked>
-												<label class="form-check-label text-small" for="customControlInline">Remember me</label>
-											</div>
-										</div>
-										<div class="d-grid gap-2 mt-3">
-											<a href="index.html" class="btn btn-lg btn-primary">Daftar</a>
-										</div>
-									</form>
-								</div>
-							</div>
-						</div>
-						<div class="text-center mb-3">
-							Sudah memiliki akun? <a href="/login">Login</a>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</main>
+            <!-- Select tanpa icon -->
+            <select class="form-select w-100">
+              <option selected disabled>Pilih jenis kelamin</option>
+              <option value="Laki-laki">Laki-laki</option>
+              <option value="Perempuan">Perempuan</option>
+            </select>
 
-	<script src="js/app.js"></script>
+            <button type="submit" class="btn btn-register w-100">Daftar</button>
 
+            <!-- Teks bawah button -->
+            <p class="mt-3 mb-0 text-center">
+              Sudah punya akun? 
+              <a href="/login" class="text-decoration-none" style="color: #8cc84b; font-weight: 600;">
+                Login
+              </a>
+            </p>
+          </form>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // Toggle password
+    const togglePassword = document.querySelector("#togglePassword");
+    const passwordInput = document.querySelector("#passwordInput");
+    const toggleIcon = document.querySelector("#toggleIcon");
+
+    togglePassword.addEventListener("click", () => {
+      const type = passwordInput.getAttribute("type") === "password" ? "text" : "password";
+      passwordInput.setAttribute("type", type);
+      toggleIcon.classList.toggle("bi-eye");
+      toggleIcon.classList.toggle("bi-eye-slash");
+    });
+  </script>
 </body>
 </html>

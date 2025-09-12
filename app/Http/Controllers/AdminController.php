@@ -28,5 +28,12 @@ class AdminController extends Controller
 
     public function UserUpdate(){
         return view('admin.user.update');
+
+    public function Bukcreate(){
+        return view('admin.buku.create');
+    }
+
+    public function Bukupdate(){
+        return view('admin.buku.update');
     }
 }
