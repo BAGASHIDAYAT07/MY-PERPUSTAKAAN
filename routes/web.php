@@ -13,7 +13,7 @@ Route::get('/user', [AdminController::class, 'User']);
 
 //user
 Route::get('/usecreate', [AdminController::class, 'Usecreate']);
-
+Route::get('/useupdate', [AdminController::class, 'UserUpdate']);
 
 //buku
 Route::get('/createbuk', [AdminController::class, 'Bukcreate']);
