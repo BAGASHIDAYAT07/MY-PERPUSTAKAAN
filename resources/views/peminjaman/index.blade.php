@@ -35,7 +35,7 @@
                   <ul class="dropdown-menu">
                     <li><a class="dropdown-item text-success" href="#">Aktifkan</a></li>
                     <li><a class="dropdown-item text-danger" href="#">Nonaktifkan</a></li>
-                    <li><a class="dropdown-item text-primary" href="/pinjaman_update/1">Update</a></li>
+                    <li><a class="dropdown-item text-primary" href="/pinjaman_update/1">Perbarui</a></li>
                   </ul>
                 </div>
               </td>
@@ -55,7 +55,7 @@
                   <ul class="dropdown-menu">
                     <li><a class="dropdown-item text-success" href="#">Aktifkan</a></li>
                     <li><a class="dropdown-item text-danger" href="#">Nonaktifkan</a></li>
-                    <li><a class="dropdown-item text-primary" href="/pinjaman_update/1">Update</a></li>
+                    <li><a class="dropdown-item text-primary" href="/pinjaman_update/1">Perbarui</a></li>
                   </ul>
                 </div>
               </td>
@@ -75,7 +75,7 @@
                   <ul class="dropdown-menu">
                     <li><a class="dropdown-item text-success" href="#">Aktifkan</a></li>
                     <li><a class="dropdown-item text-danger" href="#">Nonaktifkan</a></li>
-                    <li><a class="dropdown-item text-primary" href="/pinjaman_update/1">Update</a></li>
+                    <li><a class="dropdown-item text-primary" href="/pinjaman_update/1">Perbarui</a></li>
                   </ul>
                 </div>
               </td>
