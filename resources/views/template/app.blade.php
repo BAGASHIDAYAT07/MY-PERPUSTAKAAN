@@ -172,7 +172,7 @@
       <i class="bi bi-person me-2"></i> Pengguna
     </a>
     <a class="nav-link text-white mb-2" href="/rak-buku">
-      <i class="bi bi-journal me-2"></i> Rak Koleksi
+      <i class="bi bi-journal me-2"></i> Rak Buku
     </a>
     <a class="nav-link text-white mb-2" href="/verifikasi-user">
       <i class="bi bi-person-check me-2"></i> Verifikasi Pengguna

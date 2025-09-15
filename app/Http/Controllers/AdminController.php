@@ -14,10 +14,8 @@ class AdminController extends Controller
         return view('peminjaman.index');
     }
 
-    public function Buku(){
-        return view('admin.buku');
-    }
-
+    
+    // USER
     public function User(){
         return view('admin.user');
     }
@@ -25,15 +23,20 @@ class AdminController extends Controller
     public function usecreate(){
         return view('admin.user.creat');
     }
-
+    
     public function UserUpdate(){
         return view('admin.user.update');
     }
     
+
+    // BUKU
+    public function Buku(){
+        return view('admin.buku');
+    }
     public function Bukucreate(){
         return view('admin.bukus.create');
     }
-
+    
     public function Bukupdate(){
         return view('admin.bukus.update');
     }
