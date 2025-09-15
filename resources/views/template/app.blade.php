@@ -160,7 +160,7 @@
     </nav>
 
     <!-- Sidebar -->
-    <div id="sidebar" class="shadow-sm mt-2 p-3 rounded-4xl" style="background-color: #3A9D7A; width: 220px;">
+    <div id="sidebar" class="shadow-sm mt-2 p-2 rounded-4xl" style="background-color: #3A9D7A; width: 220px;">
   <nav class="nav flex-column">
     <a class="nav-link text-white mb-2 active" href="/dashboard">
       <i class="bi bi-speedometer2 me-2"></i> Dashboard
