@@ -45,9 +45,7 @@
         </select>
       </div>
 
-      <button type="submit" class="btn btn-success">Perbarui</button>
-      <a href="" class="btn btn-secondary">Batal</a>
-      <a href="/pinjaman_create" class="btn btn-primary mb-3 mt-3">Tambah Peminjaman</a>
+      <a href="/pinjaman_veriv" class="btn btn-success">Perbarui</a>
     </form>
   </div>
 </div>
