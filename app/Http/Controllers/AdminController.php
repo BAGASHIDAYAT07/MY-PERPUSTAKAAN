@@ -37,4 +37,8 @@ class AdminController extends Controller
     public function Bukupdate(){
         return view('admin.bukus.update');
     }
+
+    public function VerifikasiUser(){
+        return view('admin.user.VerifikasiUser');
+    }
 }

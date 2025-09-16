@@ -14,6 +14,7 @@ Route::get('/user', [AdminController::class, 'User']);
 //user
 Route::get('/usecreate', [AdminController::class, 'Usecreate']);
 Route::get('/useupdate', [AdminController::class, 'UserUpdate']);
+Route::get('/VerifikasiUser', [AdminController::class,'VerifikasiUser']);
 
 //buku
 Route::get('/createbuk', [AdminController::class, 'Bukucreate']);
