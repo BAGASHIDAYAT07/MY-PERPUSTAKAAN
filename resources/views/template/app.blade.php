@@ -174,7 +174,7 @@
     <a class="nav-link text-white mb-2" href="/rakbuku">
       <i class="bi bi-journal me-2"></i> Rak Buku
     </a>
-    <a class="nav-link text-white mb-2" href="/verifikasi-user">
+    <a class="nav-link text-white mb-2" href="/VerifikasiUser">
       <i class="bi bi-person-check me-2"></i> Verifikasi Pengguna
     </a>
     <a class="nav-link text-white mb-2" href="/verifikasi-peminjaman">
