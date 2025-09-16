@@ -96,7 +96,7 @@ body{
                 padding: 0 0.2em;
                 background: #33cc99;
             }
-            
+             
             .cloud {
                 width: 350px; height: 120px;
 
