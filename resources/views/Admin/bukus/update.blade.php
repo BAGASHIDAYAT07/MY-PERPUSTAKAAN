@@ -2,12 +2,12 @@
 
 @section("konten")
 <div class="container">
-<h1 class="mt-4">Update Buku</h1>
+<h1 class="mt-4">Ubah Buku</h1>
 
 <div class="card mb-4">
   <div class="card-header">
     <i class="fas fa-edit me-1"></i>
-    Form Update Peminjaman
+   Formulir Ubah Buku
   </div>
   <div class="card-body">
     <form method="POST">
@@ -15,47 +15,44 @@
       @method('PUT')
 
       <div class="mb-3">
-        <label for="nama_peminjam" class="form-label">Judul Buku</label>
-        <input type="text" name="nama_peminjam" class="form-control" id="nama_peminjam" 
+        <label for="judul_buku" class="form-label">Judul Buku</label>
+        <input type="text" name="judul_buku" class="form-control" id="judul_buku" 
                value="" required>
       </div>
 
       <div class="mb-3">
-        <label for="judul_buku" class="form-label">Jenis Buku</label>
-        <input type="text" name="judul_buku" class="form-control" id="judul_buku" 
+        <label for="jenis_buku" class="form-label">Jenis Buku</label>
+        <input type="text" name="jenis_buku" class="form-control" id="jenis_buku" 
                value="" required>
       </div>
 
        <div class="mb-3">
-        <label for="judul_buku" class="form-label">Nama Penerbit</label>
-        <input type="text" name="judul_buku" class="form-control" id="judul_buku" 
+        <label for="nama_penerbit" class="form-label">Nama Penerbit</label>
+        <input type="text" name="nama_penerbit" class="form-control" id="nama_penerbit" 
                value="" required>
       </div>
 
        <div class="mb-3">
-        <label for="judul_buku" class="form-label">Nama Pencipta</label>
-        <input type="text" name="judul_buku" class="form-control" id="judul_buku" 
+        <label for="nama_pencipta" class="form-label">Nama Pencipta</label>
+        <input type="text" name="nama_pencipta" class="form-control" id="nama_pencipta" 
                value="" required>
       </div>
 
        <div class="mb-3">
-        <label for="judul_buku" class="form-label">Tempat Terbit</label>
-        <input type="text" name="judul_buku" class="form-control" id="judul_buku" 
-               value="" required>
-      </div>
-
-
-
-
-      <div class="mb-3">
-        <label for="tanggal_pinjam" class="form-label">Tanggal Pinjam</label>
-        <input type="date" name="tanggal_pinjam" class="form-control" id="tanggal_pinjam" 
+        <label for="tempat_terbit" class="form-label">Tempat Terbit</label>
+        <input type="text" name="tempat_terbit" class="form-control" id="tempat_terbit" 
                value="" required>
       </div>
 
       <div class="mb-3">
-        <label for="tanggal_kembali" class="form-label">Tanggal Kembali</label>
-        <input type="date" name="tanggal_kembali" class="form-control" id="tanggal_kembali" 
+        <label for="tanggal_terbit" class="form-label">Tanggal Terbit</label>
+        <input type="date" name="tanggal_terbit" class="form-control" id="tanggal_terbit" 
+               value="" required>
+      </div>
+
+      <div class="mb-3">
+        <label for="jumlah_halaman" class="form-label">Jumlah Halaman</label>
+        <input type="text" name="jumlah_halaman" class="form-control" id="jumlah_halaman" 
                value="" required>
       </div>
 
@@ -66,9 +63,7 @@
         </select>
       </div>
 
-      <button type="submit" class="btn btn-success">Update</button>
-      <a href="" class="btn btn-secondary">Batal</a>
-      <a href="/pinjaman_create" class="btn btn-primary mb-3 mt-3">Tambah Peminjaman</a>
+      <a href="/createbuk" class="btn btn-success">Ubah</a>
     </form>
   </div>
 </div>

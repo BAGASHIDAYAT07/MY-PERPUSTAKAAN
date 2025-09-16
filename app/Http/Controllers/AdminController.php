@@ -40,4 +40,9 @@ class AdminController extends Controller
     public function Bukupdate(){
         return view('admin.bukus.update');
     }
+
+    // RAK BUKU
+    public function RakBuku(){
+        return view('admin.RakBuku.RakBuku');
+    }
 }

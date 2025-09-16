@@ -9,7 +9,7 @@
 <div class="card mb-4">
   <div class="card-header">
     <i class="fas fa-plus-circle me-1"></i>
-    Form Peminjaman
+    Formulir Peminjaman
   </div>
   <div class="card-body">
       @csrf

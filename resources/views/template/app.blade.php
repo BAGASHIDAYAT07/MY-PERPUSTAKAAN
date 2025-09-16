@@ -162,7 +162,7 @@
     <!-- Sidebar -->
     <div id="sidebar" class="shadow-sm mt-2 p-2 rounded-4xl" style="background-color: #3A9D7A; width: 220px;">
   <nav class="nav flex-column">
-    <a class="nav-link text-white mb-2 active" href="/dashboard">
+    <a class="nav-link text-white mb-2 active" href="/">
       <i class="bi bi-speedometer2 me-2"></i> Dashboard
     </a>
     <a class="nav-link text-white mb-2" href="/buku">
@@ -171,7 +171,7 @@
     <a class="nav-link text-white mb-2" href="/user">
       <i class="bi bi-person me-2"></i> Pengguna
     </a>
-    <a class="nav-link text-white mb-2" href="/rak-buku">
+    <a class="nav-link text-white mb-2" href="/rakbuku">
       <i class="bi bi-journal me-2"></i> Rak Buku
     </a>
     <a class="nav-link text-white mb-2" href="/verifikasi-user">
