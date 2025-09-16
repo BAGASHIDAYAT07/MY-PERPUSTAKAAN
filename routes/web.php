@@ -15,6 +15,7 @@ Route::get('/rakbuku', [AdminController::class, 'RakBuku']);
 //user
 Route::get('/usecreate', [AdminController::class, 'Usecreate']);
 Route::get('/useupdate', [AdminController::class, 'UserUpdate']);
+Route::get('/VerifikasiUser', [AdminController::class,'VerifikasiUser']);
 
 //buku
 Route::get('/createbuk', [AdminController::class, 'Bukucreate']);

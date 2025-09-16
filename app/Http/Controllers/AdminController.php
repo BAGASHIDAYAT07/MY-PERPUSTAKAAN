@@ -27,12 +27,17 @@ class AdminController extends Controller
     public function UserUpdate(){
         return view('admin.user.update');
     }
+  
+    public function VerifikasiUser(){
+        return view('admin.user.VerifikasiUser');
+    }
     
 
     // BUKU
     public function Buku(){
         return view('admin.buku');
     }
+  
     public function Bukucreate(){
         return view('admin.bukus.create');
     }
@@ -40,7 +45,8 @@ class AdminController extends Controller
     public function Bukupdate(){
         return view('admin.bukus.update');
     }
-
+  
+  
     // RAK BUKU
     public function RakBuku(){
         return view('admin.RakBuku.RakBuku');
