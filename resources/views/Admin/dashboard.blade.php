@@ -1,7 +1,7 @@
 @extends('template.app')
 
 @section("konten")
-<div class="container-fluid px-3" style="margin-top: -25px;">
+<div class="container-fluid " style="margin-top: -25px;">
     <!-- Judul Halaman -->
 <div class="d-flex align-items-center justify-content-between bg-white shadow-sm p-3 rounded mb-4">
     <div class="d-flex align-items-center">
@@ -26,12 +26,12 @@
             </div>
         </div>
 
-        <!-- Jumlah Siswa -->
+        <!-- Jumlah User -->
         <div class="col-md-3">
             <div class="card shadow-sm border-0 h-100 bg-white">
                 <div class="card-body text-center">
                     <i class="bi bi-people fs-2 text-success"></i>
-                    <p class="text-muted small mb-1 mt-2">Jumlah Siswa</p>
+                    <p class="text-muted small mb-1 mt-2">Jumlah User</p>
                     <h4 class="fw-bold mb-0">120</h4>
                 </div>
             </div>
