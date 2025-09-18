@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
   <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <title>Dashboard - MY-PERPUSTAKAAN</title>
+    <title>Beranda - MY-PERPUSTAKAAN</title>
 
     <!-- Styles -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
@@ -31,19 +31,23 @@
         border-radius: 0;
       }
 
-      /* Fixed Sidebar */
+      /* Sidebar dengan animasi smooth */
       #sidebar {
         position: fixed;
         top: 70px; /* tinggi navbar */
-        left: 15px;
-        width: 200px;
-        height: calc(100vh - 85px);
+        left: 0;
+        width: 220px;
+        height: calc(100vh - 70px);
         background-color: #3b8763;
-        border-radius: 15px;
         padding: 20px 15px;
         overflow-y: auto;
         z-index: 1000;
-        transition: all 0.3s ease;
+        transition: transform 0.3s ease-in-out; /* animasi smooth */
+        transform: translateX(0); /* posisi normal */
+      }
+
+      #sidebar.hide {
+        transform: translateX(-250px); /* geser keluar layar */
       }
 
       #sidebar .nav-link {
@@ -57,23 +61,19 @@
 
       #sidebar .nav-link.active {
         background-color: rgba(255, 255, 255, 0.2);
-        border-radius: 10px;
+        border-radius: 5px;
       }
 
       #sidebar .nav-link:hover {
         background-color: rgba(255, 255, 255, 0.1);
-        border-radius: 10px;
+        border-radius: 5px;
       }
 
-      #sidebar.hide {
-        left: -250px;
-      }
-
-      /* Main Content */
+      /* Main Content dengan transisi halus */
       #main-content {
-        margin-left: 230px;
+        margin-left: 215px;
         padding-top: 100px; /* space for fixed navbar */
-        transition: all 0.3s ease;
+        transition: margin-left 0.3s ease-in-out; /* halus saat geser */
       }
 
       #main-content.full {
@@ -108,23 +108,7 @@
         <span class="fw-bold">MY-PERPUSTAKAAN</span>
       </div>
 
-      <!-- Search Box -->
-      <form class="d-none d-md-inline-block mx-auto w-50">
-  <div class="input-group">
-    <input 
-      class="form-control" 
-      type="text" 
-      placeholder="Search For ...." 
-      style="border: 1px solid #ccc; border-right: none; border-radius: 10px 0 0 10px; box-shadow: none;"
-    />
-    <span class="input-group-text" style="background: #fff; border: 1px solid #ccc; border-left: none; border-radius: 0 10px 10px 0;">
-      <i class="bi bi-search"></i>
-    </span>
-  </div>
-</form>
-
-
-      <!-- Icons & User -->
+      <!-- Ikon & User -->
       <ul class="navbar-nav ms-auto d-flex align-items-center">
         <li class="nav-item mx-2">
           <a class="nav-link" href="#"><i class="bi bi-chat-dots" style="font-size: 20px;"></i></a>
@@ -140,18 +124,18 @@
           <ul class="dropdown-menu dropdown-menu-end shadow rounded-3 border-0" aria-labelledby="userDropdown" style="min-width: 200px;">
             <li>
               <a class="dropdown-item d-flex align-items-center gap-2 py-2" href="#!">
-                <i class="bi bi-gear text-success"></i> Settings
+                <i class="bi bi-gear text-success"></i> Pengaturan
               </a>
             </li>
             <li>
               <a class="dropdown-item d-flex align-items-center gap-2 py-2" href="#!">
-                <i class="bi bi-clock-history text-success"></i> Activity Log
+                <i class="bi bi-clock-history text-success"></i> Riwayat Aktivitas
               </a>
             </li>
             <li><hr class="dropdown-divider"></li>
             <li>
               <a class="dropdown-item d-flex align-items-center gap-2 py-2 fw-bold text-success" href="#!">
-                <i class="bi bi-box-arrow-right"></i> Logout
+                <i class="bi bi-box-arrow-right"></i> Keluar
               </a>
             </li>
           </ul>
@@ -160,13 +144,17 @@
     </nav>
 
     <!-- Sidebar -->
-    <div id="sidebar" class="shadow-sm mt-2 p-2 rounded-4xl" style="background-color: #3A9D7A; width: 220px;">
-  <nav class="nav flex-column">
+<div id="sidebar" class="shadow-sm p-2 rounded-4xl">
+  <div class="text-center mb-4">
+    <img src="../img/logo/smk.png" alt="Logo" style="width: 70px; border-radius: 50%;" />
+    <h6 class="text-white mt-2 fw-bold">MY-PERPUSTAKAAN</h6>
+  </div>
+  <hr class="text-white opacity-50">
+
+  <nav class="nav flex-column" style="padding: 10px 0;">
+    <span class="text-white-50 small mb-2 px-2">Main Menu</span>
     <a class="nav-link text-white mb-2 active" href="/">
-      <i class="bi bi-speedometer2 me-2"></i> Dashboard
-    </a>
-    <a class="nav-link text-white mb-2" href="/buku">
-      <i class="bi bi-book me-2"></i> Koleksi Buku
+      <i class="bi bi-speedometer2 me-2"></i> Beranda
     </a>
     <a class="nav-link text-white mb-2" href="/user">
       <i class="bi bi-person me-2"></i> Pengguna
@@ -174,11 +162,16 @@
     <a class="nav-link text-white mb-2" href="/rakbuku">
       <i class="bi bi-journal me-2"></i> Rak Buku
     </a>
+
+    <hr class="text-white opacity-50 mt-3 mb-2">
+
+    <span class="text-white-50 small mb-2 px-2">Verifikasi</span>
     <a class="nav-link text-white mb-2" href="/VerifikasiUser">
       <i class="bi bi-person-check me-2"></i> Verifikasi Pengguna
     </a>
-    <a class="nav-link text-white mb-2" href="/verifikasi-peminjaman">
+    <a class="nav-link text-white mb-2" href="/bukuveriv">
       <i class="bi bi-clipboard-check me-2"></i> Verifikasi Peminjaman
+      <span class="badge bg-light text-success ms-auto">3</span>
     </a>
   </nav>
 </div>

@@ -29,3 +29,4 @@ Route::get('/login', [AuthController::class, 'ViewLogin']);
 Route::get('/pinjam',[AdminController::class, 'tes']);
 Route::get('/pinjaman_create',[PinjamanController::class, 'create']);
 Route::get('/pinjaman_update/{id}',[PinjamanController::class, 'edit']);
+Route::get('/bukuveriv',[PinjamanController::class, 'veriv']);
