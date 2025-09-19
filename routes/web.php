@@ -32,6 +32,6 @@ Route::get('/pinjaman_create',[PinjamanController::class, 'create']);
 Route::get('/pinjaman_update/{id}',[PinjamanController::class, 'edit']);
 Route::get('/bukuveriv',[PinjamanController::class, 'veriv']);
 
-
 //untuk user
 Route::get('/userview',[UserControler::class, 'Buku']);
+Route::get('/pinjaman_detail',[PinjamanController::class, 'detail']);
