@@ -23,4 +23,9 @@ class PinjamanController extends Controller
     }
 
 
+    public function detail(){
+        return view('peminjaman.detail');
+    }
+
+
 }
