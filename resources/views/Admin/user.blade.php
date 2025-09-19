@@ -24,138 +24,123 @@
   <!-- Card Table -->
   <div class="card shadow-sm border-0">
     <div class="card-body">
-      <!-- Select All & Export -->
-      <div class="d-flex justify-content-between align-items-center mb-3">
-        <div>
-          <input type="checkbox" id="selectAll"> 
-          <label for="selectAll" class="ms-1">Pilih semua</label>
-        </div>
-        <button class="btn btn-outline-primary btn-sm">
-          <i class="bi bi-box-arrow-up"></i> Export selected
-        </button>
-      </div>
-
       <!-- Search -->
       <div class="mb-3">
         <input type="search" class="form-control form-control-sm" placeholder="Cari user...">
       </div>
 
       <!-- Table -->
-      <div class="table-responsive">
-        <table class="table table-striped table-hover align-middle mb-0 table-bordered border-secondary-subtle">
-          <thead class="table-primary text-center">
-            <tr>
-              <th></th>
-              <th>Nama</th>
-              <th>Email</th>
-              <th>NIS</th>
-              <th>Jenis Kelamin</th>
-              <th>Status</th>
-              <th>Aksi</th>
-            </tr>
-          </thead>
-          <tbody class="text-center">
-            <!-- User 1 -->
-            <tr>
-              <td><input type="checkbox"></td>
-              <td class="text-start">
-                <img src="https://ui-avatars.com/api/?name=Enggal+Dwi" class="rounded-circle me-2" width="32" height="32">
-                Enggal Dwi
-              </td>
-              <td>enggal@example.com</td>
-              <td>USR001</td>
-              <td>Laki-laki</td>
-              <td>
-                <button class="btn btn-sm btn-success toggle-status">Aktif</button>
-              </td>
-              <td>
-                <div class="d-flex justify-content-center gap-2">
-                  <button class="btn btn-sm btn-outline-warning" data-bs-toggle="modal" data-bs-target="#editUserModal">
-                    <i class="bi bi-pencil-square"></i> Edit
-                  </button>
-                  <button class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#hapusUserModal">
-                    <i class="bi bi-trash"></i> Hapus
-                  </button>
-                </div>
-              </td>
-            </tr>
+      <table class="table table-striped table-hover align-middle mb-0 table-bordered border-secondary-subtle">
+        <thead class="table-primary text-center">
+          <tr>
+            <th>Nama</th>
+            <th>Email</th>
+            <th>NIS</th>
+            <th>Jenis Kelamin</th>
+            <th>Status</th>
+            <th>Aksi</th>
+          </tr>
+        </thead>
+        <tbody class="text-center">
+          <!-- User 1 -->
+          <tr>
+            <td class="text-start">
+              <img src="https://ui-avatars.com/api/?name=Enggal+Dwi" class="rounded-circle me-2" width="32" height="32">
+              Enggal Dwi
+            </td>
+            <td>enggal@example.com</td>
+            <td>USR001</td>
+            <td>Laki-laki</td>
+            <td>
+              <button class="btn btn-sm btn-success toggle-status">Aktif</button>
+            </td>
+            <td>
+              <div class="dropdown">
+                <button class="btn btn-sm btn-light border" type="button" data-bs-toggle="dropdown">
+                  <i class="bi bi-three-dots-vertical"></i>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end">
+                  <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#detailUserModal"><i class="bi bi-eye me-2"></i> Lihat Detail</a></li>
+                  <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#editUserModal"><i class="bi bi-pencil-square me-2"></i> Edit</a></li>
+                </ul>
+              </div>
+            </td>
+          </tr>
 
-            <!-- User 2 -->
-            <tr>
-              <td><input type="checkbox"></td>
-              <td class="text-start">
-                <img src="https://ui-avatars.com/api/?name=Antooks" class="rounded-circle me-2" width="32" height="32">
-                antooks
-              </td>
-              <td>antoks@example.com</td>
-              <td>USR002</td>
-              <td>Laki-laki</td>
-              <td>
-                <button class="btn btn-sm btn-danger toggle-status">Nonaktif</button>
-              </td>
-              <td>
-                <div class="d-flex justify-content-center gap-2">
-                  <button class="btn btn-sm btn-outline-warning" data-bs-toggle="modal" data-bs-target="#editUserModal">
-                    <i class="bi bi-pencil-square"></i> Edit
-                  </button>
-                  <button class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#hapusUserModal">
-                    <i class="bi bi-trash"></i> Hapus
-                  </button>
-                </div>
-              </td>
-            </tr>
+          <!-- User 2 -->
+          <tr>
+            <td class="text-start">
+              <img src="https://ui-avatars.com/api/?name=Antooks" class="rounded-circle me-2" width="32" height="32">
+              antooks
+            </td>
+            <td>antoks@example.com</td>
+            <td>USR002</td>
+            <td>Laki-laki</td>
+            <td>
+              <button class="btn btn-sm btn-danger toggle-status">Nonaktif</button>
+            </td>
+            <td>
+              <div class="dropdown">
+                <button class="btn btn-sm btn-light border" type="button" data-bs-toggle="dropdown">
+                  <i class="bi bi-three-dots-vertical"></i>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end">
+                  <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#detailUserModal"><i class="bi bi-eye me-2"></i> Lihat Detail</a></li>
+                  <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#editUserModal"><i class="bi bi-pencil-square me-2"></i> Edit</a></li>
+                </ul>
+              </div>
+            </td>
+          </tr>
 
-            <!-- User 3 -->
-            <tr>
-              <td><input type="checkbox"></td>
-              <td class="text-start">
-                <img src="https://ui-avatars.com/api/?name=Bagasss" class="rounded-circle me-2" width="32" height="32">
-                bagasss
-              </td>
-              <td>bagas@example.com</td>
-              <td>USR003</td>
-              <td>Laki-laki</td>
-              <td>
-                <button class="btn btn-sm btn-success toggle-status">Aktif</button>
-              </td>
-              <td>
-                <div class="d-flex justify-content-center gap-2">
-                  <button class="btn btn-sm btn-outline-warning" data-bs-toggle="modal" data-bs-target="#editUserModal">
-                    <i class="bi bi-pencil-square"></i> Edit
-                  </button>
-                  <button class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#hapusUserModal">
-                    <i class="bi bi-trash"></i> Hapus
-                  </button>
-                </div>
-              </td>
-            </tr>
-
-          </tbody>
-        </table>
-      </div>
+          <!-- User 3 -->
+          <tr>
+            <td class="text-start">
+              <img src="https://ui-avatars.com/api/?name=Bagasss" class="rounded-circle me-2" width="32" height="32">
+              bagasss
+            </td>
+            <td>bagas@example.com</td>
+            <td>USR003</td>
+            <td>Laki-laki</td>
+            <td>
+              <button class="btn btn-sm btn-success toggle-status">Aktif</button>
+            </td>
+            <td>
+              <div class="dropdown">
+                <button class="btn btn-sm btn-light border" type="button" data-bs-toggle="dropdown">
+                  <i class="bi bi-three-dots-vertical"></i>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end">
+                  <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#detailUserModal"><i class="bi bi-eye me-2"></i> Lihat Detail</a></li>
+                  <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#editUserModal"><i class="bi bi-pencil-square me-2"></i> Edit</a></li>
+                </ul>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
 </div>
 
-<!-- Modal Tambah -->
+<!-- Modal Tambah User -->
 <div class="modal fade" id="tambahUserModal" tabindex="-1">
   <div class="modal-dialog modal-lg modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title fw-bold">
-          <i class="bi bi-plus-circle text-success me-2"></i>Tambah User
+          <i class="bi bi-person-plus text-success me-2"></i>Tambah User
         </h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
       <div class="modal-body">
         <form class="row g-3">
           <div class="col-md-6">
-            <label class="form-label">Nama</label>
-            <input type="text" class="form-control" placeholder="Nama lengkap">
+            <label class="form-label">Nama Lengkap</label>
+            <input type="text" class="form-control" placeholder="Contoh: Bagas Hidayat">
           </div>
           <div class="col-md-6">
             <label class="form-label">Email</label>
-            <input type="email" class="form-control" placeholder="user@example.com">
+            <input type="email" class="form-control" placeholder="nama@email.com">
           </div>
           <div class="col-md-6">
             <label class="form-label">NIS</label>
@@ -164,9 +149,21 @@
           <div class="col-md-6">
             <label class="form-label">Jenis Kelamin</label>
             <select class="form-select">
-              <option value="L">Laki-laki</option>
-              <option value="P">Perempuan</option>
+              <option selected disabled>-- Pilih --</option>
+              <option>Laki-laki</option>
+              <option>Perempuan</option>
             </select>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Status</label>
+            <select class="form-select">
+              <option>Aktif</option>
+              <option>Nonaktif</option>
+            </select>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Password</label>
+            <input type="password" class="form-control" placeholder="Minimal 6 karakter">
           </div>
         </form>
       </div>
@@ -178,7 +175,36 @@
   </div>
 </div>
 
-<!-- Modal Edit -->
+<!-- Modal Lihat Detail -->
+<div class="modal fade" id="detailUserModal" tabindex="-1">
+  <div class="modal-dialog modal-md modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title fw-bold">
+          <i class="bi bi-person-badge me-2 text-primary"></i>Detail User
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <div class="text-center mb-3">
+          <img src="https://ui-avatars.com/api/?name=Enggal+Dwi" class="rounded-circle mb-2" width="80" height="80">
+          <h5 class="mb-0">Enggal Dwi</h5>
+          <small class="text-muted">USR001</small>
+        </div>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item"><b>Email:</b> enggal@example.com</li>
+          <li class="list-group-item"><b>Jenis Kelamin:</b> Laki-laki</li>
+          <li class="list-group-item"><b>Status:</b> Aktif</li>
+        </ul>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Edit User -->
 <div class="modal fade" id="editUserModal" tabindex="-1">
   <div class="modal-dialog modal-lg modal-dialog-centered">
     <div class="modal-content">
@@ -191,7 +217,7 @@
       <div class="modal-body">
         <form class="row g-3">
           <div class="col-md-6">
-            <label class="form-label">Nama</label>
+            <label class="form-label">Nama Lengkap</label>
             <input type="text" class="form-control" value="Enggal Dwi">
           </div>
           <div class="col-md-6">
@@ -209,6 +235,17 @@
               <option>Perempuan</option>
             </select>
           </div>
+          <div class="col-md-6">
+            <label class="form-label">Status</label>
+            <select class="form-select">
+              <option selected>Aktif</option>
+              <option>Nonaktif</option>
+            </select>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Password</label>
+            <input type="password" class="form-control" placeholder="Kosongkan jika tidak diubah">
+          </div>
         </form>
       </div>
       <div class="modal-footer">
@@ -219,36 +256,8 @@
   </div>
 </div>
 
-<!-- Modal Hapus -->
-<div class="modal fade" id="hapusUserModal" tabindex="-1">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header bg-danger text-white">
-        <h5 class="modal-title mb-0">
-          <i class="bi bi-trash me-2"></i>Hapus User
-        </h5>
-        <button class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-      </div>
-      <div class="modal-body text-center">
-        <p>Apakah yakin ingin menghapus user <strong>"Enggal Dwi"</strong>?</p>
-        <small class="text-muted">Tindakan ini tidak bisa dibatalkan.</small>
-      </div>
-      <div class="modal-footer justify-content-center">
-        <button class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-        <button class="btn btn-danger">Ya, Hapus</button>
-      </div>
-    </div>
-  </div>
-</div>
-
 <!-- JS -->
 <script>
-  // Select All Checkbox
-  document.getElementById('selectAll').addEventListener('click', function () {
-    const checkboxes = document.querySelectorAll('tbody input[type="checkbox"]');
-    checkboxes.forEach(cb => cb.checked = this.checked);
-  });
-
   // Toggle Aktif/Nonaktif
   document.querySelectorAll('.toggle-status').forEach(btn => {
     btn.addEventListener('click', function () {

@@ -21,6 +21,9 @@ Route::get('/VerifikasiUser', [AdminController::class,'VerifikasiUser']);
 Route::get('/createbuk', [AdminController::class, 'Bukucreate']);
 Route::get('/updatebuk', [AdminController::class, 'Bukupdate']);
 
+//rakbuku
+Route::get('/rakbuku', [AdminController::class, 'Rakbuku']);
+
 
 // auth
 Route::get('/register', [AuthController::class, 'ViewRegister']);

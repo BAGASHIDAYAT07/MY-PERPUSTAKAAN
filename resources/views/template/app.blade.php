@@ -44,6 +44,13 @@
         z-index: 1000;
         transition: transform 0.3s ease-in-out; /* animasi smooth */
         transform: translateX(0); /* posisi normal */
+
+        /* Hilangkan scrollbar */
+        scrollbar-width: none; /* Firefox */
+      }
+
+      #sidebar::-webkit-scrollbar {
+        display: none; /* Chrome, Safari */
       }
 
       #sidebar.hide {
@@ -145,12 +152,6 @@
 
     <!-- Sidebar -->
 <div id="sidebar" class="shadow-sm p-2 rounded-4xl">
-  <div class="text-center mb-4">
-    <img src="../img/logo/smk.png" alt="Logo" style="width: 70px; border-radius: 50%;" />
-    <h6 class="text-white mt-2 fw-bold">MY-PERPUSTAKAAN</h6>
-  </div>
-  <hr class="text-white opacity-50">
-
   <nav class="nav flex-column" style="padding: 10px 0;">
     <span class="text-white-50 small mb-2 px-2">Main Menu</span>
     <a class="nav-link text-white mb-2 active" href="/">
@@ -175,6 +176,7 @@
     </a>
   </nav>
 </div>
+
 
     <!-- Main Content -->
     <div id="main-content">
