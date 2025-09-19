@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ClientError;
+use App\Http\Controllers\UserControler;
 
 // admin
 Route::get('/', [AdminController::class, 'Dashboard']);
@@ -30,4 +31,7 @@ Route::get('/pinjam',[AdminController::class, 'tes']);
 Route::get('/pinjaman_create',[PinjamanController::class, 'create']);
 Route::get('/pinjaman_update/{id}',[PinjamanController::class, 'edit']);
 Route::get('/bukuveriv',[PinjamanController::class, 'veriv']);
+
+//untuk user
+Route::get('/userview',[UserControler::class, 'Buku']);
 Route::get('/pinjaman_detail',[PinjamanController::class, 'detail']);
