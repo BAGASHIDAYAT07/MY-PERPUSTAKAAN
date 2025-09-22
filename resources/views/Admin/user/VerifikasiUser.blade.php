@@ -4,25 +4,24 @@
 <style>
   .status-badge {
     display: inline-block;
-    font-size: 0.75rem;     /* lebih kecil */
+    font-size: 0.75rem;     /* ukuran teks kecil */
     padding: 0.25em 0.6em;  /* padding tipis */
     border-radius: 4px;     /* sudut agak kotak */
-    font-weight: 500;       /* teks sedang */
+    font-weight: 500;       /* tebal sedang */
   }
 
-  .status-menunggu {
-    background-color: #ffc107; /* kuning */
-    color: #212529;
-  }
+  .status-menunggu { background-color: #ffc107; color: #212529; }
+  .status-ditolak { background-color: #dc3545; color: #fff; }
+  .status-disetujui { background-color: #198754; color: #fff; }
 
-  .status-ditolak {
-    background-color: #dc3545; /* merah */
-    color: #fff;
+  /* Atur scroll tabel hanya untuk layar kecil */
+  .table-wrapper {
+    overflow-x: visible; /* default desktop: tidak scroll */
   }
-
-  .status-disetujui {
-    background-color: #198754; /* hijau */
-    color: #fff;
+  @media (max-width: 991.98px) {
+    .table-wrapper {
+      overflow-x: auto;   /* HP/tablet: aktifkan scroll kalau kepaksa */
+    }
   }
 </style>
 
@@ -52,7 +51,7 @@
       </div>
 
       <!-- Table -->
-      <div class="table-responsive">
+      <div class="table-wrapper">
         <table class="table table-striped table-hover align-middle mb-0 table-bordered border-secondary-subtle">
           <thead class="table-primary text-center">
             <tr>
@@ -87,6 +86,11 @@
                   </button>
                   <ul class="dropdown-menu">
                     <li>
+                      <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#detailUserModal">
+                        <i class="bi bi-eye me-2"></i> Lihat Detail
+                      </a>
+                    </li>
+                    <li>
                       <a class="dropdown-item text-success" href="#">
                         <i class="bi bi-check2-circle me-2"></i> Setujui
                       </a>
@@ -117,9 +121,16 @@
               </td>
               <td>
                 <div class="dropdown">
-                  <button class="btn btn-sm btn-light border" data-bs-toggle="dropdown" disabled>
+                  <button class="btn btn-sm btn-light border" data-bs-toggle="dropdown">
                     <i class="bi bi-three-dots-vertical"></i>
                   </button>
+                  <ul class="dropdown-menu">
+                    <li>
+                      <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#detailUserModal">
+                        <i class="bi bi-eye me-2"></i> Lihat Detail
+                      </a>
+                    </li>
+                  </ul>
                 </div>
               </td>
             </tr>
@@ -140,15 +151,51 @@
               </td>
               <td>
                 <div class="dropdown">
-                  <button class="btn btn-sm btn-light border" data-bs-toggle="dropdown" disabled>
+                  <button class="btn btn-sm btn-light border" data-bs-toggle="dropdown">
                     <i class="bi bi-three-dots-vertical"></i>
                   </button>
+                  <ul class="dropdown-menu">
+                    <li>
+                      <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#detailUserModal">
+                        <i class="bi bi-eye me-2"></i> Lihat Detail
+                      </a>
+                    </li>
+                  </ul>
                 </div>
               </td>
             </tr>
 
           </tbody>
         </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Detail User -->
+<div class="modal fade" id="detailUserModal" tabindex="-1">
+  <div class="modal-dialog modal-md modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title fw-bold">
+          <i class="bi bi-person-lines-fill me-2 text-primary"></i> Detail User
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <div class="text-center mb-3">
+          <img src="https://ui-avatars.com/api/?name=User+Demo" class="rounded-circle shadow" alt="Foto User" style="width: 100px; height: 100px;">
+        </div>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item"><b>Nama:</b> Enggal</li>
+          <li class="list-group-item"><b>Email:</b> enggal.@email.com</li>
+          <li class="list-group-item"><b>NIS:</b> USR002</li>
+          <li class="list-group-item"><b>Jenis Kelamin:</b> Laki-laki</li>
+          <li class="list-group-item"><b>Status:</b> Menunggu</li>
+        </ul>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
       </div>
     </div>
   </div>
