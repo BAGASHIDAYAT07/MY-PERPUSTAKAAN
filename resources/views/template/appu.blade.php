@@ -118,7 +118,7 @@
         <button class="btn btn-link me-2" id="sidebarToggle">
           <i class="bi bi-list fs-4" style="color: black;"></i>
         </button>
-        <a href="/" class="d-flex align-items-center text-decoration-none">
+        <a href="/Home" class="d-flex align-items-center text-decoration-none">
           <img src="../img/logo/smk.png" alt="Logo" class="logo-nav" style="width: 45px; margin-right: 8px;" />
           <span class="fw-bold brand-text text-dark">MY-PERPUSTAKAAN</span>
         </a>
