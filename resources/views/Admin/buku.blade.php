@@ -1,6 +1,6 @@
-@extends('template.app')
+@extends('template.appu')
 
-@section("konten")
+@section("kontenU")
 <h1 class="mt-4">Daftar Buku</h1>
 
 <div class="card mb-4">
