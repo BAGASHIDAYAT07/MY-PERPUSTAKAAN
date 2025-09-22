@@ -1,7 +1,7 @@
 @extends('template.app')
 
 @section("konten")
-<div class="container-fluid " style="margin-top: -25px;">
+<div class="container-fluid px-3" style="margin-top: -25px;">
     <!-- Judul Halaman -->
 <div class="d-flex align-items-center justify-content-between bg-white shadow-sm p-3 rounded mb-4">
     <div class="d-flex align-items-center">

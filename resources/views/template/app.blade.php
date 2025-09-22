@@ -31,7 +31,20 @@
         border-radius: 0;
       }
 
-      /* Sidebar dengan animasi smooth */
+      /* Fix posisi dropdown user */
+      .navbar .nav-item.dropdown {
+        position: relative;
+      }
+
+      .navbar .dropdown-menu {
+        position: absolute;
+        top: 100% !important;
+        right: 0;
+        left: auto;
+        margin-top: .5rem;
+      }
+
+      /* Sidebar */
       #sidebar {
         position: fixed;
         top: 70px; /* tinggi navbar */
@@ -42,19 +55,17 @@
         padding: 20px 15px;
         overflow-y: auto;
         z-index: 1000;
-        transition: transform 0.3s ease-in-out; /* animasi smooth */
-        transform: translateX(0); /* posisi normal */
-
-        /* Hilangkan scrollbar */
-        scrollbar-width: none; /* Firefox */
-      }
-
-      #sidebar::-webkit-scrollbar {
-        display: none; /* Chrome, Safari */
+        transition: transform 0.3s ease-in-out;
+        transform: translateX(0); /* default tampil */
+        scrollbar-width: none;
       }
 
       #sidebar.hide {
-        transform: translateX(-250px); /* geser keluar layar */
+        transform: translateX(-250px); /* kalau disembunyikan */
+      }
+
+      #sidebar::-webkit-scrollbar {
+        display: none;
       }
 
       #sidebar .nav-link {
@@ -76,15 +87,25 @@
         border-radius: 5px;
       }
 
-      /* Main Content dengan transisi halus */
+      /* Main Content */
       #main-content {
-        margin-left: 215px;
-        padding-top: 100px; /* space for fixed navbar */
-        transition: margin-left 0.3s ease-in-out; /* halus saat geser */
+        margin-left: 215px; /* default geser karena sidebar tampil */
+        padding-top: 100px;
+        transition: margin-left 0.3s ease-in-out;
       }
 
-      #main-content.full {
-        margin-left: 15px;
+      /* Mobile view */
+      @media (max-width: 767.98px) {
+        #main-content {
+          margin-left: 0 !important; /* konten full di mobile */
+        }
+
+        /* Sembunyikan logo, tulisan judul, dan username di mobile */
+        .logo-nav,
+        .brand-text,
+        .username-text {
+          display: none !important;
+        }
       }
 
       .dropdown-menu {
@@ -98,7 +119,7 @@
       }
 
       .dropdown-item:hover {
-        background-color: #E6F4EA; /* hijau muda */
+        background-color: #E6F4EA;
         color: #2E7D32;
       }
     </style>
@@ -108,11 +129,16 @@
     <!-- Navbar -->
     <nav class="navbar navbar-expand navbar-light bg-white shadow-sm px-3" style="height: 70px;">
       <div class="d-flex align-items-center">
+        <!-- Toggle Burger -->
         <button class="btn btn-link me-2" id="sidebarToggle">
-          <i class="bi bi-list" style="color: black;"></i>
+          <i class="bi bi-list fs-4" style="color: black;"></i>
         </button>
-        <img src="../img/logo/smk.png" alt="Logo" style="width: 45px; margin-right: 8px;" />
-        <span class="fw-bold">MY-PERPUSTAKAAN</span>
+
+        <!-- Logo -->
+        <a href="/" class="d-flex align-items-center text-decoration-none">
+          <img src="../img/logo/smk.png" alt="Logo" class="logo-nav" style="width: 45px; margin-right: 8px;" />
+          <span class="fw-bold brand-text text-dark">MY-PERPUSTAKAAN</span>
+        </a>
       </div>
 
       <!-- Ikon & User -->
@@ -126,11 +152,14 @@
         <li class="nav-item dropdown mx-2">
           <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             <img src="../img/photos/user.jpg" class="rounded-circle me-2" style="width: 35px; height: 35px;" alt="User" />
-            <span>Admin</span>
+            <span class="username-text">Admin</span>
           </a>
           <ul class="dropdown-menu dropdown-menu-end shadow rounded-3 border-0" aria-labelledby="userDropdown" style="min-width: 200px;">
             <li>
-              <a class="dropdown-item d-flex align-items-center gap-2 py-2" href="#!">
+              <a class="dropdown-item d-flex align-items-center gap-2 py-2"
+                 href="#"
+                 data-bs-toggle="modal"
+                 data-bs-target="#pengaturanModal">
                 <i class="bi bi-gear text-success"></i> Pengaturan
               </a>
             </li>
@@ -141,7 +170,7 @@
             </li>
             <li><hr class="dropdown-divider"></li>
             <li>
-              <a class="dropdown-item d-flex align-items-center gap-2 py-2 fw-bold text-success" href="#!">
+              <a class="dropdown-item d-flex align-items-center gap-2 py-2 fw-bold text-success" href="/login">
                 <i class="bi bi-box-arrow-right"></i> Keluar
               </a>
             </li>
@@ -151,38 +180,90 @@
     </nav>
 
     <!-- Sidebar -->
-<div id="sidebar" class="shadow-sm p-2 rounded-4xl">
-  <nav class="nav flex-column" style="padding: 10px 0;">
-    <span class="text-white-50 small mb-2 px-2">Main Menu</span>
-    <a class="nav-link text-white mb-2 active" href="/">
-      <i class="bi bi-speedometer2 me-2"></i> Beranda
-    </a>
-    <a class="nav-link text-white mb-2" href="/user">
-      <i class="bi bi-person me-2"></i> Pengguna
-    </a>
-    <a class="nav-link text-white mb-2" href="/rakbuku">
-      <i class="bi bi-journal me-2"></i> Rak Buku
-    </a>
+    <div id="sidebar" class="shadow-sm p-2 rounded-4xl">
+      <nav class="nav flex-column" style="padding: 10px 0;">
+        <span class="text-white-50 small mb-2 px-2">Main Menu</span>
+        <a class="nav-link text-white mb-2 active" href="/">
+          <i class="bi bi-speedometer2 me-2"></i> Beranda
+        </a>
+        <a class="nav-link text-white mb-2" href="/user">
+          <i class="bi bi-person me-2"></i> Pengguna
+        </a>
+        <a class="nav-link text-white mb-2" href="/rakbuku">
+          <i class="bi bi-journal me-2"></i> Rak Buku
+        </a>
 
-    <hr class="text-white opacity-50 mt-3 mb-2">
+        <hr class="text-white opacity-50 mt-3 mb-2">
 
-    <span class="text-white-50 small mb-2 px-2">Verifikasi</span>
-    <a class="nav-link text-white mb-2" href="/VerifikasiUser">
-      <i class="bi bi-person-check me-2"></i> Verifikasi Pengguna
-    </a>
-    <a class="nav-link text-white mb-2" href="/bukuveriv">
-      <i class="bi bi-clipboard-check me-2"></i> Verifikasi Peminjaman
-      <span class="badge bg-light text-success ms-auto">3</span>
-    </a>
-  </nav>
-</div>
-
+        <span class="text-white-50 small mb-2 px-2">Verifikasi</span>
+        <a class="nav-link text-white mb-2" href="/VerifikasiUser">
+          <i class="bi bi-person-check me-2"></i> Verifikasi Pengguna
+        </a>
+        <a class="nav-link text-white mb-2" href="/bukuveriv">
+          <i class="bi bi-clipboard-check me-2"></i> Verifikasi Peminjaman
+          <span class="badge bg-light text-success ms-auto">3</span>
+        </a>
+      </nav>
+    </div>
 
     <!-- Main Content -->
     <div id="main-content">
       <main class="p-1">
         @yield("konten")
       </main>
+    </div>
+
+    <!-- Modal Pengaturan -->
+    <div class="modal fade" id="pengaturanModal" tabindex="-1" aria-labelledby="pengaturanModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg rounded-4">
+          <div class="modal-header bg-success text-white rounded-top-4">
+            <h5 class="modal-title fw-bold" id="pengaturanModalLabel">
+              <i class="bi bi-gear me-2"></i> Pengaturan Profil
+            </h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body p-4">
+            <form>
+              <!-- Upload Foto Profil -->
+              <div class="mb-4 text-center">
+                <img id="previewFoto" src="../img/photos/user.jpg" alt="Foto Profil" 
+                     class="rounded-circle mb-3" style="width: 100px; height: 100px; object-fit: cover; border: 3px solid #3b8763;">
+                <div>
+                  <input type="file" class="form-control d-inline-block" style="max-width: 300px;"
+                         accept="image/*" onchange="previewImage(event)">
+                </div>
+              </div>
+
+              <!-- Nama Lengkap -->
+              <div class="mb-3">
+                <label class="form-label fw-semibold">Nama Lengkap</label>
+                <input type="text" class="form-control" value="Admin" />
+              </div>
+
+              <!-- Email -->
+              <div class="mb-3">
+                <label class="form-label fw-semibold">Email</label>
+                <input type="email" class="form-control" value="admin@contoh.com" />
+              </div>
+
+              <!-- Password -->
+              <div class="mb-3">
+                <label class="form-label fw-semibold">Password Baru</label>
+                <input type="password" class="form-control" placeholder="••••••••" />
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer border-0">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+              Batal
+            </button>
+            <button type="button" class="btn btn-success">
+              Simpan Perubahan
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- Scripts -->
@@ -192,11 +273,34 @@
     <script src="{{ asset('js/datatables-simple-demo.js') }}"></script>
 
     <script>
-      // Sidebar toggle
-      document.getElementById("sidebarToggle").addEventListener("click", () => {
-        document.getElementById("sidebar").classList.toggle("hide");
-        document.getElementById("main-content").classList.toggle("full");
-      });
+      const sidebar = document.getElementById("sidebar");
+      const toggleBtn = document.getElementById("sidebarToggle");
+      const mainContent = document.getElementById("main-content");
+
+      if (toggleBtn) {
+        toggleBtn.addEventListener("click", () => {
+          sidebar.classList.toggle("hide");
+
+          if (sidebar.classList.contains("hide")) {
+            mainContent.style.marginLeft = "0";
+          } else {
+            mainContent.style.marginLeft = "215px";
+          }
+        });
+      }
+
+      // Preview Foto Profil
+      function previewImage(event) {
+        const input = event.target;
+        const preview = document.getElementById("previewFoto");
+        if (input.files && input.files[0]) {
+          const reader = new FileReader();
+          reader.onload = function(e) {
+            preview.src = e.target.result;
+          };
+          reader.readAsDataURL(input.files[0]);
+        }
+      }
     </script>
   </body>
 </html>

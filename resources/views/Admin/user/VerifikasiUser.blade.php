@@ -1,10 +1,35 @@
 @extends('template.app')
 
 @section("konten")
-<div class="container py-4" style="margin-top: -50px;">
+<style>
+  .status-badge {
+    display: inline-block;
+    font-size: 0.75rem;     /* lebih kecil */
+    padding: 0.25em 0.6em;  /* padding tipis */
+    border-radius: 4px;     /* sudut agak kotak */
+    font-weight: 500;       /* teks sedang */
+  }
+
+  .status-menunggu {
+    background-color: #ffc107; /* kuning */
+    color: #212529;
+  }
+
+  .status-ditolak {
+    background-color: #dc3545; /* merah */
+    color: #fff;
+  }
+
+  .status-disetujui {
+    background-color: #198754; /* hijau */
+    color: #fff;
+  }
+</style>
+
+<div class="container-fluid px-3" style="margin-top: -25px;">
   <!-- Judul Halaman -->
-  <div class="card shadow-sm border-0 mb-4">
-    <div class="card-body d-flex align-items-center">
+  <div class="d-flex align-items-center justify-content-between bg-white shadow-sm p-3 rounded mb-4">
+    <div class="d-flex align-items-center">
       <i class="bi bi-people text-primary fs-1 me-3"></i>
       <div>
         <h3 class="fw-bold mb-0">Verifikasi User</h3>
@@ -51,8 +76,8 @@
               <td>USR002</td>
               <td>Laki-laki</td>
               <td>
-                <span class="badge bg-warning text-dark">
-                  <i class="bi bi-clock"></i> Menunggu
+                <span class="status-badge status-menunggu">
+                  <i class="bi bi-clock me-1"></i> Menunggu
                 </span>
               </td>
               <td>
@@ -86,8 +111,8 @@
               <td>USR001</td>
               <td>Laki-laki</td>
               <td>
-                <span class="badge bg-danger">
-                  <i class="bi bi-x-circle"></i> Ditolak
+                <span class="status-badge status-ditolak">
+                  <i class="bi bi-x-circle me-1"></i> Ditolak
                 </span>
               </td>
               <td>
@@ -109,8 +134,8 @@
               <td>USR003</td>
               <td>Laki-laki</td>
               <td>
-                <span class="badge bg-success">
-                  <i class="bi bi-check2-circle"></i> Disetujui
+                <span class="status-badge status-disetujui">
+                  <i class="bi bi-check2-circle me-1"></i> Disetujui
                 </span>
               </td>
               <td>
