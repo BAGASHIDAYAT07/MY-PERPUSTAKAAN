@@ -21,6 +21,18 @@
     </button>
   </div>
 
+    @if ($message = Session::get('error'))
+      <div class="alert alert-danger">
+          {{ $message }}
+      </div>
+    @endif
+
+    @if ($message = Session::get('success'))
+      <div class="alert alert-success">
+          {{ $message }}
+      </div>
+    @endif
+
   <!-- Card Table -->
   <div class="card shadow-sm border-0">
     <div class="card-body">
@@ -135,43 +147,44 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
       <div class="modal-body">
-        <form class="row g-3">
+        <form class="row g-3" action="{{ route('user.post') }}"  method="POST">
+          @csrf
           <div class="col-md-6">
             <label class="form-label">Nama Lengkap</label>
-            <input type="text" class="form-control" placeholder="Contoh: Bagas Hidayat">
+            <input type="text" name="namaLengkap" class="form-control" placeholder="Contoh: Bagas Hidayat">
           </div>
           <div class="col-md-6">
             <label class="form-label">Email</label>
-            <input type="email" class="form-control" placeholder="nama@email.com">
+            <input type="email" name="email" class="form-control" placeholder="nama@email.com">
           </div>
           <div class="col-md-6">
             <label class="form-label">NIS</label>
-            <input type="text" class="form-control" placeholder="USR001">
+            <input type="text" name="nis" class="form-control" placeholder="USR001">
           </div>
           <div class="col-md-6">
             <label class="form-label">Jenis Kelamin</label>
-            <select class="form-select">
+            <select class="form-select" name="gender">
               <option selected disabled>-- Pilih --</option>
-              <option>Laki-laki</option>
-              <option>Perempuan</option>
+              <option value="1">Laki-laki</option>
+              <option value="0">Perempuan</option>
             </select>
           </div>
           <div class="col-md-6">
             <label class="form-label">Status</label>
-            <select class="form-select">
-              <option>Aktif</option>
-              <option>Nonaktif</option>
+            <select class="form-select" name="status">
+              <option value="1">Aktif</option>
+              <option value="0">Nonaktif</option>
             </select>
           </div>
           <div class="col-md-6">
             <label class="form-label">Password</label>
-            <input type="password" class="form-control" placeholder="Minimal 6 karakter">
+            <input type="password" name="password" class="form-control" placeholder="Minimal 6 karakter">
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+            <button class="btn btn-success">Simpan</button>
           </div>
         </form>
-      </div>
-      <div class="modal-footer">
-        <button class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-        <button class="btn btn-success">Simpan</button>
       </div>
     </div>
   </div>

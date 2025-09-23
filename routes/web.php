@@ -11,6 +11,7 @@ use App\Http\Controllers\UserControler;
 Route::get('/', [AdminController::class, 'Dashboard']);
 Route::get('/buku', [UserControler::class, 'Buku']);
 Route::get('/user', [AdminController::class, 'User']);
+Route::post('/user/post', [AdminController::class, 'UserCreates'])->name('user.post');
 
 //user
 Route::get('/usecreate', [AdminController::class, 'Usecreate']);
