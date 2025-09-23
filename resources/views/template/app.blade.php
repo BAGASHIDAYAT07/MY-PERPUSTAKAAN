@@ -239,23 +239,23 @@
     <div id="sidebar" class="shadow-sm p-2 rounded-4xl">
       <nav class="nav flex-column" style="padding: 10px 0;">
         <span class="text-white-50 small mb-2 px-2">Main Menu</span>
-        <a class="nav-link text-white mb-2 active" href="/">
+        <a class="nav-link text-white mb-2 {{ $active == 'dashboard' ? 'active' : '' }}" href="/">
           <i class="bi bi-speedometer2 me-2"></i> Beranda
         </a>
-        <a class="nav-link text-white mb-2" href="/user">
+        <a class="nav-link text-white mb-2 {{ $active == 'user' ? 'active' : '' }}" href="/user">
           <i class="bi bi-person me-2"></i> User
         </a>
-        <a class="nav-link text-white mb-2" href="/rakbuku">
+        <a class="nav-link text-white mb-2 {{ $active == 'rakbuku' ? 'active' : '' }}" href="/rakbuku">
           <i class="bi bi-journal me-2"></i> Rak Buku
         </a>
 
         <hr class="text-white opacity-50 mt-3 mb-2" />
 
         <span class="text-white-50 small mb-2 px-2">Verifikasi</span>
-        <a class="nav-link text-white mb-2" href="/VerifikasiUser">
+        <a class="nav-link text-white mb-2 {{ $active == 'verifikasiuser' ? 'active' : '' }}" href="/VerifikasiUser">
           <i class="bi bi-person-check me-2"></i> Verifikasi User
         </a>
-        <a class="nav-link text-white mb-2" href="/bukuveriv">
+        <a class="nav-link text-white mb-2 {{ $active == 'veriv' ? 'active' : '' }}" href="/bukuveriv">
           <i class="bi bi-clipboard-check me-2"></i> Verifikasi Peminjaman
           <span class="badge bg-light text-success ms-auto">3</span>
         </a>
