@@ -163,23 +163,23 @@
       <nav class="nav flex-column">
         <span class="text-white-50 small mb-2 px-2">Menu</span>
 
-        <a class="nav-link text-white mb-2 active" href="/Home">
+        <a class="nav-link text-white mb-2 {{ $active == 'HomeUser' ? 'active' : '' }}" href="/Home">
           <i class="bi bi-house me-2"></i> Home
         </a>
 
-        <a class="nav-link text-white mb-2" href="/buku">
+        <a class="nav-link text-white mb-2 {{ $active == 'buku' ? 'active' : '' }}" href="/buku">
           <i class="bi bi-journal-bookmark me-2"></i> Buku
         </a>
 
-        <a class="nav-link text-white mb-2" href="/Favorit">
+        <a class="nav-link text-white mb-2 {{ $active == 'Favorit' ? 'active' : '' }}" href="/Favorit">
           <i class="bi bi-heart me-2"></i> Favorit
         </a>
 
-        <a class="nav-link text-white mb-2" href="/peminjaman">
+        <a class="nav-link text-white mb-2 {{ $active == 'Peminjaman' ? 'active' : '' }}" href="/Peminjaman">
           <i class="bi bi-journal-arrow-down me-2"></i> Peminjaman
         </a>
 
-        <a class="nav-link text-white mb-2" href="/history">
+        <a class="nav-link text-white mb-2 {{ $active == 'History' ? 'active' : '' }}" href="/History">
           <i class="bi bi-clock-history me-2"></i> History
         </a>
 

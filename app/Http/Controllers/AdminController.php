@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 class AdminController extends Controller
 {
     public function Dashboard(){
-        return view('admin.dashboard');
+        return view('admin.dashboard', ["active" => "dashboard"]);
     }
 
     public function tes(){
@@ -17,7 +17,7 @@ class AdminController extends Controller
     
     // USER
     public function User(){
-        return view('admin.user');
+        return view('admin.user', ["active" => "user"]);
     }
     
     public function usecreate(){
@@ -29,14 +29,11 @@ class AdminController extends Controller
     }
   
     public function VerifikasiUser(){
-        return view('admin.user.VerifikasiUser');
+        return view('admin.user.VerifikasiUser', ["active" => "verifikasiuser"]);
     }
     
 
     // BUKU
-    public function Buku(){
-        return view('admin.buku');
-    }
   
     public function Bukucreate(){
         return view('admin.bukus.create');
@@ -49,6 +46,6 @@ class AdminController extends Controller
   
     // RAK BUKU
     public function RakBuku(){
-        return view('admin.RakBuku.RakBuku');
+        return view('admin.RakBuku.RakBuku', ["active" => "rakbuku"]);
     }
 }

@@ -9,7 +9,7 @@ use App\Http\Controllers\UserControler;
 
 // admin
 Route::get('/', [AdminController::class, 'Dashboard']);
-Route::get('/buku', [AdminController::class, 'Buku']);
+Route::get('/buku', [UserControler::class, 'Buku']);
 Route::get('/user', [AdminController::class, 'User']);
 
 //user
@@ -38,4 +38,6 @@ Route::get('/bukuveriv',[PinjamanController::class, 'veriv']);
 //untuk user
 Route::get('/Home',[UserControler::class, 'Home']);
 Route::get('/Favorit',[UserControler::class, 'Favorit']);
+Route::get('/Peminjaman',[UserControler::class, 'Peminjaman']);
+Route::get('/History',[UserControler::class, 'History']);
 Route::get('/pinjaman_detail',[PinjamanController::class, 'detail']);

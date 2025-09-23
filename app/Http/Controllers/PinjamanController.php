@@ -19,7 +19,7 @@ class PinjamanController extends Controller
 }
 
  public function veriv(){
-        return view('peminjaman.verivikasi');
+        return view('peminjaman.verivikasi', ["active" => "veriv"]);
     }
 
 
