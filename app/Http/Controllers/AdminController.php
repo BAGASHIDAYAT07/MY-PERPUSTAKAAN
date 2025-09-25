@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash; // ✅ untuk hash password
+use Illuminate\Support\Facades\Http;
 use App\Models\User;
+use App\Models\Buku;
 
 class AdminController extends Controller
 {
@@ -114,76 +116,57 @@ public function update(Request $request, $id)
 
 public function tambahbuku(Request $request)
 {
-    // ✅ Validasi form
     $request->validate([
-    'judul'         => 'required|string|max:255',
-    'JenisBuku'     => 'required|string|max:100',
-    'Pencipta'      => 'required|string|max:100',
-    'Penerbit'      => 'required|string|max:100',
-    'TempatTerbit'  => 'required|string|max:100',
-    'TahunTerbit'   => 'required|digits:4|integer',
-    'JumlahHalaman' => 'required|integer|min:1',
-    'status'        => 'required|in:0,1',
-    'foto'          => 'nullable|image|mimes:jpg,jpeg,png|max:1048',
-    ], [
-    'judul.required'         => 'Judul buku tidak boleh kosong',
-    'JenisBuku.required'     => 'Jenis buku tidak boleh kosong',
-    'Pencipta.required'      => 'Nama penulis harus diisi',
-    'Penerbit.required'      => 'Nama penerbit harus diisi',
-    'TempatTerbit.required'  => 'Tempat terbit harus diisi',
-    'TahunTerbit.required'   => 'Tahun terbit harus diisi',
-    'TahunTerbit.digits'     => 'Tahun harus 4 digit (contoh: 2024)',
-    'JumlahHalaman.required' => 'Jumlah halaman harus diisi',
-    'JumlahHalaman.integer'  => 'Jumlah halaman harus berupa angka',
-    'JumlahHalaman.min'      => 'Jumlah halaman minimal 1',
-    'status.required'        => 'Status buku harus dipilih',
-    'foto.image'             => 'File harus berupa gambar',
-    'foto.mimes'             => 'Format gambar harus JPG, JPEG, atau PNG',
-    'foto.max'               => 'Ukuran gambar maksimal 1MB',
+        'judul' => 'required|string|max:255',
+        'deskripsi' => 'required|string|max:255',
+        'JenisBuku' => 'required|string|max:255',
+        'Penerbit' => 'required|string|max:255',
+        'Pencipta' => 'required|string|max:255',
+        'TempatTerbit' => 'required|string|max:255',
+        'TahunTerbit' => 'required|integer',
+        'JumlahHalaman' => 'required|integer',
+        'status' => 'required|boolean',
+        'foto' => 'required|image|mimes:jpg,jpeg,png|max:2048',
     ]);
 
+    $fotoUrl = null;
 
-    // ✅ Upload foto jika ada
-    $fotoPath = null;
     if ($request->hasFile('foto')) {
-        $fotoPath = $request->file('foto')->store('foto_buku', 'public');
+        $file = $request->file('foto');
+        $fileName = time() . '_' . $file->getClientOriginalName();
+
+        // Upload ke Supabase
+        $response = Http::withHeaders([
+            'apikey' => config('services.supabase.key'),
+            'Authorization' => 'Bearer ' . config('services.supabase.key'),
+        ])->attach(
+            'file',
+            file_get_contents($file),
+            $fileName
+        )->post(config('services.supabase.url') . "/storage/v1/object/" . config('services.supabase.bucket') . "/" . $fileName);
+
+        if ($response->successful()) {
+            $fotoUrl = config('services.supabase.url') . "/storage/v1/object/public/"
+                . config('services.supabase.bucket') . "/" . $fileName;
+        }
     }
 
-    //  🔍 Testing data yang masuk
-    dd([
-        'judul'         => $request->judul,
-        'JenisBuku'     => $request->JenisBuku,
-        'Penerbit'      => $request->Penerbit,
-        'Pencipta'      => $request->Pencipta,
-        'TempatTerbit'  => $request->TempatTerbit,
-        'TahunTerbit'   => $request->TahunTerbit,
+    Buku::create([
+        'judul' => $request->judul,
+        'deskripsi' => $request->deskripsi,
+        'JenisBuku' => $request->JenisBuku,
+        'Penerbit' => $request->Penerbit,
+        'Pencipta' => $request->Pencipta,
+        'TempatTerbit' => $request->TempatTerbit,
+        'TahunTerbit' => $request->TahunTerbit,
         'JumlahHalaman' => $request->JumlahHalaman,
-        'status'        => $request->status,
-        'foto'          => $fotoPath,
+        'status' => $request->status,
+        'foto' => $fotoUrl, // 🚀 ini bukan null
     ]);
 
-
-    // ✅ Simpan data buku ke database
-    $buku = Buku::create([
-    'judul'         => $request->judul,
-    'JenisBuku'     => $request->JenisBuku,
-    'Penerbit'      => $request->Penerbit,
-    'Pencipta'      => $request->Pencipta,
-    'TempatTerbit'  => $request->TempatTerbit,
-    'TahunTerbit'   => $request->TahunTerbit,
-    'JumlahHalaman' => $request->JumlahHalaman,
-    'status'        => $request->status,
-    'foto'          => $fotoPath,
-    ]);
-
-
-    // ✅ Feedback ke user
-    if ($buku) {
-        return redirect()->back()->with('success', 'Buku berhasil ditambahkan');
-    } else {
-        return redirect()->back()->with('error', 'Buku gagal ditambahkan');
-    }
+    return redirect()->route('rakbuku')->with('success', 'Buku berhasil ditambahkan!');
 }
+
 
 
 
@@ -204,4 +187,12 @@ public function tambahbuku(Request $request)
     {
         return view('admin.RakBuku.RakBuku', ["active" => "rakbuku"]);
     }
+
+    public function Pagenation()
+    {
+        $user = User::paginate(10); // tampilkan 10 data per halaman
+        return view('admin.user', compact('user'));
+    }
 }
+
+

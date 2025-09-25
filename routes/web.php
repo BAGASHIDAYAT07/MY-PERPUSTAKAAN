@@ -23,7 +23,7 @@ Route::get('/createbuk', [AdminController::class, 'Bukucreate']);
 Route::get('/updatebuk', [AdminController::class, 'Bukupdate']);
 
 //rakbuku
-Route::get('/rakbuku', [AdminController::class, 'Rakbuku']);
+Route::get('/rakbuku', [AdminController::class, 'RakBuku'])->name('rakbuku');
 
 
 // auth
