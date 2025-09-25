@@ -21,6 +21,32 @@
     </button>
   </div>
 
+{{-- ✅ Pesan Validasi --}}
+@if ($errors->any())
+  <div class="alert alert-danger">
+    <ul class="mb-0">
+      @foreach ($errors->all() as $error)
+        <li>{{ $error }}</li>
+      @endforeach
+    </ul>
+  </div>
+@endif
+
+{{-- ✅ Pesan Sukses --}}
+@if (session('success'))
+  <div class="alert alert-success">
+    {{ session('success') }}
+  </div>
+@endif
+
+{{-- ✅ Pesan Error --}}
+@if (session('error'))
+  <div class="alert alert-danger">
+    {{ session('error') }}
+  </div>
+@endif
+
+
   <!-- Card Table -->
   <div class="card shadow-sm border-0">
     <div class="card-body">
@@ -101,80 +127,71 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
       <div class="modal-body">
-        <form class="row g-3">
-          <!-- Judul -->
-          <div class="col-md-6">
-            <label class="form-label">Judul Buku</label>
-            <input type="text" class="form-control" value="Belajar Laravel">
-          </div>
+        <form class="row g-3" action="{{ route('buku.tambahbuku') }}" method="POST" enctype="multipart/form-data">
+    @csrf
+    <!-- Judul -->
+    <div class="col-md-6">
+        <label class="form-label">Judul Buku</label>
+        <input type="text" name="judul" class="form-control">
+    </div>
 
-          <!-- Jenis -->
-          <div class="col-md-6">
-            <label class="form-label">Jenis Buku</label>
-            <input type="text" class="form-control" value="Pelajaran">
-          </div>
+    <!-- Jenis Buku -->
+    <div class="col-md-6">
+        <label class="form-label">Jenis Buku</label>
+        <input type="text" name="JenisBuku" class="form-control">
+    </div>
 
-          <!-- Penerbit -->
-          <div class="col-md-6">
-            <label class="form-label">Penerbit</label>
-            <input type="text" class="form-control" value="Gramedia">
-          </div>
+    <!-- Penerbit -->
+    <div class="col-md-6">
+        <label class="form-label">Penerbit</label>
+        <input type="text" name="Penerbit" class="form-control">
+    </div>
 
-          <!-- Penulis -->
-          <div class="col-md-6">
-            <label class="form-label">Penulis</label>
-            <input type="text" class="form-control" value="Bagas Hidayat">
-          </div>
+    <!-- Penulis (Pencipta) -->
+    <div class="col-md-6">
+        <label class="form-label">Pencipta</label>
+        <input type="text" name="Pencipta" class="form-control">
+    </div>
 
-          <!-- Kota -->
-          <div class="col-md-6">
-            <label class="form-label">Kota Terbit</label>
-            <input type="text" class="form-control" value="Jakarta">
-          </div>
+    <!-- Kota (TempatTerbit) -->
+    <div class="col-md-6">
+        <label class="form-label">Tempat Terbit</label>
+        <input type="text" name="TempatTerbit" class="form-control">
+    </div>
 
-          <!-- Tahun -->
-          <div class="col-md-6">
-            <label class="form-label">Tahun Terbit</label>
-            <input type="number" class="form-control" value="2025">
-          </div>
+    <!-- Tahun -->
+    <div class="col-md-6">
+        <label class="form-label">Tahun Terbit</label>
+        <input type="text" name="TahunTerbit" class="form-control" placeholder="2024">
+    </div>
 
-          <!-- Halaman -->
-          <div class="col-md-6">
-            <label class="form-label">Jumlah Halaman</label>
-            <input type="number" class="form-control" value="250">
-          </div>
+    <!-- Halaman -->
+    <div class="col-md-6">
+        <label class="form-label">Jumlah Halaman</label>
+        <input type="number" name="JumlahHalaman" class="form-control">
+    </div>
 
-          <!-- Nama Rak -->
-          <div class="col-md-6">
-            <label class="form-label">Nama Rak</label>
-            <input type="text" class="form-control" value="Rak Belajar">
-          </div>
+    <!-- Foto Buku -->
+    <div class="col-md-6">
+        <label class="form-label">Foto Buku</label>
+        <input type="file" name="foto" class="form-control">
+    </div>
 
-          <!-- Nomor Rak -->
-          <div class="col-md-6">
-            <label class="form-label">Nomor Rak</label>
-            <input type="text" class="form-control" value="B2">
-          </div>
+    <!-- Status -->
+    <div class="col-md-6">
+      <label class="form-label">Status</label>
+      <select class="form-select" name="status">
+        <option value="1">Aktif</option>
+        <option value="0">Nonaktif</option>
+      </select>
+    </div>
 
-          <!-- Status -->
-          <div class="col-md-6">
-            <label class="form-label">Status</label>
-            <select class="form-select">
-              <option selected>Aktif</option>
-              <option>Nonaktif</option>
-            </select>
-          </div>
-
-          <!-- Foto Buku -->
-          <div class="col-md-6">
-            <label class="form-label">Foto Buku</label>
-            <input type="file" class="form-control">
-          </div>
-        </form>
-      </div>
-      <div class="modal-footer">
+    <div class="modal-footer">
         <button class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
         <button class="btn btn-success">Simpan</button>
+    </div>
+</form>
+
       </div>
     </div>
   </div>
