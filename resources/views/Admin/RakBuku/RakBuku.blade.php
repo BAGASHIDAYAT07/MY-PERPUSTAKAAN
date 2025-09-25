@@ -135,6 +135,12 @@
         <input type="text" name="judul" class="form-control">
     </div>
 
+    <!-- deskripsi -->
+    <div class="col-md-6">
+        <label class="form-label">Deskripsi Buku</label>
+        <input type="text" name="deskripsi" class="form-control">
+    </div>
+
     <!-- Jenis Buku -->
     <div class="col-md-6">
         <label class="form-label">Jenis Buku</label>
@@ -212,7 +218,8 @@
           <img src="../img/photos/buku1.jpeg" class="rounded shadow img-fluid" alt="Foto Buku" style="max-width: 150px;">
         </div>
         <ul class="list-group list-group-flush">
-          <li class="list-group-item"><b>Judul:</b> Belajar Laravel</li>
+          <li class="list-group-item"><b>Judul Buku:</b> Belajar Laravel</li>
+          <li class="list-group-item"><b>Deskripsi Buku:</b> Belajar Laravel</li>
           <li class="list-group-item"><b>Jenis:</b> Pelajaran</li>
           <li class="list-group-item"><b>Penerbit:</b> Gramedia</li>
           <li class="list-group-item"><b>Penulis:</b> Bagas Hidayat</li>
@@ -254,6 +261,10 @@
           <div class="mb-3">
             <label class="form-label">Judul Buku</label>
             <input type="text" class="form-control" value="Belajar Laravel">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Deskripsi Buku</label>
+            <input type="text" class="form-control" value="jasvhdakJHEGSDUKQWJEHSGFC">
           </div>
           <div class="mb-3">
             <label class="form-label">Jenis Buku</label>

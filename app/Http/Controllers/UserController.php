@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class UserControler extends Controller
+class UserController extends Controller
 {
     public function Home(){
         return view("User.HomeUser", ["active" => "HomeUser"]);
