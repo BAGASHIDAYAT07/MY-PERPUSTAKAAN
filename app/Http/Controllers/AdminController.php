@@ -3,49 +3,205 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash; // ✅ untuk hash password
+use App\Models\User;
 
 class AdminController extends Controller
 {
-    public function Dashboard(){
+    public function Dashboard()
+    {
         return view('admin.dashboard', ["active" => "dashboard"]);
     }
 
-    public function tes(){
+    public function tes()
+    {
         return view('peminjaman.index');
     }
 
-    
     // USER
-    public function User(){
-        return view('admin.user', ["active" => "user"]);
+    public function User()
+    {
+        $user = User::all();
+        return view('admin.user', ["active" => "user", "user" => $user]);
     }
-    
-    public function usecreate(){
-        return view('admin.user.creat');
-    }
-    
-    public function UserUpdate(){
-        return view('admin.user.update');
-    }
-  
-    public function VerifikasiUser(){
+
+    public function VerifikasiUser()
+    {
         return view('admin.user.VerifikasiUser', ["active" => "verifikasiuser"]);
     }
-    
+
+    public function UserCreates(Request $request)
+{
+    // ✅ Validasi form
+    $request->validate([
+        'namaLengkap' => 'required|string|max:255',
+        'email'       => 'required|email|unique:users,email',
+        'nis'         => 'required|unique:users,NIS',
+        'gender'      => 'required',
+        'status'      => 'required',
+        'password'    => 'required|min:6',
+    ], [
+        // Pesan khusus jika data kosong
+        'namaLengkap.required' => 'Nama lengkap tidak boleh kosong',
+        'email.required'       => 'Email tidak boleh kosong',
+        'nis.required'         => 'NIS tidak boleh kosong',
+        'gender.required'      => 'Jenis kelamin harus dipilih',
+        'status.required'      => 'Status harus dipilih',
+        'password.required'    => 'Password tidak boleh kosong',
+        'password.min'         => 'Password minimal 6 karakter',
+        'email.email'          => 'Format email tidak valid',
+        'email.unique'         => 'Email sudah terdaftar',
+        'nis.unique'           => 'NIS sudah digunakan',
+    ]);
+
+    // ✅ Simpan data user ke database
+    $user = User::create([
+        'name'         => $request->namaLengkap,
+        'email'        => $request->email,
+        'NIS'          => $request->nis,
+        'jenisKelamin' => $request->gender,
+        'status'       => $request->status,
+        'password'     => Hash::make($request->password), // password terenkripsi
+    ]);
+
+    // ✅ Feedback ke user
+    if ($user) {
+        return redirect()->back()->with('success', 'Data berhasil ditambahkan');
+    } else {
+        return redirect()->back()->with('error', 'Data gagal ditambahkan');
+    }
+}
+
+
+public function toggleStatus($id)
+{
+    $user = User::findOrFail($id);
+
+    // Ubah status: kalau 1 jadi 0, kalau 0 jadi 1
+    $user->status = $user->status == 1 ? 0 : 1;
+    $user->save();
+
+    return redirect()->back()->with('success', 'Status user berhasil diubah!');
+}
+
+public function update(Request $request, $id)
+{
+    $user = User::findOrFail($id);
+
+    $request->validate([
+        'namaLengkap' => 'required|string|max:255',
+        'email'       => 'required|email|unique:users,email,' . $id,
+        'nis'         => 'required|unique:users,NIS,' . $id,
+        'gender'      => 'required',
+        'status'      => 'required|in:0,1',
+    ]);
+
+    $user->name         = $request->namaLengkap;
+    $user->email        = $request->email;
+    $user->NIS          = $request->nis;
+    $user->jenisKelamin = $request->gender;
+    $user->status       = $request->status;
+
+    if ($request->filled('password')) {
+        $user->password = Hash::make($request->password);
+    }
+
+    $user->save();
+
+    return redirect()->back()->with('success', 'Data user berhasil diperbarui');
+}
+
+
+public function tambahbuku(Request $request)
+{
+    // ✅ Validasi form
+    $request->validate([
+    'judul'         => 'required|string|max:255',
+    'JenisBuku'     => 'required|string|max:100',
+    'Pencipta'      => 'required|string|max:100',
+    'Penerbit'      => 'required|string|max:100',
+    'TempatTerbit'  => 'required|string|max:100',
+    'TahunTerbit'   => 'required|digits:4|integer',
+    'JumlahHalaman' => 'required|integer|min:1',
+    'status'        => 'required|in:0,1',
+    'foto'          => 'nullable|image|mimes:jpg,jpeg,png|max:1048',
+    ], [
+    'judul.required'         => 'Judul buku tidak boleh kosong',
+    'JenisBuku.required'     => 'Jenis buku tidak boleh kosong',
+    'Pencipta.required'      => 'Nama penulis harus diisi',
+    'Penerbit.required'      => 'Nama penerbit harus diisi',
+    'TempatTerbit.required'  => 'Tempat terbit harus diisi',
+    'TahunTerbit.required'   => 'Tahun terbit harus diisi',
+    'TahunTerbit.digits'     => 'Tahun harus 4 digit (contoh: 2024)',
+    'JumlahHalaman.required' => 'Jumlah halaman harus diisi',
+    'JumlahHalaman.integer'  => 'Jumlah halaman harus berupa angka',
+    'JumlahHalaman.min'      => 'Jumlah halaman minimal 1',
+    'status.required'        => 'Status buku harus dipilih',
+    'foto.image'             => 'File harus berupa gambar',
+    'foto.mimes'             => 'Format gambar harus JPG, JPEG, atau PNG',
+    'foto.max'               => 'Ukuran gambar maksimal 1MB',
+    ]);
+
+
+    // ✅ Upload foto jika ada
+    $fotoPath = null;
+    if ($request->hasFile('foto')) {
+        $fotoPath = $request->file('foto')->store('foto_buku', 'public');
+    }
+
+    //  🔍 Testing data yang masuk
+    dd([
+        'judul'         => $request->judul,
+        'JenisBuku'     => $request->JenisBuku,
+        'Penerbit'      => $request->Penerbit,
+        'Pencipta'      => $request->Pencipta,
+        'TempatTerbit'  => $request->TempatTerbit,
+        'TahunTerbit'   => $request->TahunTerbit,
+        'JumlahHalaman' => $request->JumlahHalaman,
+        'status'        => $request->status,
+        'foto'          => $fotoPath,
+    ]);
+
+
+    // ✅ Simpan data buku ke database
+    $buku = Buku::create([
+    'judul'         => $request->judul,
+    'JenisBuku'     => $request->JenisBuku,
+    'Penerbit'      => $request->Penerbit,
+    'Pencipta'      => $request->Pencipta,
+    'TempatTerbit'  => $request->TempatTerbit,
+    'TahunTerbit'   => $request->TahunTerbit,
+    'JumlahHalaman' => $request->JumlahHalaman,
+    'status'        => $request->status,
+    'foto'          => $fotoPath,
+    ]);
+
+
+    // ✅ Feedback ke user
+    if ($buku) {
+        return redirect()->back()->with('success', 'Buku berhasil ditambahkan');
+    } else {
+        return redirect()->back()->with('error', 'Buku gagal ditambahkan');
+    }
+}
+
+
+
 
     // BUKU
-  
-    public function Bukucreate(){
+    public function Bukucreate()
+    {
         return view('admin.bukus.create');
     }
-    
-    public function Bukupdate(){
+
+    public function Bukupdate()
+    {
         return view('admin.bukus.update');
     }
-  
-  
+
     // RAK BUKU
-    public function RakBuku(){
+    public function RakBuku()
+    {
         return view('admin.RakBuku.RakBuku', ["active" => "rakbuku"]);
     }
 }
