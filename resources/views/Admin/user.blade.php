@@ -223,6 +223,8 @@
           @endforeach
         </tbody>
         </table>
+        <div class="d-flex justify-content-between align-items-center mt-3">
+      </div>
       </div>
     </div>
   </div>
