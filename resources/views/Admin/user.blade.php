@@ -21,115 +21,207 @@
     </button>
   </div>
 
-    @if ($message = Session::get('error'))
+    {{-- ✅ Pesan Validasi --}}
+    @if ($errors->any())
       <div class="alert alert-danger">
-          {{ $message }}
+        <ul class="mb-0">
+          @foreach ($errors->all() as $error)
+            <li>{{ $error }}</li>
+          @endforeach
+        </ul>
       </div>
     @endif
 
-    @if ($message = Session::get('success'))
+    {{-- ✅ Pesan Sukses --}}
+    @if (session('success'))
       <div class="alert alert-success">
-          {{ $message }}
+        {{ session('success') }}
       </div>
     @endif
+
+    {{-- ✅ Pesan Error Umum --}}
+    @if (session('error'))
+      <div class="alert alert-danger">
+        {{ session('error') }}
+      </div>
+    @endif
+
+
 
   <!-- Card Table -->
   <div class="card shadow-sm border-0">
     <div class="card-body">
-      <!-- Search -->
-      <div class="mb-3">
-        <input type="search" class="form-control form-control-sm" placeholder="Cari user...">
+      <!-- Search dengan Filter -->
+      <div class="mb-3 d-flex gap-2">
+        <div class="input-group input-group-sm" style="max-width: 300px;">
+          <span class="input-group-text bg-white border-end-0">
+            <i class="bi bi-search text-muted"></i>
+          </span>
+          <input type="search" id="searchInput" class="form-control border-start-0" placeholder="Cari user...">
+        </div>
+
+        <!-- Dropdown Filter -->
+        <select id="searchFilter" class="form-select form-select-sm" style="max-width: 150px;">
+          <option value="all">Semua</option>
+          <option value="0">No</option>
+          <option value="1">Nama</option>
+          <option value="2">Email</option>
+          <option value="3">NIS</option>
+          <option value="4">Jenis Kelamin</option>
+          <option value="5">Status</option>
+        </select>
       </div>
 
-      <!-- Table Responsive -->
-      <div class="table-responsive">
-        <table class="table table-striped table-hover align-middle mb-0 table-bordered border-secondary-subtle">
-          <thead class="table-primary text-center">
-            <tr>
-              <th>Nama</th>
-              <th>Email</th>
-              <th>NIS</th>
-              <th>Jenis Kelamin</th>
-              <th>Status</th>
-              <th>Aksi</th>
-            </tr>
-          </thead>
-          <tbody class="text-center">
-            <!-- User 1 -->
-            <tr>
-              <td class="text-start">
-                <img src="https://ui-avatars.com/api/?name=Enggal+Dwi" class="rounded-circle me-2" width="32" height="32">
-                Enggal Dwi
-              </td>
-              <td>enggal@example.com</td>
-              <td>USR001</td>
-              <td>Laki-laki</td>
-              <td>
-                <button class="btn btn-sm btn-success toggle-status">Aktif</button>
-              </td>
-              <td>
-                <div class="dropdown">
-                  <button class="btn btn-sm btn-light border" type="button" data-bs-toggle="dropdown">
-                    <i class="bi bi-three-dots-vertical"></i>
-                  </button>
-                  <ul class="dropdown-menu dropdown-menu-end">
-                    <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#detailUserModal"><i class="bi bi-eye me-2"></i> Lihat Detail</a></li>
-                    <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#editUserModal"><i class="bi bi-pencil-square me-2"></i> Edit</a></li>
-                  </ul>
-                </div>
-              </td>
-            </tr>
 
-            <!-- User 2 -->
-            <tr>
-              <td class="text-start">
-                <img src="https://ui-avatars.com/api/?name=Antooks" class="rounded-circle me-2" width="32" height="32">
-                antooks
-              </td>
-              <td>antoks@example.com</td>
-              <td>USR002</td>
-              <td>Laki-laki</td>
-              <td>
-                <button class="btn btn-sm btn-danger toggle-status">Nonaktif</button>
-              </td>
-              <td>
-                <div class="dropdown">
-                  <button class="btn btn-sm btn-light border" type="button" data-bs-toggle="dropdown">
-                    <i class="bi bi-three-dots-vertical"></i>
-                  </button>
-                  <ul class="dropdown-menu dropdown-menu-end">
-                    <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#detailUserModal"><i class="bi bi-eye me-2"></i> Lihat Detail</a></li>
-                    <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#editUserModal"><i class="bi bi-pencil-square me-2"></i> Edit</a></li>
-                  </ul>
-                </div>
-              </td>
-            </tr>
 
-            <!-- User 3 -->
-            <tr>
-              <td class="text-start">
-                <img src="https://ui-avatars.com/api/?name=Bagasss" class="rounded-circle me-2" width="32" height="32">
-                bagasss
-              </td>
-              <td>bagas@example.com</td>
-              <td>USR003</td>
-              <td>Laki-laki</td>
-              <td>
-                <button class="btn btn-sm btn-success toggle-status">Aktif</button>
-              </td>
-              <td>
-                <div class="dropdown">
-                  <button class="btn btn-sm btn-light border" type="button" data-bs-toggle="dropdown">
-                    <i class="bi bi-three-dots-vertical"></i>
-                  </button>
-                  <ul class="dropdown-menu dropdown-menu-end">
-                    <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#detailUserModal"><i class="bi bi-eye me-2"></i> Lihat Detail</a></li>
-                    <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#editUserModal"><i class="bi bi-pencil-square me-2"></i> Edit</a></li>
-                  </ul>
+      <table class="table table-striped table-hover align-middle mb-0 table-bordered border-secondary-subtle">
+    <thead class="table-primary text-center">
+        <tr>
+            <th>No</th>
+            <th>Nama</th>
+            <th>Email</th>
+            <th>NIS</th>
+            <th>Jenis Kelamin</th>
+            <th>Status</th>
+            <th>Aksi</th>
+        </tr>
+    </thead>
+    <tbody class="text-center">
+          @foreach ($user as $u)
+              <tr>
+                  <td>{{ $loop->iteration }}</td>
+                  <td class="text-start">
+                      <img src="https://ui-avatars.com/api/?name={{ urlencode($u->name) }}" 
+                          class="rounded-circle me-2" width="32" height="32">
+                      {{ $u->name }}
+                  </td>
+                  <td>{{ $u->email }}</td>
+                  <td>{{ $u->NIS }}</td>
+                  <td>{{ $u->jenisKelamin }}</td>
+                  <td>
+                  <form action="{{ route('user.toggle-status', $u->id) }}" method="POST">
+                          @csrf
+                          <button type="submit" 
+                              class="btn btn-sm {{ $u->status == 1 ? 'btn-success' : 'btn-danger' }}">
+                              {{ $u->status == 1 ? 'Aktif' : 'Nonaktif' }}
+                          </button>
+                      </form>
+                  </td>
+                  <td>
+                      <div class="dropdown">
+                          <button class="btn btn-sm btn-light border" type="button" data-bs-toggle="dropdown">
+                              <i class="bi bi-three-dots-vertical"></i>
+                          </button>
+                          <ul class="dropdown-menu dropdown-menu-end">
+                              <li>
+                                  <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#detailUserModal{{ $u->id }}">
+                                      <i class="bi bi-eye me-2"></i> Lihat Detail
+                                  </a>
+                              </li>
+                              <li>
+                                  <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#editUserModal{{ $u->id }}">
+                                      <i class="bi bi-pencil-square me-2"></i> Edit
+                                  </a>
+                              </li>
+                          </ul>
+                      </div>
+                  </td>
+              </tr>
+
+              <!-- Modal Detail User -->
+              <div class="modal fade" id="detailUserModal{{ $u->id }}" tabindex="-1">
+                <div class="modal-dialog modal-md modal-dialog-centered modal-dialog-scrollable">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title fw-bold">
+                        <i class="bi bi-person-badge me-2 text-primary"></i>Detail User
+                      </h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                      <div class="text-center mb-3">
+                        <img src="https://ui-avatars.com/api/?name={{ urlencode($u->name) }}" 
+                            class="rounded-circle mb-2" width="80" height="80">
+                        <h5 class="mb-0">{{ $u->name }}</h5>
+                        <small class="text-muted">{{ $u->NIS }}</small>
+                      </div>
+                      <ul class="list-group list-group-flush">
+                        <li class="list-group-item"><b>Email:</b> {{ $u->email }}</li>
+                        <li class="list-group-item"><b>Jenis Kelamin:</b> {{ $u->jenisKelamin }}</li>
+                        <li class="list-group-item"><b>Status:</b> {{ $u->status == 1 ? 'Aktif' : 'Nonaktif' }}</li>
+                      </ul>
+                    </div>
+                    <div class="modal-footer">
+                      <button class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                    </div>
+                  </div>
                 </div>
-              </td>
-            </tr>
-          </tbody>
+              </div>
+
+              <!-- Modal Edit User -->
+              <div class="modal fade" id="editUserModal{{ $u->id }}" tabindex="-1">
+                <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+                  <div class="modal-content">
+                    <div class="modal-header bg-light">
+                      <h5 class="modal-title fw-bold">
+                        <i class="bi bi-pencil-square text-warning me-2"></i> Edit User
+                      </h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+
+                    <form action="{{ route('user.update', $u->id) }}" method="POST">
+                      @csrf
+                      @method('PUT')
+                      <div class="modal-body">
+                        <div class="row g-3">
+                          <div class="col-md-6">
+                            <label class="form-label fw-semibold">Nama Lengkap</label>
+                            <input type="text" name="namaLengkap" class="form-control" value="{{ $u->name }}">
+                          </div>
+
+                          <div class="col-md-6">
+                            <label class="form-label fw-semibold">Email</label>
+                            <input type="email" name="email" class="form-control" value="{{ $u->email }}">
+                          </div>
+
+                          <div class="col-md-6">
+                            <label class="form-label fw-semibold">NIS</label>
+                            <input type="text" name="nis" class="form-control" value="{{ $u->NIS }}">
+                          </div>
+
+                          <div class="col-md-6">
+                            <label class="form-label fw-semibold">Jenis Kelamin</label>
+                            <select class="form-select" name="gender">
+                              <option value="laki-laki" {{ $u->jenisKelamin == 'laki-laki' ? 'selected' : '' }}>Laki-laki</option>
+                              <option value="perempuan" {{ $u->jenisKelamin == 'perempuan' ? 'selected' : '' }}>Perempuan</option>
+                            </select>
+                          </div>
+
+                          <div class="col-md-6">
+                            <label class="form-label fw-semibold">Status</label>
+                            <select class="form-select" name="status">
+                              <option value="1" {{ $u->status == 1 ? 'selected' : '' }}>Aktif</option>
+                              <option value="0" {{ $u->status == 0 ? 'selected' : '' }}>Nonaktif</option>
+                            </select>
+                          </div>
+
+                          <div class="col-md-6">
+                            <label class="form-label fw-semibold">Password</label>
+                            <input type="password" name="password" class="form-control" placeholder="Kosongkan jika tidak diubah">
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="modal-footer">
+                        <button class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                        <button type="submit" class="btn btn-warning">Simpan Perubahan</button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+          @endforeach
+        </tbody>
         </table>
       </div>
     </div>
@@ -151,7 +243,7 @@
           @csrf
           <div class="col-md-6">
             <label class="form-label">Nama Lengkap</label>
-            <input type="text" name="namaLengkap" class="form-control" placeholder="Contoh: Bagas Hidayat">
+            <input type="text" name="namaLengkap" class="form-control" placeholder="Isi Nama Name">
           </div>
           <div class="col-md-6">
             <label class="form-label">Email</label>
@@ -159,14 +251,14 @@
           </div>
           <div class="col-md-6">
             <label class="form-label">NIS</label>
-            <input type="text" name="nis" class="form-control" placeholder="USR001">
+            <input type="text" name="nis" class="form-control" placeholder="12345678901">
           </div>
           <div class="col-md-6">
             <label class="form-label">Jenis Kelamin</label>
             <select class="form-select" name="gender">
               <option selected disabled>-- Pilih --</option>
-              <option value="1">Laki-laki</option>
-              <option value="0">Perempuan</option>
+              <option value="laki-laki">Laki-laki</option>
+              <option value="perempuan">Perempuan</option>
             </select>
           </div>
           <div class="col-md-6">
@@ -185,35 +277,6 @@
             <button class="btn btn-success">Simpan</button>
           </div>
         </form>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Modal Lihat Detail -->
-<div class="modal fade" id="detailUserModal" tabindex="-1">
-  <div class="modal-dialog modal-md modal-dialog-centered modal-dialog-scrollable">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title fw-bold">
-          <i class="bi bi-person-badge me-2 text-primary"></i>Detail User
-        </h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-      </div>
-      <div class="modal-body">
-        <div class="text-center mb-3">
-          <img src="https://ui-avatars.com/api/?name=Enggal+Dwi" class="rounded-circle mb-2" width="80" height="80">
-          <h5 class="mb-0">Enggal Dwi</h5>
-          <small class="text-muted">USR001</small>
-        </div>
-        <ul class="list-group list-group-flush">
-          <li class="list-group-item"><b>Email:</b> enggal@example.com</li>
-          <li class="list-group-item"><b>Jenis Kelamin:</b> Laki-laki</li>
-          <li class="list-group-item"><b>Status:</b> Aktif</li>
-        </ul>
-      </div>
-      <div class="modal-footer">
-        <button class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
       </div>
     </div>
   </div>
@@ -280,5 +343,46 @@
       }
     });
   });
+
+  document.getElementById("searchInput").addEventListener("keyup", filterTable);
+  document.getElementById("searchFilter").addEventListener("change", filterTable);
+
+  function filterTable() {
+    let input = document.getElementById("searchInput").value.toLowerCase();
+    let filter = document.getElementById("searchFilter").value;
+    let rows = document.querySelectorAll("table tbody tr");
+
+    rows.forEach(function(row) {
+      let cells = row.getElementsByTagName("td");
+      let match = false;
+
+      if (filter === "all") {
+        // cek semua kolom
+        for (let i = 0; i < cells.length; i++) {
+          let text = cells[i].innerText.toLowerCase().trim();
+          if (text.includes(input)) {
+            match = true;
+            break;
+          }
+        }
+      } else {
+        let colIndex = parseInt(filter);
+
+        // khusus kolom Nama (index 1), ambil teks tanpa gambar
+        if (colIndex === 1) {
+          let namaCell = row.querySelector("td:nth-child(2)");
+          if (namaCell && namaCell.innerText.toLowerCase().includes(input)) {
+            match = true;
+          }
+        } else {
+          if (cells[colIndex] && cells[colIndex].innerText.toLowerCase().includes(input)) {
+            match = true;
+          }
+        }
+      }
+
+      row.style.display = match ? "" : "none";
+    });
+  }
 </script>
 @endsection
