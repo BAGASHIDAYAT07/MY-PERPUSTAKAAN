@@ -106,20 +106,31 @@
           <h3>Selamat Datang</h3>
           <h6>Di Halaman Login My-perpustakaan</h6>
 
-          <form class="w-100">
-            <!-- Input Email -->
-            <div class="input-group">
-              <input type="email" class="form-control" placeholder="Masukan Email" required />
-              <span class="input-group-text"><i class="bi bi-envelope"></i></span>
-            </div>
+              @error('email')
+      <small class="text-danger">{{ $message }}</small>
+    @enderror
 
-            <!-- Input Password -->
-            <div class="input-group">
-              <input type="password" class="form-control" id="passwordInput" placeholder="Masukan Password" required />
-              <button class="input-group-text" type="button" id="togglePassword">
-                <i class="bi bi-eye-slash" id="toggleIcon"></i>
-              </button>
-            </div>
+      @error('status')
+    <small class="text-danger">{{ $message }}</small>
+  @enderror
+
+          <form class="w-100" action="{{ route('login.post') }}" method="post">
+            @csrf
+            <!-- Input Email -->
+            <!-- Input Email -->
+<div class="input-group">
+  <input type="email" name="email" class="form-control" placeholder="Masukan Email" required />
+  <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+</div>
+
+<!-- Input Password -->
+<div class="input-group">
+  <input type="password" name="password" class="form-control" id="passwordInput" placeholder="Masukan Password" required />
+  <button class="input-group-text" type="button" id="togglePassword">
+    <i class="bi bi-eye-slash" id="toggleIcon"></i>
+  </button>
+</div>
+
 
             <button type="submit" class="btn btn-login w-100 mt-3">Login</button>
 

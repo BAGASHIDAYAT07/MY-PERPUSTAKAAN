@@ -29,6 +29,8 @@ Route::get('/rakbuku', [AdminController::class, 'RakBuku'])->name('rakbuku');
 // auth
 Route::get('/register', [AuthController::class, 'ViewRegister']);
 Route::get('/login', [AuthController::class, 'ViewLogin']);
+Route::post('/logins', [AuthController::class, 'login'])->name('login.post');
+
 
 //pinjaman
 Route::get('/pinjam',[AdminController::class, 'tes']);
