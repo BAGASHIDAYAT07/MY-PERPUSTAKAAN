@@ -1,88 +1,46 @@
 @extends('template.app')
 
 @section("konten")
+<div class="container">
+    <h1>Daftar Peminjaman</h1>
+    <a href="{{ route('peminjaman.create') }}" class="btn btn-primary mb-3">Tambah Peminjaman</a>
+    
+    @if(session('success'))
+        <div class="alert alert-success">{{ session('success') }}</div>
+    @endif
+    
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>User</th>
+                <th>Buku</th>
+                <th>Tanggal Pinjam</th>
+                <th>Tanggal Kembali</th>
+                <th>Status</th>
+                <th>Aksi</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach($peminjamans as $peminjaman)
+            <tr>
+                <td>{{ $peminjaman->user->name }}</td>
+                <td>{{ $peminjaman->buku->judul }}</td>
+                <td>{{ $peminjaman->tanggal_pinjam }}</td>
+                <td>{{ $peminjaman->tanggal_kembali ?? '-' }}</td>
+                <td>{{ ucfirst($peminjaman->status) }}</td>
+                <td>
+                    <a href="{{ route('peminjaman.edit', $peminjaman) }}" class="btn btn-warning btn-sm">Edit</a>
+                    <form action="{{ route('peminjaman.destroy', $peminjaman) }}" method="POST" class="d-inline">
+                        @csrf
+                        @method('DELETE')
+                        <button onclick="return confirm('Yakin ingin hapus?')" class="btn btn-danger btn-sm">Hapus</button>
+                    </form>
+                </td>
+            </tr>
+            @endforeach
+        </tbody>
+    </table>
 
-  <div class="container">
-    <h3 class="mb-4">Peminjaman</h3>
-
-    <div class="card shadow-sm">
-      <div class="card-body">
-        <table class="table table-bordered align-middle">
-          <thead class="table-dark">
-            <tr>
-              <th scope="col">No</th>
-              <th scope="col">Nama</th>
-              <th scope="col">Email</th>
-              <th scope="col">ID</th>
-              <th scope="col">Jenis Kelamin</th>
-              <th scope="col">Status</th>
-              <th scope="col">Aksi</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <th scope="row">1</th>
-              <td>Enggal Dwi</td>
-              <td>enggal@example.com</td>
-              <td>USR001</td>
-              <td>Laki-laki</td>
-              <td><span class="badge bg-success">Aktif</span></td>
-              <td>
-                <div class="dropdown">
-                  <button class="btn btn-sm btn-light" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    &#8942;
-                  </button>
-                  <ul class="dropdown-menu">
-                    <li><a class="dropdown-item text-success" href="#">Aktifkan</a></li>
-                    <li><a class="dropdown-item text-danger" href="#">Nonaktifkan</a></li>
-                    <li><a class="dropdown-item text-primary" href="/pinjaman_update/1">Perbarui</a></li>
-                  </ul>
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <th scope="row">2</th>
-              <td>antooks</td>
-              <td>antoks@example.com</td>
-              <td>USR002</td>
-              <td>Laki-laki</td>
-              <td><span class="badge bg-danger">Tidak Aktif</span></td>
-              <td>
-                <div class="dropdown">
-                  <button class="btn btn-sm btn-light" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    &#8942;
-                  </button>
-                  <ul class="dropdown-menu">
-                    <li><a class="dropdown-item text-success" href="#">Aktifkan</a></li>
-                    <li><a class="dropdown-item text-danger" href="#">Nonaktifkan</a></li>
-                    <li><a class="dropdown-item text-primary" href="/pinjaman_update/1">Perbarui</a></li>
-                  </ul>
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <th scope="row">3</th>
-              <td>bagasss</td>
-              <td>bagas@example.com</td>
-              <td>USR003</td>
-              <td>Laki-laki</td>
-              <td><span class="badge bg-success">Aktif</span></td>
-              <td>
-                <div class="dropdown">
-                  <button class="btn btn-sm btn-light" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    &#8942;
-                  </button>
-                  <ul class="dropdown-menu">
-                    <li><a class="dropdown-item text-success" href="#">Aktifkan</a></li>
-                    <li><a class="dropdown-item text-danger" href="#">Nonaktifkan</a></li>
-                    <li><a class="dropdown-item text-primary" href="/pinjaman_update/1">Perbarui</a></li>
-                  </ul>
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div>
+    {{ $peminjamans->links() }}
+</div>
 @endsection
