@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash; // ✅ untuk hash password
 use Illuminate\Support\Facades\Http;
 use App\Models\User;
-use App\Models\Buku;
 
 class AdminController extends Controller
 {
@@ -108,86 +107,6 @@ public function update(Request $request, $id)
     return redirect()->back()->with('success', 'Data user berhasil diperbarui');
 }
 
-
-public function tambahbuku(Request $request)
-{
-    $request->validate([
-        'judul' => 'required|string|max:255',
-        'deskripsi' => 'required|string|max:255',
-        'JenisBuku' => 'required|string|max:255',
-        'Penerbit' => 'required|string|max:255',
-        'Pencipta' => 'required|string|max:255',
-        'TempatTerbit' => 'required|string|max:255',
-        'TahunTerbit' => 'required|integer',
-        'JumlahHalaman' => 'required|integer',
-        'status' => 'required|boolean',
-        'foto' => 'required|image|mimes:jpg,jpeg,png|max:2048',
-    ]);
-
-    $fotoUrl = null;
-
-    if ($request->hasFile('foto')) {
-        $file = $request->file('foto');
-        $fileName = time() . '_' . $file->getClientOriginalName();
-
-        // Upload ke Supabase
-        $response = Http::withHeaders([
-            'apikey' => config('services.supabase.key'),
-            'Authorization' => 'Bearer ' . config('services.supabase.key'),
-        ])->attach(
-            'file',
-            file_get_contents($file),
-            $fileName
-        )->post(config('services.supabase.url') . "/storage/v1/object/" . config('services.supabase.bucket') . "/" . $fileName);
-
-        if ($response->successful()) {
-            $fotoUrl = config('services.supabase.url') . "/storage/v1/object/public/"
-                . config('services.supabase.bucket') . "/" . $fileName;
-        }
-    }
-
-    Buku::create([
-        'judul' => $request->judul,
-        'deskripsi' => $request->deskripsi,
-        'JenisBuku' => $request->JenisBuku,
-        'Penerbit' => $request->Penerbit,
-        'Pencipta' => $request->Pencipta,
-        'TempatTerbit' => $request->TempatTerbit,
-        'TahunTerbit' => $request->TahunTerbit,
-        'JumlahHalaman' => $request->JumlahHalaman,
-        'status' => $request->status,
-        'foto' => $fotoUrl, // 🚀 ini bukan null
-    ]);
-
-    return redirect()->route('rakbuku')->with('success', 'Buku berhasil ditambahkan!');
-}
-
-
-
-
-
-    // BUKU
-    public function Bukucreate()
-    {
-        return view('admin.bukus.create');
-    }
-
-    public function Bukupdate()
-    {
-        return view('admin.bukus.update');
-    }
-
-    // RAK BUKU
-    public function RakBuku()
-    {
-        return view('admin.RakBuku.RakBuku', ["active" => "rakbuku"]);
-    }
-
-    public function Pagenation()
-    {
-        $user = User::paginate(10); // tampilkan 10 data per halaman
-        return view('admin.user', compact('user'));
-    }
 }
 
 

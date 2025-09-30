@@ -50,13 +50,31 @@
   <!-- Card Table -->
   <div class="card shadow-sm border-0">
     <div class="card-body">
-      <!-- Search -->
-      <div class="mb-3">
-        <input type="search" class="form-control form-control-sm" placeholder="Cari buku...">
-      </div>
+      <!-- Card Table -->
+  <div class="card shadow-sm border-0">
+    <div class="card-body">
+      <!-- Search dengan Filter -->
+<div class="mb-3 d-flex gap-2">
+  <div class="input-group input-group-sm" style="max-width: 300px;">
+    <span class="input-group-text bg-white border-end-0">
+      <i class="bi bi-search text-muted"></i>
+    </span>
+    <input type="search" id="searchInput" class="form-control border-start-0" placeholder="Cari buku...">
+  </div>
+
+  <!-- Dropdown Filter -->
+  <select id="searchFilter" class="form-select form-select-sm" style="max-width: 180px;">
+    <option value="all">Semua</option>
+    <option value="1">Judul Buku</option>
+    <option value="2">Jenis Buku</option>
+    <option value="3">Nama Rak</option>
+    <option value="4">No Rak</option>
+    <option value="5">Status</option>
+  </select>
+</div>
+
 
       <!-- Table Responsive -->
-<div class="table-responsive">
   <table class="table table-striped table-hover align-middle mb-0 table-bordered border-secondary-subtle">
     <thead class="table-primary text-center">
       <tr>
@@ -70,46 +88,190 @@
       </tr>
     </thead>
     <tbody class="text-center">
-      <!-- Contoh Data Buku -->
-      <tr>
-        <td>
-          <img src="../img/photos/buku1.jpeg" 
-               class="rounded shadow-sm img-fluid" 
+  @foreach ($buku as $item)
+    <tr>
+      <td>
+        <img src="{{ $item->foto }}" 
+             class="rounded shadow-sm img-fluid" 
+             alt="Foto Buku" 
+             style="max-width: 100px;">
+      </td>
+      <td class="text-start">
+        <i class="bi bi-journal-bookmark-fill text-primary me-2"></i>
+        {{ $item->judul }}
+      </td>
+      <td>{{ $item->JenisBuku }}</td>
+      <td>{{ $item->namarak ?? '-' }}</td>
+      <td>{{ $item->norak ?? '-' }}</td>
+      <td>
+        <form action="{{ route('buku.toggleStatus', $item->id) }}" method="POST" style="display:inline;">
+    @csrf
+    <button type="submit" 
+            class="btn btn-sm {{ $item->status ? 'btn-success' : 'btn-danger' }}">
+      {{ $item->status ? 'Aktif' : 'Nonaktif' }}
+    </button>
+  </form>
+      </td>
+      <td>
+        <div class="dropdown">
+          <button class="btn btn-sm btn-light border" type="button" data-bs-toggle="dropdown">
+            <i class="bi bi-three-dots-vertical"></i>
+          </button>
+          <ul class="dropdown-menu dropdown-menu-end">
+            <li>
+              <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#detailBukuModal-{{ $item->id }}">
+                <i class="bi bi-eye me-2"></i> Lihat Detail
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#editBukuModal-{{ $item->id }}">
+                <i class="bi bi-pencil-square me-2"></i> Edit
+              </a>
+            </li>
+          </ul>
+        </div>
+      </td>
+    </tr>
+
+    <!-- view buku -->
+    <div class="modal fade" id="detailBukuModal-{{ $item->id }}" tabindex="-1">
+  <div class="modal-dialog modal-md modal-dialog-centered modal-fullscreen-sm-down">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title fw-bold">
+          <i class="bi bi-journal-text me-2 text-primary"></i>Detail Buku
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <div class="text-center mb-3">
+          <img src="{{ $item->foto }}" 
+               class="rounded shadow img-fluid" 
                alt="Foto Buku" 
-               style="max-width: 100px;">
-        </td>
-        <td class="text-start">
-          <i class="bi bi-journal-bookmark-fill text-primary me-2"></i>
-          Belajar Laravel
-        </td>
-        <td>Pelajaran</td>
-        <td>Rak Belajar</td>
-        <td>B2</td>
-        <!-- Tombol Aktif / Nonaktif -->
-        <td>
-          <button class="btn btn-sm btn-success toggle-status">Aktif</button>
-        </td>
-        <td>
-          <div class="dropdown">
-            <button class="btn btn-sm btn-light border" type="button" data-bs-toggle="dropdown">
-              <i class="bi bi-three-dots-vertical"></i>
-            </button>
-            <ul class="dropdown-menu dropdown-menu-end">
-              <li>
-                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#detailBukuModal">
-                  <i class="bi bi-eye me-2"></i> Lihat Detail
-                </a>
-              </li>
-              <li>
-                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#editBukuModal">
-                  <i class="bi bi-pencil-square me-2"></i> Edit
-                </a>
-              </li>
-            </ul>
+               style="max-width: 150px;">
+        </div>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item"><b>Judul Buku:</b> {{ $item->judul }}</li>
+          <li class="list-group-item"><b>Deskripsi Buku:</b> {{ $item->deskripsi }}</li>
+          <li class="list-group-item"><b>Jenis:</b> {{ $item->JenisBuku }}</li>
+          <li class="list-group-item"><b>Penerbit:</b> {{ $item->Penerbit }}</li>
+          <li class="list-group-item"><b>Pencipta:</b> {{ $item->Pencipta }}</li>
+          <li class="list-group-item"><b>Kota:</b> {{ $item->TempatTerbit }}</li>
+          <li class="list-group-item"><b>Tahun:</b> {{ $item->TahunTerbit }}</li>
+          <li class="list-group-item"><b>Halaman:</b> {{ $item->JumlahHalaman }}</li>
+          <li class="list-group-item"><b>Nama Rak:</b> {{ $item->namarak ?? '-' }}</li>
+          <li class="list-group-item"><b>No Rak:</b> {{ $item->norak ?? '-' }}</li>
+          <li class="list-group-item"><b>Status:</b> 
+            @if ($item->status)
+              <span class="badge bg-success">Aktif</span>
+            @else
+              <span class="badge bg-danger">Nonaktif</span>
+            @endif
+          </li>
+        </ul>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- edit buku -->
+<div class="modal fade" id="editBukuModal-{{ $item->id }}" tabindex="-1">
+  <div class="modal-dialog modal-md modal-dialog-centered modal-fullscreen-sm-down">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title fw-bold">
+          <i class="bi bi-pencil-square me-2 text-warning"></i>Edit Buku
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <!-- Form Update -->
+      <form action="{{ route('buku.update', $item->id) }}" method="POST" enctype="multipart/form-data">
+        @csrf
+        @method('PUT')
+        <div class="modal-body">
+          <!-- Ganti Foto Buku -->
+          <div class="mb-3 text-center">
+            <img src="{{ $item->foto }}" 
+                 class="rounded shadow-sm mb-2 img-fluid" 
+                 alt="Foto Buku" 
+                 style="max-width: 120px;">
+            <input type="file" name="foto" class="form-control form-control-sm mt-2" value="{{ $item->judul }}" placeholder="Masukkan judul buku">
           </div>
-        </td>
-      </tr>
-    </tbody>
+
+          <div class="mb-3">
+            <label class="form-label">Judul Buku</label>
+            <input type="text" name="judul" class="form-control" value="{{ $item->judul }}" placeholder="Tuliskan deskripsi singkat buku">
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Deskripsi Buku</label>
+            <input type="text" name="deskripsi" class="form-control" value="{{ $item->deskripsi }}" placeholder="Contoh: Fiksi, Non-Fiksi, Sejarah">
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Jenis Buku</label>
+            <input type="text" name="JenisBuku" class="form-control" value="{{ $item->JenisBuku }}" placeholder="Masukkan nama penerbit">
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Penerbit</label>
+            <input type="text" name="Penerbit" class="form-control" value="{{ $item->Penerbit }}" placeholder="Masukkan nama penulis/pencipta">
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Pencipta</label>
+            <input type="text" name="Pencipta" class="form-control" value="{{ $item->Pencipta }}" placeholder="Contoh: Jakarta, Bandung">
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Kota (Tempat Terbit)</label>
+            <input type="text" name="TempatTerbit" class="form-control" value="{{ $item->TempatTerbit }}" placeholder="Masukkan tahun terbit (contoh: 2023)">
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Tahun Terbit</label>
+            <input type="number" name="TahunTerbit" class="form-control" value="{{ $item->TahunTerbit }}">
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Jumlah Halaman</label>
+            <input type="number" name="JumlahHalaman" class="form-control" value="{{ $item->JumlahHalaman }}">
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Nama Rak</label>
+            <input type="text" name="namarak" class="form-control" value="{{ $item->namarak }}">
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">No Rak</label>
+            <input type="text" name="norak" class="form-control" value="{{ $item->norak }}">
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Status</label>
+            <select name="status" class="form-select">
+              <option value="1" {{ $item->status ? 'selected' : '' }}>Aktif</option>
+              <option value="0" {{ !$item->status ? 'selected' : '' }}>Nonaktif</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+          <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+  @endforeach
+</tbody>
+
   </table>
 </div>
     </div>
@@ -183,6 +345,18 @@
         <input type="file" name="foto" class="form-control">
     </div>
 
+    <!-- nama rak -->
+    <div class="col-md-6">
+        <label class="form-label">Nama Rak</label>
+        <input type="text" name="namarak" class="form-control">
+    </div>
+
+    <!-- no rak -->
+    <div class="col-md-6">
+        <label class="form-label">No rak</label>
+        <input type="number" name="norak" class="form-control">
+    </div>
+
     <!-- Status -->
     <div class="col-md-6">
       <label class="form-label">Status</label>
@@ -203,110 +377,6 @@
   </div>
 </div>
 
-<!-- Modal Detail Buku -->
-<div class="modal fade" id="detailBukuModal" tabindex="-1">
-  <div class="modal-dialog modal-md modal-dialog-centered modal-fullscreen-sm-down">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title fw-bold">
-          <i class="bi bi-journal-text me-2 text-primary"></i>Detail Buku
-        </h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-      </div>
-      <div class="modal-body">
-        <div class="text-center mb-3">
-          <img src="../img/photos/buku1.jpeg" class="rounded shadow img-fluid" alt="Foto Buku" style="max-width: 150px;">
-        </div>
-        <ul class="list-group list-group-flush">
-          <li class="list-group-item"><b>Judul Buku:</b> Belajar Laravel</li>
-          <li class="list-group-item"><b>Deskripsi Buku:</b> Belajar Laravel</li>
-          <li class="list-group-item"><b>Jenis:</b> Pelajaran</li>
-          <li class="list-group-item"><b>Penerbit:</b> Gramedia</li>
-          <li class="list-group-item"><b>Penulis:</b> Bagas Hidayat</li>
-          <li class="list-group-item"><b>Kota:</b> Jakarta</li>
-          <li class="list-group-item"><b>Tahun:</b> 2025</li>
-          <li class="list-group-item"><b>Halaman:</b> 250</li>
-          <li class="list-group-item"><b>Rak:</b> Rak Belajar (B2)</li>
-          <li class="list-group-item"><b>Status:</b> Aktif</li> <!-- Tambahan -->
-        </ul>
-      </div>
-      <div class="modal-footer">
-        <button class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Modal Edit Buku -->
-<div class="modal fade" id="editBukuModal" tabindex="-1">
-  <div class="modal-dialog modal-md modal-dialog-centered modal-fullscreen-sm-down">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title fw-bold">
-          <i class="bi bi-pencil-square me-2 text-warning"></i>Edit Buku
-        </h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-      </div>
-      <form>
-        <div class="modal-body">
-          <!-- Ganti Foto Buku -->
-          <div class="mb-3 text-center">
-            <img src="../img/photos/buku1.jpeg" 
-                 class="rounded shadow-sm mb-2 img-fluid" 
-                 alt="Foto Buku" 
-                 style="max-width: 120px;">
-            <input type="file" class="form-control form-control-sm mt-2">
-          </div>
-
-          <div class="mb-3">
-            <label class="form-label">Judul Buku</label>
-            <input type="text" class="form-control" value="Belajar Laravel">
-          </div>
-          <div class="mb-3">
-            <label class="form-label">Deskripsi Buku</label>
-            <input type="text" class="form-control" value="jasvhdakJHEGSDUKQWJEHSGFC">
-          </div>
-          <div class="mb-3">
-            <label class="form-label">Jenis Buku</label>
-            <input type="text" class="form-control" value="Pelajaran">
-          </div>
-          <div class="mb-3">
-            <label class="form-label">Penerbit</label>
-            <input type="text" class="form-control" value="Gramedia">
-          </div>
-          <div class="mb-3">
-            <label class="form-label">Penulis</label>
-            <input type="text" class="form-control" value="Bagas Hidayat">
-          </div>
-          <div class="mb-3">
-            <label class="form-label">Kota</label>
-            <input type="text" class="form-control" value="Jakarta">
-          </div>
-          <div class="mb-3">
-            <label class="form-label">Tahun Terbit</label>
-            <input type="number" class="form-control" value="2025">
-          </div>
-          <div class="mb-3">
-            <label class="form-label">Jumlah Halaman</label>
-            <input type="number" class="form-control" value="250">
-          </div>
-          <div class="mb-3">
-            <label class="form-label">Rak Buku</label>
-            <input type="text" class="form-control" value="Rak Belajar">
-          </div>
-          <div class="mb-3">
-            <label class="form-label">No Rak</label>
-            <input type="text" class="form-control" value="B2">
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-          <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
-        </div>
-      </form>
-    </div>
-  </div>
-</div>
 
 <!-- Script Toggle Status -->
 <script>
@@ -325,5 +395,42 @@
       });
     });
   });
+
+  document.addEventListener("DOMContentLoaded", function () {
+  const searchInput = document.getElementById("searchInput");
+  const searchFilter = document.getElementById("searchFilter");
+  const rows = document.querySelectorAll("table tbody tr");
+
+  function filterTable() {
+    const keyword = searchInput.value.toLowerCase();
+    const filter = searchFilter.value;
+
+    rows.forEach(row => {
+      let cells = row.getElementsByTagName("td");
+      let match = false;
+
+      if (filter === "all") {
+        // cari di semua kolom
+        for (let i = 0; i < cells.length; i++) {
+          if (cells[i].innerText.toLowerCase().includes(keyword)) {
+            match = true;
+            break;
+          }
+        }
+      } else {
+        // cari di kolom tertentu
+        const colIndex = parseInt(filter);
+        if (cells[colIndex] && cells[colIndex].innerText.toLowerCase().includes(keyword)) {
+          match = true;
+        }
+      }
+
+      row.style.display = match ? "" : "none";
+    });
+  }
+
+  searchInput.addEventListener("keyup", filterTable);
+  searchFilter.addEventListener("change", filterTable);
+});
 </script>
 @endsection

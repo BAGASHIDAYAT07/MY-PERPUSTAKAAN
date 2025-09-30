@@ -15,6 +15,8 @@ class Buku extends Model
         'TempatTerbit',
         'TahunTerbit',
         'JumlahHalaman',
+        'namarak',
+        'norak',
         'status',
         'foto',
     ];

@@ -27,10 +27,12 @@
     ></script>
 
     <style>
+      @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
       body {
         background-color: #f5f9fc;
         margin: 0;
         padding: 0;
+        font-family: "Poppins", sans-serif;
       }
 
       /* Fixed Navbar */
@@ -39,8 +41,10 @@
         top: 0;
         left: 0;
         right: 0;
-        z-index: 1050;
+        height: 70px;
+        z-index: 1000; /* lebih rendah dari sidebar */
         border-radius: 0;
+        width: 100%;
       }
 
       /* Fix posisi dropdown user */
@@ -59,17 +63,13 @@
       /* Sidebar */
       #sidebar {
         position: fixed;
-        top: 70px; /* tinggi navbar */
+        top: 0; /* mulai dari atas biar nutup navbar */
         left: 0;
-        width: 220px;
-        height: calc(100vh - 70px);
-        background-color: #3b8763;
+        width: 240px;
+        height: 100vh;
+        background-color: #fff;
+        z-index: 1050; /* lebih tinggi dari navbar */
         padding: 20px 15px;
-        overflow-y: auto;
-        z-index: 1000;
-        transition: transform 0.3s ease-in-out;
-        transform: translateX(0); /* default tampil */
-        scrollbar-width: none;
       }
 
       #sidebar.hide {
@@ -89,20 +89,21 @@
         gap: 8px;
       }
 
-      #sidebar .nav-link.active {
-        background-color: rgba(255, 255, 255, 0.2);
-        border-radius: 5px;
+      /* Hover sidebar */
+      #sidebar .nav-link {
+        color: #212529; /* default teks hitam */
+        transition: all 0.2s ease;
       }
 
       #sidebar .nav-link:hover {
-        background-color: rgba(255, 255, 255, 0.1);
-        border-radius: 5px;
+        background-color: #d1e7dd; /* hijau muda */
+        color: #0f5132; /* hijau tua */
+        border-radius: 8px;
       }
 
       /* Main Content */
       #main-content {
         margin-left: 215px; /* default geser karena sidebar tampil */
-        padding-top: 100px;
         transition: margin-left 0.3s ease-in-out;
       }
 
@@ -147,125 +148,147 @@
 
   <body>
     <!-- Navbar -->
-    <nav
-      class="navbar navbar-expand navbar-light bg-white shadow-sm px-3"
-      style="height: 70px;"
-    >
-      <div class="d-flex align-items-center">
-        <!-- Toggle Burger -->
-        <button class="btn btn-link me-2" id="sidebarToggle">
-          <i class="bi bi-list fs-4" style="color: black;"></i>
-        </button>
+<nav class="navbar navbar-expand bg-white shadow-sm px-2"
+     style="height: 70px; position: fixed; top: 0; left: 240px; right: 0; width: calc(100% - 240px);">
+  <div class="container-fluid d-flex justify-content-between align-items-center">
 
-        <!-- Logo -->
-        <a href="/" class="d-flex align-items-center text-decoration-none">
-          <img
-            src="../img/logo/smk.png"
-            alt="Logo"
-            class="logo-nav"
-            style="width: 45px; margin-right: 8px;"
-          />
-          <span class="fw-bold brand-text text-dark">MY-PERPUSTAKAAN</span>
+    <!-- Kiri: Judul Halaman -->
+    <div>
+      <h5 class="mb-0 text-dark" style="font-weight: 600;">Dashboard</h5>
+      <small class="text-success">Dashboard</small>
+    </div>
+
+    <!-- Kanan: Notifikasi + User -->
+    <div class="d-flex align-items-center">
+      <!-- Ikon Notifikasi -->
+      <a href="#" class="text-dark me-4">
+        <i class="bi bi-bell fs-5"></i>
+      </a>
+
+      <!-- User Dropdown -->
+      <div class="dropdown">
+        <a class="d-flex align-items-center text-decoration-none" 
+           href="#" 
+           id="userDropdown" 
+           role="button" 
+           data-bs-toggle="dropdown" 
+           aria-expanded="false">
+          
+          <!-- Nama + Role -->
+          <div class="text-end me-2">
+            <div class="fw-semibold text-dark">BangGazz</div>
+            <small class="text-muted">Admin</small>
+          </div>
+
+          <!-- Foto Admin -->
+          <img src="../img/photos/admin.jpg"
+               alt="User"
+               class="rounded-circle"
+               style="width: 38px; height: 38px; object-fit: cover; cursor: pointer;">
         </a>
-      </div>
 
-      <!-- Ikon & User -->
-      <ul class="navbar-nav ms-auto d-flex align-items-center">
-        <li class="nav-item mx-2">
-          <a class="nav-link" href="#"
-            ><i class="bi bi-chat-dots" style="font-size: 20px;"></i
-          ></a>
-        </li>
-        <li class="nav-item mx-2">
-          <a class="nav-link" href="#"
-            ><i class="bi bi-bell" style="font-size: 20px;"></i
-          ></a>
-        </li>
-        <li class="nav-item dropdown mx-2">
-          <a
-            class="nav-link dropdown-toggle d-flex align-items-center"
-            href="#"
-            id="userDropdown"
-            role="button"
-            data-bs-toggle="dropdown"
-            aria-expanded="false"
-          >
-            <img
-              src="../img/photos/user.jpg"
-              class="rounded-circle me-2"
-              style="width: 35px; height: 35px;"
-              alt="User"
-            />
-            <span class="username-text">Admin</span>
-          </a>
-          <ul
-            class="dropdown-menu dropdown-menu-end shadow rounded-3 border-0"
-            aria-labelledby="userDropdown"
-            style="min-width: 200px;"
-          >
-            <li>
-              <a
-                class="dropdown-item d-flex align-items-center gap-2 py-2"
-                href="#"
-                data-bs-toggle="modal"
-                data-bs-target="#pengaturanModal"
-              >
-                <i class="bi bi-gear text-success"></i> Pengaturan
-              </a>
-            </li>
-            <li>
-              <a
-                class="dropdown-item d-flex align-items-center gap-2 py-2"
-                href="#!"
-              >
-                <i class="bi bi-clock-history text-success"></i> Riwayat Aktivitas
-              </a>
-            </li>
-            <li><hr class="dropdown-divider" /></li>
-            <li>
-              <a
-                class="dropdown-item d-flex align-items-center gap-2 py-2 fw-bold text-success"
-                href="/login"
-              >
-                <i class="bi bi-box-arrow-right"></i> Keluar
-              </a>
-            </li>
-          </ul>
-        </li>
-      </ul>
-    </nav>
+        <!-- Menu Dropdown -->
+        <ul class="dropdown-menu dropdown-menu-end shadow rounded-3 border-0" 
+            aria-labelledby="userDropdown" 
+            style="min-width: 200px;">
+          
+          <li>
+            <a class="dropdown-item d-flex align-items-center gap-2 py-2" 
+               href="#" 
+               data-bs-toggle="modal" 
+               data-bs-target="#pengaturanModal">
+              <i class="bi bi-gear text-success"></i> Pengaturan
+            </a>
+          </li>
+
+          <li>
+            <a class="dropdown-item d-flex align-items-center gap-2 py-2" href="#!">
+              <i class="bi bi-clock-history text-success"></i> Riwayat Aktivitas
+            </a>
+          </li>
+
+          <li><hr class="dropdown-divider" /></li>
+
+          <li>
+            <a class="dropdown-item d-flex align-items-center gap-2 py-2 fw-bold text-success" href="/login">
+              <i class="bi bi-box-arrow-right"></i> Keluar
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</nav>
+
+
+
 
     <!-- Sidebar -->
-    <div id="sidebar" class="shadow-sm p-2 rounded-4xl">
-      <nav class="nav flex-column" style="padding: 10px 0;">
-        <span class="text-white-50 small mb-2 px-2">Main Menu</span>
-        <a class="nav-link text-white mb-2 {{ $active == 'dashboard' ? 'active' : '' }}" href="/">
-          <i class="bi bi-speedometer2 me-2"></i> Beranda
-        </a>
-        <a class="nav-link text-white mb-2 {{ $active == 'user' ? 'active' : '' }}" href="/user">
-          <i class="bi bi-person me-2"></i> User
-        </a>
-        <a class="nav-link text-white mb-2 {{ $active == 'rakbuku' ? 'active' : '' }}" href="/rakbuku">
-          <i class="bi bi-journal me-2"></i> Rak Buku
-        </a>
+<div id="sidebar" class="d-flex flex-column shadow-sm" 
+     style="width: 240px; height: 100vh; background-color: #fff; position: fixed; top: 0; left: 0; padding: 20px 15px; overflow-y: auto;">
 
-        <hr class="text-white opacity-50 mt-3 mb-2" />
+  <!-- Logo + Judul -->
+  <div class="text-center mb-4">
+    <img src="../img/logo/smk.png" alt="Logo" style="width: 60px;">
+    <h5 class="mt-4 fw-bold text-success" style="font-size: 19px;">MY PERPUSTAKAAN</h5>
+    <p class="text-muted small font" style="font-size: 12px; font-weight: 500;">Sistem Informasi Perpustakaan</p>
+  </div>
 
-        <span class="text-white-50 small mb-2 px-2">Verifikasi</span>
-        <a class="nav-link text-white mb-2 {{ $active == 'verifikasiuser' ? 'active' : '' }}" href="/VerifikasiUser">
-          <i class="bi bi-person-check me-2"></i> Verifikasi User
+
+  <!-- Menu -->
+  <nav class="nav flex-column flex-grow-1">
+
+    <!-- Dashboard -->
+    <a class="nav-link d-flex align-items-center mb-2 fw-semibold rounded py-2 px-3 {{ $active == 'dashboard' ? 'bg-success text-white' : 'text-muted' }}" href="/" data-load>
+      <i class="bi bi-grid-fill me-2"></i> Dashboard
+    </a>
+
+    <!-- User Dropdown -->
+    <div class="nav-item mb-2">
+      <a class="nav-link d-flex justify-content-between align-items-center text-muted fw-semibold px-3 py-2 rounded"
+         data-bs-toggle="collapse" href="#menuUser" role="button" aria-expanded="false">
+        <span><i class="bi bi-people-fill me-2"></i> User</span>
+        <i class="bi bi-caret-down-fill small"></i>
+      </a>
+      <div class="collapse ps-4" id="menuUser">
+        <a class="nav-link rounded {{ $active == 'user' ? 'bg-success text-white' : 'text-muted' }}" href="/user" data-load>
+          <i class="bi bi-person-fill-gear me-2"></i> Manajemen User
         </a>
-        <a class="nav-link text-white mb-2 {{ $active == 'veriv' ? 'active' : '' }}" href="/bukuveriv">
-          <i class="bi bi-clipboard-check me-2"></i> Verifikasi Peminjaman
-          <span class="badge bg-light text-success ms-auto">3</span>
+        <a class="nav-link rounded {{ $active == 'verifikasiuser' ? 'bg-success text-white' : 'text-muted' }}" href="/VerifikasiUser" data-load>
+          <i class="bi bi-person-fill-check me-2"></i> Verifikasi User
         </a>
-      </nav>
+      </div>
     </div>
 
-    <!-- Main Content -->
-    <div id="main-content">
-      <main class="p-1">@yield("konten")</main>
+    <!-- Buku Dropdown -->
+    <div class="nav-item mb-2">
+      <a class="nav-link d-flex justify-content-between align-items-center text-muted fw-semibold px-3 py-2 rounded"
+         data-bs-toggle="collapse" href="#menuBuku" role="button" aria-expanded="false">
+        <span><i class="bi bi-journal-bookmark-fill me-2"></i> Buku</span>
+        <i class="bi bi-caret-down-fill small"></i>
+      </a>
+      <div class="collapse ps-4" id="menuBuku">
+        <a class="nav-link rounded {{ $active == 'rakbuku' ? 'bg-success text-white' : 'text-muted' }}" href="/rakbuku" data-load>
+          <i class="bi bi-collection-fill me-2"></i> Rak Buku
+        </a>
+        <a class="nav-link rounded {{ $active == 'veriv' ? 'bg-success text-white' : 'text-muted' }}" href="/bukuveriv" data-load>
+          <i class="bi bi-clipboard2-check-fill me-2"></i> Verifikasi Peminjaman
+        </a>
+      </div>
     </div>
+
+    <!-- Laporan -->
+    <a class="nav-link d-flex align-items-center text-muted fw-semibold px-3 py-2 rounded {{ $active == 'laporan' ? 'bg-success text-white' : 'text-dark' }}" href="/laporan">
+      <i class="bi bi-file-earmark-text-fill me-2" data-load></i> Laporan
+    </a>
+  </nav>
+</div>
+
+<!-- Main Content -->
+<div id="main-content" style="padding-left: 25px; padding-top:107px;">
+  <main id="app-content">@yield("konten")</main>
+</div>
+
 
     <!-- Modal Pengaturan -->
     <div
@@ -391,6 +414,63 @@
           reader.readAsDataURL(input.files[0]);
         }
       }
+
+      document.querySelectorAll("a[data-load]").forEach(link => {
+    link.addEventListener("click", function(e) {
+      e.preventDefault();
+
+      let url = this.getAttribute("href");
+
+      // 🔹 hapus semua active dulu
+      document.querySelectorAll("#sidebar .nav-link").forEach(nav => {
+        nav.classList.remove("bg-success", "text-white");
+        nav.classList.add("text-muted");
+      });
+
+      // 🔹 kasih active ke link yang diklik
+      this.classList.add("bg-success", "text-white");
+      this.classList.remove("text-muted");
+
+      fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          let parser = new DOMParser();
+          let doc = parser.parseFromString(html, "text/html");
+          let newContent = doc.querySelector("main")?.innerHTML;
+
+          if (newContent) {
+            document.getElementById("app-content").innerHTML = newContent;
+            history.pushState({}, "", url);
+          }
+        })
+        .catch(err => console.error("Gagal load:", err));
+    });
+  });
+
+  // 🔹 untuk tombol back/forward browser
+  window.addEventListener("popstate", () => {
+    fetch(location.href)
+      .then(res => res.text())
+      .then(html => {
+        let parser = new DOMParser();
+        let doc = parser.parseFromString(html, "text/html");
+        let newContent = doc.querySelector("main")?.innerHTML;
+        if (newContent) {
+          document.getElementById("app-content").innerHTML = newContent;
+        }
+
+        // update active sidebar sesuai URL
+        document.querySelectorAll("#sidebar .nav-link").forEach(nav => {
+          nav.classList.remove("bg-success", "text-white");
+          nav.classList.add("text-muted");
+
+          if (nav.getAttribute("href") === location.pathname) {
+            nav.classList.add("bg-success", "text-white");
+            nav.classList.remove("text-muted");
+          }
+        });
+      });
+  });
     </script>
   </body>
 </html>
