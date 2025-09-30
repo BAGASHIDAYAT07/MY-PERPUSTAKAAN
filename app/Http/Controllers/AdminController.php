@@ -14,11 +14,6 @@ class AdminController extends Controller
         return view('admin.dashboard', ["active" => "dashboard"]);
     }
 
-    public function tes()
-    {
-        return view('peminjaman.index');
-    }
-
     // USER
     public function User()
     {
