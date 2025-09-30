@@ -46,10 +46,26 @@
   <!-- Card Table -->
   <div class="card shadow-sm border-0">
     <div class="card-body">
-      <!-- Search -->
-      <div class="mb-3">
-        <input type="search" class="form-control form-control-sm" placeholder="Cari peminjam...">
-      </div>
+      <!-- Search dengan Filter -->
+<div class="mb-3 d-flex gap-2">
+  <div class="input-group input-group-sm" style="max-width: 300px;">
+    <span class="input-group-text bg-white border-end-0">
+      <i class="bi bi-search text-muted"></i>
+    </span>
+    <input type="search" id="searchInput" class="form-control border-start-0" placeholder="Cari data...">
+  </div>
+
+  <!-- Dropdown Filter -->
+  <select id="searchFilter" class="form-select form-select-sm" style="max-width: 180px;">
+    <option value="all">Semua</option>
+    <option value="0">Nama Peminjam</option>
+    <option value="1">Judul Buku</option>
+    <option value="2">Email</option>
+    <option value="3">Tanggal Pinjam</option>
+    <option value="4">Tanggal Kembali</option>
+    <option value="5">Status</option>
+  </select>
+</div>
 
       <!-- Table -->
       <div class="table-responsive">
@@ -194,4 +210,39 @@
     </div>
   </div>
 </div>
+
+<script>
+  document.getElementById("searchInput").addEventListener("keyup", filterTable);
+  document.getElementById("searchFilter").addEventListener("change", filterTable);
+
+  function filterTable() {
+    let input = document.getElementById("searchInput").value.toLowerCase();
+    let filter = document.getElementById("searchFilter").value;
+    let rows = document.querySelectorAll("table tbody tr");
+
+    rows.forEach(function(row) {
+      let cells = row.getElementsByTagName("td");
+      let match = false;
+
+      if (filter === "all") {
+        // cek semua kolom (kecuali aksi)
+        for (let i = 0; i < cells.length - 1; i++) {
+          let text = cells[i].innerText.toLowerCase().trim();
+          if (text.includes(input)) {
+            match = true;
+            break;
+          }
+        }
+      } else {
+        let colIndex = parseInt(filter);
+        if (cells[colIndex] && cells[colIndex].innerText.toLowerCase().includes(input)) {
+          match = true;
+        }
+      }
+
+      row.style.display = match ? "" : "none";
+    });
+  }
+</script>
+
 @endsection
