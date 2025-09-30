@@ -1,48 +1,42 @@
 @extends('template.app')
 
 @section("konten")
-
 <div class="container">
+    <h1>Tambah Peminjaman</h1>
 
-<h1 class="mt-4">Tambah Peminjaman Buku</h1>
+    <form action="{{ route('peminjaman.store') }}" method="POST">
+        @csrf
 
-<div class="card mb-4">
-  <div class="card-header">
-    <i class="fas fa-plus-circle me-1"></i>
-    Formulir Peminjaman
-  </div>
-  <div class="card-body">
-      @csrf
-      <div class="mb-3">
-        <label for="nama_peminjam" class="form-label">Nama Peminjam</label>
-        <input type="text" name="nama_peminjam" class="form-control" id="nama_peminjam" required>
-      </div>
+        <div class="mb-3">
+            <label for="user_id" class="form-label">Peminjam</label>
+            <select name="user_id" id="user_id" class="form-select" required>
+                <option value="">-- Pilih User --</option>
+                @foreach($users as $user)
+                    <option value="{{ $user->id }}">{{ $user->name }}</option>
+                @endforeach
+            </select>
+            @error('user_id') <div class="text-danger">{{ $message }}</div> @enderror
+        </div>
 
-      <div class="mb-3">
-        <label for="judul_buku" class="form-label">Judul Buku</label>
-        <input type="text" name="judul_buku" class="form-control" id="judul_buku" required>
-      </div>
+        <div class="mb-3">
+            <label for="buku_id" class="form-label">Buku</label>
+            <select name="buku_id" id="buku_id" class="form-select" required>
+                <option value="">-- Pilih Buku --</option>
+                @foreach($bukus as $buku)
+                    <option value="{{ $buku->id }}">{{ $buku->judul }}</option>
+                @endforeach
+            </select>
+            @error('buku_id') <div class="text-danger">{{ $message }}</div> @enderror
+        </div>
 
-      <div class="mb-3">
-        <label for="tanggal_pinjam" class="form-label">Tanggal Pinjam</label>
-        <input type="date" name="tanggal_pinjam" class="form-control" id="tanggal_pinjam" required>
-      </div>
+        <div class="mb-3">
+            <label for="tanggal_pinjam" class="form-label">Tanggal Pinjam</label>
+            <input type="date" name="tanggal_pinjam" id="tanggal_pinjam" class="form-control" required>
+            @error('tanggal_pinjam') <div class="text-danger">{{ $message }}</div> @enderror
+        </div>
 
-      <div class="mb-3">
-        <label for="tanggal_kembali" class="form-label">Tanggal Kembali</label>
-        <input type="date" name="tanggal_kembali" class="form-control" id="tanggal_kembali" required>
-      </div>
-
-      <div class="mb-3">
-        <label for="status" class="form-label">Status</label>
-        <select name="status" id="status" class="form-control">
-          <option value="dipinjam">Dipinjam</option>
-          <option value="dikembalikan">Dikembalikan</option>
-        </select>
-        <a href="/pinjaman_create" class="btn btn-primary mt-3">Tambah Peminjaman</a>
-      </div>
-  </div>
+        <button type="submit" class="btn btn-success">Simpan</button>
+        <a href="{{ route('peminjaman.index') }}" class="btn btn-secondary">Kembali</a>
+    </form>
 </div>
-</div>
-
 @endsection
