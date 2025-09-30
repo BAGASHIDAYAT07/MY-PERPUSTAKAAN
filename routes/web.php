@@ -7,6 +7,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ClientError;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\BukuController; // 🔑 jangan lupa import
+use App\Http\Controllers\VerivPinjamanAdminController;
 
 // admin
 Route::get('/', [AdminController::class, 'Dashboard']);
@@ -38,7 +39,7 @@ Route::post('/logins', [AuthController::class, 'login'])->name('login.post');
 Route::get('/pinjaman',[PinjamanController::class, 'index']);
 Route::get('/peminjaman/create', [PinjamanController::class, 'create'])->name('peminjaman.create' );
 Route::get('/pinjaman_update/{id}',[PinjamanController::class, 'edit']);
-Route::get('/bukuveriv',[PinjamanController::class, 'veriv']);
+Route::get('/bukuveriv',[VerivPinjamanAdminController::class, 'veriv']);
 
 // untuk user
 Route::get('/Home',[UserController::class, 'Home']);

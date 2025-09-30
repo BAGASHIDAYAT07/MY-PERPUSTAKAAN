@@ -239,7 +239,7 @@
   <nav class="nav flex-column flex-grow-1">
 
     <!-- Dashboard -->
-    <a class="nav-link d-flex align-items-center mb-2 fw-semibold rounded py-2 px-3 {{ $active == 'dashboard' ? 'bg-success text-white' : 'text-muted' }}" href="/" data-load>
+    <a class="nav-link d-flex align-items-center mb-2 fw-semibold rounded py-2 px-3 {{ $active == 'dashboard' ? 'bg-success text-white' : 'text-muted' }}" href="/">
       <i class="bi bi-grid-fill me-2"></i> Dashboard
     </a>
 
@@ -251,10 +251,10 @@
         <i class="bi bi-caret-down-fill small"></i>
       </a>
       <div class="collapse ps-4" id="menuUser">
-        <a class="nav-link rounded {{ $active == 'user' ? 'bg-success text-white' : 'text-muted' }}" href="/user" data-load>
+        <a class="nav-link rounded {{ $active == 'user' ? 'bg-success text-white' : 'text-muted' }}" href="/user">
           <i class="bi bi-person-fill-gear me-2"></i> Manajemen User
         </a>
-        <a class="nav-link rounded {{ $active == 'verifikasiuser' ? 'bg-success text-white' : 'text-muted' }}" href="/VerifikasiUser" data-load>
+        <a class="nav-link rounded {{ $active == 'verifikasiuser' ? 'bg-success text-white' : 'text-muted' }}" href="/VerifikasiUser">
           <i class="bi bi-person-fill-check me-2"></i> Verifikasi User
         </a>
       </div>
@@ -268,10 +268,10 @@
         <i class="bi bi-caret-down-fill small"></i>
       </a>
       <div class="collapse ps-4" id="menuBuku">
-        <a class="nav-link rounded {{ $active == 'rakbuku' ? 'bg-success text-white' : 'text-muted' }}" href="/rakbuku" data-load>
+        <a class="nav-link rounded {{ $active == 'rakbuku' ? 'bg-success text-white' : 'text-muted' }}" href="/rakbuku">
           <i class="bi bi-collection-fill me-2"></i> Rak Buku
         </a>
-        <a class="nav-link rounded {{ $active == 'veriv' ? 'bg-success text-white' : 'text-muted' }}" href="/bukuveriv" data-load>
+        <a class="nav-link rounded {{ $active == 'veriv' ? 'bg-success text-white' : 'text-muted' }}" href="/bukuveriv">
           <i class="bi bi-clipboard2-check-fill me-2"></i> Verifikasi Peminjaman
         </a>
       </div>
@@ -279,7 +279,7 @@
 
     <!-- Laporan -->
     <a class="nav-link d-flex align-items-center text-muted fw-semibold px-3 py-2 rounded {{ $active == 'laporan' ? 'bg-success text-white' : 'text-dark' }}" href="/laporan">
-      <i class="bi bi-file-earmark-text-fill me-2" data-load></i> Laporan
+      <i class="bi bi-file-earmark-text-fill me-2"></i> Laporan
     </a>
   </nav>
 </div>
@@ -383,25 +383,6 @@
     <script src="{{ asset('js/datatables-simple-demo.js') }}"></script>
 
     <script>
-      const sidebar = document.getElementById("sidebar");
-      const toggleBtn = document.getElementById("sidebarToggle");
-      const mainContent = document.getElementById("main-content");
-
-      if (toggleBtn) {
-      toggleBtn.addEventListener("click", () => {
-        if (window.innerWidth > 768) {
-          // Desktop toggle
-          sidebar.classList.toggle("hide");
-          mainContent.style.marginLeft = sidebar.classList.contains("hide")
-            ? "0"
-            : "215px";
-        } else {
-          // Mobile toggle pakai .show
-          sidebar.classList.toggle("show");
-        }
-      });
-    }
-
       // Preview Foto Profil
       function previewImage(event) {
         const input = event.target;
@@ -414,63 +395,6 @@
           reader.readAsDataURL(input.files[0]);
         }
       }
-
-      document.querySelectorAll("a[data-load]").forEach(link => {
-    link.addEventListener("click", function(e) {
-      e.preventDefault();
-
-      let url = this.getAttribute("href");
-
-      // 🔹 hapus semua active dulu
-      document.querySelectorAll("#sidebar .nav-link").forEach(nav => {
-        nav.classList.remove("bg-success", "text-white");
-        nav.classList.add("text-muted");
-      });
-
-      // 🔹 kasih active ke link yang diklik
-      this.classList.add("bg-success", "text-white");
-      this.classList.remove("text-muted");
-
-      fetch(url)
-        .then(res => res.text())
-        .then(html => {
-          let parser = new DOMParser();
-          let doc = parser.parseFromString(html, "text/html");
-          let newContent = doc.querySelector("main")?.innerHTML;
-
-          if (newContent) {
-            document.getElementById("app-content").innerHTML = newContent;
-            history.pushState({}, "", url);
-          }
-        })
-        .catch(err => console.error("Gagal load:", err));
-    });
-  });
-
-  // 🔹 untuk tombol back/forward browser
-  window.addEventListener("popstate", () => {
-    fetch(location.href)
-      .then(res => res.text())
-      .then(html => {
-        let parser = new DOMParser();
-        let doc = parser.parseFromString(html, "text/html");
-        let newContent = doc.querySelector("main")?.innerHTML;
-        if (newContent) {
-          document.getElementById("app-content").innerHTML = newContent;
-        }
-
-        // update active sidebar sesuai URL
-        document.querySelectorAll("#sidebar .nav-link").forEach(nav => {
-          nav.classList.remove("bg-success", "text-white");
-          nav.classList.add("text-muted");
-
-          if (nav.getAttribute("href") === location.pathname) {
-            nav.classList.add("bg-success", "text-white");
-            nav.classList.remove("text-muted");
-          }
-        });
-      });
-  });
     </script>
   </body>
 </html>
