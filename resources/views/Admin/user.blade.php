@@ -152,7 +152,7 @@
                       </ul>
                     </div>
                     <div class="modal-footer">
-                      <button class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                      <button class="btn btn-danger" data-bs-dismiss="modal">Tutup</button>
                     </div>
                   </div>
                 </div>
@@ -164,7 +164,7 @@
                   <div class="modal-content">
                     <div class="modal-header bg-light">
                       <h5 class="modal-title fw-bold">
-                        <i class="bi bi-pencil-square text-warning me-2"></i> Edit User
+                        <i class="bi bi-pencil-square text-success me-2"></i> Edit User
                       </h5>
                       <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                     </div>
@@ -213,8 +213,8 @@
                       </div>
 
                       <div class="modal-footer">
-                        <button class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                        <button type="submit" class="btn btn-warning">Simpan Perubahan</button>
+                        <button class="btn btn-danger" data-bs-dismiss="modal">Batal</button>
+                        <button type="submit" class="btn btn-success">Simpan Perubahan</button>
                       </div>
                     </form>
                   </div>
@@ -275,7 +275,7 @@
             <input type="password" name="password" class="form-control" placeholder="Minimal 6 karakter">
           </div>
           <div class="modal-footer">
-            <button class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+            <button class="btn btn-danger" data-bs-dismiss="modal">Batal</button>
             <button class="btn btn-success">Simpan</button>
           </div>
         </form>
@@ -322,7 +322,7 @@
         </form>
       </div>
       <div class="modal-footer">
-        <button class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+        <button class="btn btn-danger" data-bs-dismiss="modal">Batal</button>
         <button class="btn btn-warning">Simpan Perubahan</button>
       </div>
     </div>

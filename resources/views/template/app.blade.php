@@ -96,7 +96,7 @@
       }
 
       #sidebar .nav-link:hover {
-        background-color: #d1e7dd; /* hijau muda */
+        background-color: #C3F4DD; /* hijau muda */
         color: #0f5132; /* hijau tua */
         border-radius: 8px;
       }
@@ -142,6 +142,17 @@
       .dropdown-item:hover {
         background-color: #e6f4ea;
         color: #2e7d32;
+      }
+      .merah {
+        transition: background 0.2s ease, color 0.2s ease;
+        border-radius: 6px;
+        padding-left: 20px;
+        text-decoration: none;
+        color: #DC3545;
+      }
+      .merah:hover {
+        background-color: #DC3545;
+        color: #ffffff;
       }
     </style>
   </head>
@@ -210,7 +221,7 @@
           <li><hr class="dropdown-divider" /></li>
 
           <li>
-            <a class="dropdown-item d-flex align-items-center gap-2 py-2 fw-bold text-success" href="/login">
+            <a class="merah d-flex align-items-center gap-2 py-2 fw-bold" href="/login">
               <i class="bi bi-box-arrow-right"></i> Keluar
             </a>
           </li>
@@ -268,11 +279,11 @@
         <i class="bi bi-caret-down-fill small"></i>
       </a>
       <div class="collapse ps-4" id="menuBuku">
-        <a class="nav-link rounded {{ $active == 'rakbuku' ? 'bg-success text-white' : 'text-muted' }}" href="/rakbuku">
-          <i class="bi bi-collection-fill me-2"></i> Rak Buku
-        </a>
         <a class="nav-link rounded {{ $active == 'veriv' ? 'bg-success text-white' : 'text-muted' }}" href="/bukuveriv">
           <i class="bi bi-clipboard2-check-fill me-2"></i> Verifikasi Peminjaman
+        </a>
+        <a class="nav-link rounded {{ $active == 'rakbuku' ? 'bg-success text-white' : 'text-muted' }}" href="/rakbuku">
+          <i class="bi bi-collection-fill me-2"></i> Rak Buku
         </a>
       </div>
     </div>
@@ -363,7 +374,7 @@
           <div class="modal-footer border-0">
             <button
               type="button"
-              class="btn btn-secondary"
+              class="btn btn-danger"
               data-bs-dismiss="modal"
             >
               Batal

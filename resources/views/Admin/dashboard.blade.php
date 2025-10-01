@@ -1,7 +1,7 @@
 @extends('template.app')
 
 @section("konten")
-<div class="container-fluid px-3" style="margin-top: -25px;">
+<div class="container-fluid px-3 pb-3" style="margin-top: -25px;">
     <!-- Judul Halaman -->
 <div class="d-flex align-items-center justify-content-between bg-white shadow-sm p-3 rounded mb-4">
     <div class="d-flex align-items-center">
@@ -12,6 +12,16 @@
         </div>
     </div>
 </div>
+
+    <!-- Separator Bulan -->
+    <div class="my-4">
+    <select id="TahunSelector" 
+        class="form-select fw-bold border-b-blue-400 shadow-sm w-100" 
+        style="font-size: 1rem; padding: 0.75rem 1rem; border-radius: 8px;">
+        <option value="2025" selected>2025</option>
+        <option value="2026">2026</option>
+    </select>
+    </div>
 
     <!-- Statistik Kartu -->
     <div class="row g-3">
@@ -60,18 +70,8 @@
         </div>
     </div>
 
-    <!-- Separator Bulan -->
-    <div class="my-4">
-    <select id="TahunSelector" 
-        class="form-select fw-bold border-b-blue-400 shadow-sm w-100" 
-        style="font-size: 1rem; padding: 0.75rem 1rem; border-radius: 8px;">
-        <option value="2025" selected>2025</option>
-        <option value="2026">2026</option>
-    </select>
-</div>
-
     <!-- Grafik Statistik -->
-    <div class="card shadow-sm border-0 mb-4">
+    <div class="card shadow-sm border-0 my-4">
         <div class="card-header bg-white border-bottom fw-bold">
             <i class="bi bi-graph-up-arrow me-1"></i> Statistik Peminjaman
         </div>
