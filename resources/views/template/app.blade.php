@@ -109,7 +109,8 @@
 
       .merah {
         color: #DC3545;
-        font-weight: bold;
+        font-weight: 500;
+        transition: background 0.2s ease, color 0.2s ease;
       }
       .merah:hover {
         background-color: #DC3545;
@@ -155,7 +156,7 @@
               </li>
               <li><hr class="dropdown-divider" /></li>
               <li>
-                <a class="merah d-flex align-items-center gap-2 py-2" href="/login">
+                <a class="merah d-flex align-items-center gap-2 py-2" style="padding-left: 17px; text-decoration: none;" href="/login">
                   <i class="bi bi-box-arrow-right"></i> Keluar
                 </a>
               </li>
