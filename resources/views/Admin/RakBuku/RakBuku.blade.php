@@ -72,9 +72,7 @@
     <option value="5">Status</option>
   </select>
 </div>
-
-
-      <!-- Table Responsive -->
+  <!-- Table Responsive -->
   <table class="table table-striped table-hover align-middle mb-0 table-bordered border-secondary-subtle">
     <thead class="table-primary text-center">
       <tr>
@@ -91,7 +89,7 @@
   @foreach ($buku as $item)
     <tr>
       <td>
-        <img src="{{ $item->foto }}" 
+        <img src="{{ asset('storage/' . $item->foto) }}" 
              class="rounded shadow-sm img-fluid" 
              alt="Foto Buku" 
              style="max-width: 100px;">

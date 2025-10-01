@@ -26,35 +26,36 @@ class BukuController extends Controller
         'foto' => 'required|image|mimes:jpg,jpeg,png|max:2048',
     ]);
 
-    $fotoUrl = null;
-
     if ($request->hasFile('foto')) {
         $file = $request->file('foto');
 
         // Nama file unik
         $fileName = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
 
-        // Upload ke Supabase dengan upsert=true
-        $response = Http::withHeaders([
-            'apikey' => config('services.supabase.key'),
-            'Authorization' => 'Bearer ' . config('services.supabase.key'),
-        ])->attach(
-            'file',
-            file_get_contents($file),
-            $fileName
-        )->post(
-            config('services.supabase.url') . "/storage/v1/object/" 
-            . config('services.supabase.bucket') 
-            . "/" . $fileName . "?upsert=true"
-        );
+         $path = $file->storeAs('uploads', $fileName, 'public');
+        //  dd($path);
 
-        if ($response->successful()) {
-            $fotoUrl = config('services.supabase.url') . "/storage/v1/object/public/"
-                . config('services.supabase.bucket') . "/" . $fileName;
-        } else {
-            // Debug kalau error
-            return back()->withErrors(['foto' => 'Upload gagal: ' . $response->body()]);
-        }
+        // Upload ke Supabase dengan upsert=true
+        // $response = Http::withHeaders([
+        //     'apikey' => config('services.supabase.key'),
+        //     'Authorization' => 'Bearer ' . config('services.supabase.key'),
+        // ])->attach(
+        //     'file',
+        //     file_get_contents($file),
+        //     $fileName
+        // )->post(
+        //     config('services.supabase.url') . "/storage/v1/object/" 
+        //     . config('services.supabase.bucket') 
+        //     . "/" . $fileName . "?upsert=true"
+        // );
+
+        // if ($response->successful()) {
+        //     $fotoUrl = config('services.supabase.url') . "/storage/v1/object/public/"
+        //         . config('services.supabase.bucket') . "/" . $fileName;
+        // } else {
+        //     // Debug kalau error
+        //     return back()->withErrors(['foto' => 'Upload gagal: ' . $response->body()]);
+        // }
     }
 
     Buku::create([
@@ -69,11 +70,12 @@ class BukuController extends Controller
         'namarak' => $request->namarak,
         'norak' => $request->norak,
         'status' => $request->status,
-        'foto' => $fotoUrl, // 🚀 sudah pasti link public supabase
+        'foto' => $path, // 🚀 sudah pasti link public supabase
     ]);
 
     return redirect()->route('rakbuku')->with('success', 'Buku berhasil ditambahkan!');
 }
+
 
 // RAK BUKU
 public function RakBuku()
@@ -81,10 +83,11 @@ public function RakBuku()
     // Ambil semua data buku dari database
     $buku = Buku::all();
 
-    // Kirim ke view
+
+       // Kirim ke view
     return view('admin.RakBuku.RakBuku', [
         "active" => "rakbuku",
-        "buku"   => $buku
+        "buku"   => $buku,
     ]);
 }
 

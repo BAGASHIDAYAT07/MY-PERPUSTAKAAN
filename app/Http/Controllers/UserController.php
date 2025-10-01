@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Pinjaman;
+use App\Models\Buku;
 
 class UserController extends Controller
 {
@@ -12,7 +13,8 @@ class UserController extends Controller
     }
 
     public function Buku(){
-        return view('admin.buku', ["active" => "buku"]);
+        $buku = Buku::where('status', 1)->get();
+        return view('admin.buku', ["active" => "buku", 'buku' => $buku]);
     }
 
     public function Favorit(){
