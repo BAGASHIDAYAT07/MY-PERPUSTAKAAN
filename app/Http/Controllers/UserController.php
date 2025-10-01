@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Pinjaman;
 
 class UserController extends Controller
 {
@@ -20,7 +21,13 @@ class UserController extends Controller
     public function Peminjaman(){
         return view("User.Peminjaman", ["active" => "Peminjaman"]);
     }
-    public function History(){
-        return view("User.History", ["active" => "History"]);
-    }
+    public function History()
+{
+    $histories = Pinjaman::with(['buku','user'])
+        ->orderBy('created_at','desc')
+        ->get();
+
+    return view('User.History', compact('histories'));
+}
+
 }
