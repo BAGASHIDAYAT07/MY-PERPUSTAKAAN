@@ -8,6 +8,8 @@ use App\Http\Controllers\ClientError;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\BukuController; // 🔑 jangan lupa import
 use App\Http\Controllers\VerivPinjamanAdminController;
+use App\Http\Controllers\ProfileController;
+
 
 // admin
 Route::get('/', [AdminController::class, 'Dashboard']);
@@ -53,3 +55,7 @@ Route::get('/History', [UserController::class, 'History'])->name('User.History')
 // user actions
 Route::post('/user/{id}/toggle-status', [AdminController::class, 'toggleStatus'])->name('user.toggle-status');
 Route::put('/user/{id}', [AdminController::class, 'update'])->name('user.update');
+
+
+//profil
+// Route::put('/profile/update', [ProfileController::class, 'update'])->name('profile.update');

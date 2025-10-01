@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Pinjaman;
+use App\Models\Buku;
 
 class UserController extends Controller
 {
@@ -16,11 +17,13 @@ class UserController extends Controller
     }
 
     public function Buku(){
+        $buku = Buku::where('status', 1)->get();
                 if (!Auth::check()) {
             session(['redirect_after_login' => url()->current()]);
             return redirect('/login');
         }
-        return view('admin.buku', ["active" => "buku"]);
+        return view('admin.buku', ["active" => "buku", 'buku' => $buku]);
+
     }
 
     public function Favorit(){
