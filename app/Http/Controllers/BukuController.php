@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use App\Models\Buku;
+use Illuminate\Support\Facades\Auth;
 
 class BukuController extends Controller
 {
@@ -78,6 +79,10 @@ class BukuController extends Controller
 // RAK BUKU
 public function RakBuku()
 {
+            if (!Auth::check()) {
+            session(['redirect_after_login' => url()->current()]);
+            return redirect('/login');
+        }
     // Ambil semua data buku dari database
     $buku = Buku::all();
 

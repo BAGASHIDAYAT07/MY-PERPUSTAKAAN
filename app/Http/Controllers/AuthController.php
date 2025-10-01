@@ -11,12 +11,23 @@ use Illuminate\Support\Facades\Auth;
 class AuthController extends Controller{
     
     public function ViewLogin(){
+        if (Auth::check()) {
+            session(['redirect_after_login' => url()->current()]);
+            return redirect('/');
+        }
         return view('login');
     }
 
     public function login(Request $request)
     {
         $user = User::where('email', $request->email)->first();
+
+
+        if($user==null){
+            return back()->withErrors([
+            'email' => 'Email tidak di temukan',
+        ])->onlyInput('email');
+        }
 
         if($user->status === 0){
             return back()->withErrors([
@@ -37,6 +48,11 @@ class AuthController extends Controller{
         return back()->withErrors([
             'email' => 'Email atau password salah.',
         ])->onlyInput('email');
+    }
+
+    public function logout(Request $request){
+        $request->session()->flush();
+        return redirect('/login');
     }
 
 

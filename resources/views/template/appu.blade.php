@@ -210,7 +210,7 @@
           <li><hr class="dropdown-divider" /></li>
 
           <li>
-            <a class="dropdown-item d-flex align-items-center gap-2 py-2 fw-bold text-success" href="/login">
+            <a class="dropdown-item d-flex align-items-center gap-2 py-2 fw-bold text-success" href="/logout">
               <i class="bi bi-box-arrow-right"></i> Keluar
             </a>
           </li>

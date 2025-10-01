@@ -6,23 +6,36 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash; // ✅ untuk hash password
 use Illuminate\Support\Facades\Http;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 class AdminController extends Controller
 {
     public function Dashboard()
     {
+        if (!Auth::check()) {
+            session(['redirect_after_login' => url()->current()]);
+            return redirect('/login');
+        }
         return view('admin.dashboard', ["active" => "dashboard"]);
     }
 
     // USER
     public function User()
     {
+                if (!Auth::check()) {
+            session(['redirect_after_login' => url()->current()]);
+            return redirect('/login');
+        }
         $user = User::all();
         return view('admin.user', ["active" => "user", "user" => $user]);
     }
 
     public function VerifikasiUser()
     {
+                if (!Auth::check()) {
+            session(['redirect_after_login' => url()->current()]);
+            return redirect('/login');
+        }
         return view('admin.user.VerifikasiUser', ["active" => "verifikasiuser"]);
     }
 

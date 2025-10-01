@@ -3,7 +3,7 @@
 @section("kontenU")
 
 <div class="container mt-4">
-    <h2 class="mb-4">📖 History Peminjaman</h2>
+    <h2 class="mb-4"><i class="bi bi-book"></i>History Peminjaman</h2>
 
     @if(session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>
@@ -14,7 +14,6 @@
             <table class="table table-bordered table-hover">
                 <thead class="table-dark">
                     <tr>
-                        <th>#</th>
                         <th>Judul Buku</th>
                         <th>Peminjam</th>
                         <th>Tanggal Pinjam</th>

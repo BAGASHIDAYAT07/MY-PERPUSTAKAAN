@@ -6,12 +6,17 @@ use App\Models\Pinjaman;
 use App\Models\Buku;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PinjamanController extends Controller
 {
     // Halaman daftar peminjaman
     public function index()
     {
+                if (!Auth::check()) {
+            session(['redirect_after_login' => url()->current()]);
+            return redirect('/login');
+        }
         $peminjamans = Pinjaman::with(['user', 'buku'])->latest()->paginate(10);
         return view("User.Peminjaman", [
             "active" => "Peminjaman",
