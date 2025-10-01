@@ -34,6 +34,7 @@ Route::get('/rakbuku', [BukuController::class, 'RakBuku'])->name('rakbuku');
 // auth
 Route::get('/register', [AuthController::class, 'ViewRegister']);
 Route::get('/login', [AuthController::class, 'ViewLogin']);
+Route::get('/logout', [AuthController::class, 'logout']);
 Route::post('/logins', [AuthController::class, 'login'])->name('login.post');
 
 
