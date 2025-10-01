@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="id">
   <head>
@@ -156,7 +157,7 @@
               </li>
               <li><hr class="dropdown-divider" /></li>
               <li>
-                <a class="merah d-flex align-items-center gap-2 py-2" style="padding-left: 17px; text-decoration: none;" href="/login">
+                <a class="merah d-flex align-items-center gap-2 py-2" style="padding-left: 17px; text-decoration: none;" href="/logout">
                   <i class="bi bi-box-arrow-right"></i> Keluar
                 </a>
               </li>
