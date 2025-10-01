@@ -18,16 +18,15 @@ class UserController extends Controller
     public function Favorit(){
         return view("User.Favorit", ["active" => "Favorit"]);
     }
-    public function Peminjaman(){
-        return view("User.Peminjaman", ["active" => "Peminjaman"]);
-    }
     public function History()
 {
     $histories = Pinjaman::with(['buku','user'])
         ->orderBy('created_at','desc')
         ->get();
 
-    return view('User.History', compact('histories'));
+    return view('User.History', compact('histories')
+        , ["active" => "History"]
+);
 }
 
 }

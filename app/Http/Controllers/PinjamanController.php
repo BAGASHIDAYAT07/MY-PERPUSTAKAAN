@@ -9,12 +9,17 @@ use Illuminate\Http\Request;
 
 class PinjamanController extends Controller
 {
+    // Halaman daftar peminjaman
     public function index()
     {
         $peminjamans = Pinjaman::with(['user', 'buku'])->latest()->paginate(10);
-        return view('user.peminjaman', compact('peminjamans'));
+        return view("User.Peminjaman", [
+            "active" => "Peminjaman",
+            "peminjamans" => $peminjamans
+        ]);
     }
 
+    // Form tambah peminjaman
     public function create()
     {
         $users = User::all();
@@ -22,6 +27,7 @@ class PinjamanController extends Controller
         return view('peminjaman.create', compact('users', 'bukus'));
     }
 
+    // Simpan data baru
     public function store(Request $request)
     {
         $request->validate([
@@ -35,14 +41,16 @@ class PinjamanController extends Controller
         return redirect()->route('peminjaman.index')->with('success', 'Peminjaman berhasil ditambahkan');
     }
 
-    public function edit(Pinjaman $pinjaman)
+    // Form edit peminjaman
+    public function edit(Pinjaman $peminjaman)
     {
         $users = User::all();
         $bukus = Buku::all();
         return view('peminjaman.update', compact('peminjaman', 'users', 'bukus'));
     }
 
-    public function update(Request $request, Pinjaman $pinjaman)
+    // Update data peminjaman
+    public function update(Request $request, Pinjaman $peminjaman)
     {
         $request->validate([
             'user_id' => 'required|exists:users,id',
@@ -52,14 +60,15 @@ class PinjamanController extends Controller
             'status' => 'required|in:dipinjam,dikembalikan',
         ]);
 
-        $pinjaman->update($request->all());
+        $peminjaman->update($request->all());
 
         return redirect()->route('peminjaman.index')->with('success', 'Peminjaman berhasil diperbarui');
     }
 
-    public function destroy(Pinjaman $pinjaman)
+    // Hapus data peminjaman
+    public function destroy(Pinjaman $peminjaman)
     {
-        $pinjaman->delete();
-        return redirect()->route('pinjaman.index')->with('success', 'Peminjaman berhasil dihapus');
+        $peminjaman->delete();
+        return redirect()->route('peminjaman.index')->with('success', 'Peminjaman berhasil dihapus');
     }
 }
