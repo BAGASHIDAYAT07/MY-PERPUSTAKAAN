@@ -238,19 +238,19 @@
   <!-- Menu -->
   <nav class="nav flex-column flex-grow-1">
 
-        <a class="nav-link d-flex align-items-center mb-2 fw-semibold rounded py-2 px-3 {{ $active == 'buku'  ? 'bg-success text-white' : 'text-muted' }}" href="/buku" data-load>
+        <a class="nav-link d-flex align-items-center mb-2 fw-semibold rounded py-2 px-3 {{ $active == 'buku'  ? 'bg-success text-white' : 'text-muted' }}" href="/buku">
           <i class="bi bi-journal-bookmark-fill me-2"></i> Buku
         </a>
 
-        <a class="nav-link d-flex align-items-center mb-2 fw-semibold rounded py-2 px-3 {{ $active == 'Favorit' ? 'bg-success text-white' : 'text-muted' }}" href="/Favorit" data-load>
+        <a class="nav-link d-flex align-items-center mb-2 fw-semibold rounded py-2 px-3 {{ $active == 'Favorit' ? 'bg-success text-white' : 'text-muted' }}" href="/Favorit">
           <i class="bi bi-heart me-2"></i> Favorit
         </a>
 
-        <a class="nav-link d-flex align-items-center mb-2 fw-semibold rounded py-2 px-3 {{ $active == 'Peminjaman' ? 'bg-success text-white' : 'text-muted' }}" href="/Peminjaman" data-load>
+        <a class="nav-link d-flex align-items-center mb-2 fw-semibold rounded py-2 px-3 {{ $active == 'Peminjaman' ? 'bg-success text-white' : 'text-muted' }}" href="/Peminjaman">
           <i class="bi bi-journal-arrow-down me-2"></i> Peminjaman
         </a>
 
-        <a class="nav-link d-flex align-items-center mb-2 fw-semibold rounded py-2 px-3 {{ $active == 'History' ? 'bg-success text-white' : 'text-muted' }}" href="/History" data-load>
+        <a class="nav-link d-flex align-items-center mb-2 fw-semibold rounded py-2 px-3 {{ $active == 'History' ? 'bg-success text-white' : 'text-muted' }}" href="/History">
           <i class="bi bi-clock-history me-2"></i> History
         </a>
 
@@ -390,63 +390,6 @@
           reader.readAsDataURL(input.files[0]);
         }
       }
-
-      document.querySelectorAll("a[data-load]").forEach(link => {
-    link.addEventListener("click", function(e) {
-      e.preventDefault();
-
-      let url = this.getAttribute("href");
-
-      // 🔹 hapus semua active dulu
-      document.querySelectorAll("#sidebar .nav-link").forEach(nav => {
-        nav.classList.remove("bg-success", "text-white");
-        nav.classList.add("text-muted");
-      });
-
-      // 🔹 kasih active ke link yang diklik
-      this.classList.add("bg-success", "text-white");
-      this.classList.remove("text-muted");
-
-      fetch(url)
-        .then(res => res.text())
-        .then(html => {
-          let parser = new DOMParser();
-          let doc = parser.parseFromString(html, "text/html");
-          let newContent = doc.querySelector("main")?.innerHTML;
-
-          if (newContent) {
-            document.getElementById("app-content").innerHTML = newContent;
-            history.pushState({}, "", url);
-          }
-        })
-        .catch(err => console.error("Gagal load:", err));
-    });
-  });
-
-  // 🔹 untuk tombol back/forward browser
-  window.addEventListener("popstate", () => {
-    fetch(location.href)
-      .then(res => res.text())
-      .then(html => {
-        let parser = new DOMParser();
-        let doc = parser.parseFromString(html, "text/html");
-        let newContent = doc.querySelector("main")?.innerHTML;
-        if (newContent) {
-          document.getElementById("app-content").innerHTML = newContent;
-        }
-
-        // update active sidebar sesuai URL
-        document.querySelectorAll("#sidebar .nav-link").forEach(nav => {
-          nav.classList.remove("bg-success", "text-white");
-          nav.classList.add("text-muted");
-
-          if (nav.getAttribute("href") === location.pathname) {
-            nav.classList.add("bg-success", "text-white");
-            nav.classList.remove("text-muted");
-          }
-        });
-      });
-  });
     </script>
   </body>
 </html>

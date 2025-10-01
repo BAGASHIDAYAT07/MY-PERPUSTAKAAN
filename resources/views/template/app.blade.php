@@ -3,31 +3,19 @@
   <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1, shrink-to-fit=no"
-    />
-    <title>Beranda - MY-PERPUSTAKAAN</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <title>{{ $title ?? 'Beranda' }} - MY-PERPUSTAKAAN</title>
 
     <!-- Styles -->
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
-    />
-    <link
-      href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css"
-      rel="stylesheet"
-    />
-    <link href="{{ asset('css/styles.css') }}" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"/>
+    <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet"/>
+    <link href="{{ asset('css/styles.css') }}" rel="stylesheet"/>
 
     <!-- Chart.js -->
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"
-      crossorigin="anonymous"
-    ></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
 
     <style>
-      @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+      @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
       body {
         background-color: #f5f9fc;
         margin: 0;
@@ -35,45 +23,33 @@
         font-family: "Poppins", sans-serif;
       }
 
-      /* Fixed Navbar */
+      /* Navbar */
       .navbar {
         position: fixed;
         top: 0;
-        left: 0;
+        left: 240px;
         right: 0;
         height: 70px;
-        z-index: 1000; /* lebih rendah dari sidebar */
-        border-radius: 0;
-        width: 100%;
-      }
-
-      /* Fix posisi dropdown user */
-      .navbar .nav-item.dropdown {
-        position: relative;
+        z-index: 1000;
+        width: calc(100% - 240px);
       }
 
       .navbar .dropdown-menu {
-        position: absolute;
-        top: 100% !important;
         right: 0;
         left: auto;
-        margin-top: 0.5rem;
       }
 
       /* Sidebar */
       #sidebar {
         position: fixed;
-        top: 0; /* mulai dari atas biar nutup navbar */
+        top: 0;
         left: 0;
         width: 240px;
         height: 100vh;
         background-color: #fff;
-        z-index: 1050; /* lebih tinggi dari navbar */
+        z-index: 1050;
         padding: 20px 15px;
-      }
-
-      #sidebar.hide {
-        transform: translateX(-250px); /* kalau disembunyikan */
+        overflow-y: auto;
       }
 
       #sidebar::-webkit-scrollbar {
@@ -81,74 +57,59 @@
       }
 
       #sidebar .nav-link {
-        color: #fff;
+        color: #212529;
         font-weight: 500;
-        margin: 5px 0;
         display: flex;
         align-items: center;
         gap: 8px;
-      }
-
-      /* Hover sidebar */
-      #sidebar .nav-link {
-        color: #212529; /* default teks hitam */
         transition: all 0.2s ease;
       }
 
       #sidebar .nav-link:hover {
-        background-color: #C3F4DD; /* hijau muda */
-        color: #0f5132; /* hijau tua */
+        background-color: #C3F4DD;
+        color: #0f5132;
         border-radius: 8px;
       }
 
       /* Main Content */
       #main-content {
-        margin-left: 215px; /* default geser karena sidebar tampil */
+        margin-left: 240px;
+        padding-top: 110px;
         transition: margin-left 0.3s ease-in-out;
       }
 
-      /* Mobile view */
+      /* Mobile View */
       @media (max-width: 767.98px) {
-      #sidebar {
-        transform: translateX(-250px); /* default sembunyi */
+        #sidebar {
+          transform: translateX(-250px);
+        }
+        #sidebar.show {
+          transform: translateX(0);
+        }
+        #main-content {
+          margin-left: 0 !important;
+        }
+        .logo-nav,
+        .brand-text,
+        .username-text {
+          display: none !important;
+        }
       }
 
-      #sidebar.show {
-        transform: translateX(0); /* tampil saat burger dipencet */
-      }
-
-      #main-content {
-        margin-left: 0 !important; /* konten full di mobile */
-      }
-
-      /* Sembunyikan logo, tulisan judul, dan username di mobile */
-      .logo-nav,
-      .brand-text,
-      .username-text {
-        display: none !important;
-      }
-    }
-
-      .dropdown-menu {
-        padding: 8px 0;
-        font-size: 15px;
-      }
-
+      /* Dropdown Menu */
       .dropdown-item {
-        transition: background 0.2s ease, color 0.2s ease;
         border-radius: 6px;
+        transition: background 0.2s ease, color 0.2s ease;
       }
 
       .dropdown-item:hover {
         background-color: #e6f4ea;
         color: #2e7d32;
       }
+
       .merah {
-        transition: background 0.2s ease, color 0.2s ease;
-        border-radius: 6px;
-        padding-left: 20px;
-        text-decoration: none;
         color: #DC3545;
+        font-weight: bold;
       }
       .merah:hover {
         background-color: #DC3545;
@@ -159,229 +120,138 @@
 
   <body>
     <!-- Navbar -->
-<nav class="navbar navbar-expand bg-white shadow-sm px-2"
-     style="height: 70px; position: fixed; top: 0; left: 240px; right: 0; width: calc(100% - 240px);">
-  <div class="container-fluid d-flex justify-content-between align-items-center">
+    <nav class="navbar navbar-expand bg-white shadow-sm px-1">
+      <div class="container-fluid d-flex justify-content-between align-items-center">
+        <!-- Judul Halaman -->
+        <div>
+          <h5 class="mb-0 text-dark fw-semibold">{{ $title ?? 'Dashboard' }}</h5>
+          <small class="text-success">{{ $subtitle ?? 'Dashboard' }}</small>
+        </div>
 
-    <!-- Kiri: Judul Halaman -->
-    <div>
-      <h5 class="mb-0 text-dark" style="font-weight: 600;">Dashboard</h5>
-      <small class="text-success">Dashboard</small>
-    </div>
+        <!-- Notifikasi + User -->
+        <div class="d-flex align-items-center">
+          <a href="#" class="text-dark me-4"><i class="bi bi-bell fs-5"></i></a>
 
-    <!-- Kanan: Notifikasi + User -->
-    <div class="d-flex align-items-center">
-      <!-- Ikon Notifikasi -->
-      <a href="#" class="text-dark me-4">
-        <i class="bi bi-bell fs-5"></i>
-      </a>
+          <!-- User Dropdown -->
+          <div class="dropdown">
+            <a class="d-flex align-items-center text-decoration-none" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <div class="text-end me-2">
+                <div class="fw-semibold text-dark">{{ auth()->user()->name ?? 'BangGazz' }}</div>
+                <small class="text-muted">{{ auth()->user()->role ?? 'Admin' }}</small>
+              </div>
+              <img src="{{ asset('img/photos/admin.jpg') }}" alt="User" class="rounded-circle" style="width: 38px; height: 38px; object-fit: cover; cursor: pointer;">
+            </a>
 
-      <!-- User Dropdown -->
-      <div class="dropdown">
-        <a class="d-flex align-items-center text-decoration-none" 
-           href="#" 
-           id="userDropdown" 
-           role="button" 
-           data-bs-toggle="dropdown" 
-           aria-expanded="false">
-          
-          <!-- Nama + Role -->
-          <div class="text-end me-2">
-            <div class="fw-semibold text-dark">BangGazz</div>
-            <small class="text-muted">Admin</small>
+            <ul class="dropdown-menu dropdown-menu-end shadow rounded-3 border-0" aria-labelledby="userDropdown" style="min-width: 200px;">
+              <li>
+                <a class="dropdown-item d-flex align-items-center gap-2 py-2" href="#" data-bs-toggle="modal" data-bs-target="#pengaturanModal">
+                  <i class="bi bi-gear text-success"></i> Pengaturan
+                </a>
+              </li>
+              <li>
+                <a class="dropdown-item d-flex align-items-center gap-2 py-2" href="#!">
+                  <i class="bi bi-clock-history text-success"></i> Riwayat Aktivitas
+                </a>
+              </li>
+              <li><hr class="dropdown-divider" /></li>
+              <li>
+                <a class="merah d-flex align-items-center gap-2 py-2" href="/login">
+                  <i class="bi bi-box-arrow-right"></i> Keluar
+                </a>
+              </li>
+            </ul>
           </div>
-
-          <!-- Foto Admin -->
-          <img src="../img/photos/admin.jpg"
-               alt="User"
-               class="rounded-circle"
-               style="width: 38px; height: 38px; object-fit: cover; cursor: pointer;">
-        </a>
-
-        <!-- Menu Dropdown -->
-        <ul class="dropdown-menu dropdown-menu-end shadow rounded-3 border-0" 
-            aria-labelledby="userDropdown" 
-            style="min-width: 200px;">
-          
-          <li>
-            <a class="dropdown-item d-flex align-items-center gap-2 py-2" 
-               href="#" 
-               data-bs-toggle="modal" 
-               data-bs-target="#pengaturanModal">
-              <i class="bi bi-gear text-success"></i> Pengaturan
-            </a>
-          </li>
-
-          <li>
-            <a class="dropdown-item d-flex align-items-center gap-2 py-2" href="#!">
-              <i class="bi bi-clock-history text-success"></i> Riwayat Aktivitas
-            </a>
-          </li>
-
-          <li><hr class="dropdown-divider" /></li>
-
-          <li>
-            <a class="merah d-flex align-items-center gap-2 py-2 fw-bold" href="/login">
-              <i class="bi bi-box-arrow-right"></i> Keluar
-            </a>
-          </li>
-        </ul>
+        </div>
       </div>
-    </div>
-  </div>
-</nav>
-
-
-
+    </nav>
 
     <!-- Sidebar -->
-<div id="sidebar" class="d-flex flex-column shadow-sm" 
-     style="width: 240px; height: 100vh; background-color: #fff; position: fixed; top: 0; left: 0; padding: 20px 15px; overflow-y: auto;">
-
-  <!-- Logo + Judul -->
-  <div class="text-center mb-4">
-    <img src="../img/logo/smk.png" alt="Logo" style="width: 60px;">
-    <h5 class="mt-4 fw-bold text-success" style="font-size: 19px;">MY PERPUSTAKAAN</h5>
-    <p class="text-muted small font" style="font-size: 12px; font-weight: 500;">Sistem Informasi Perpustakaan</p>
-  </div>
-
-
-  <!-- Menu -->
-  <nav class="nav flex-column flex-grow-1">
-
-    <!-- Dashboard -->
-    <a class="nav-link d-flex align-items-center mb-2 fw-semibold rounded py-2 px-3 {{ $active == 'dashboard' ? 'bg-success text-white' : 'text-muted' }}" href="/">
-      <i class="bi bi-grid-fill me-2"></i> Dashboard
-    </a>
-
-    <!-- User Dropdown -->
-    <div class="nav-item mb-2">
-      <a class="nav-link d-flex justify-content-between align-items-center text-muted fw-semibold px-3 py-2 rounded"
-         data-bs-toggle="collapse" href="#menuUser" role="button" aria-expanded="false">
-        <span><i class="bi bi-people-fill me-2"></i> User</span>
-        <i class="bi bi-caret-down-fill small"></i>
-      </a>
-      <div class="collapse ps-4" id="menuUser">
-        <a class="nav-link rounded {{ $active == 'user' ? 'bg-success text-white' : 'text-muted' }}" href="/user">
-          <i class="bi bi-person-fill-gear me-2"></i> Manajemen User
-        </a>
-        <a class="nav-link rounded {{ $active == 'verifikasiuser' ? 'bg-success text-white' : 'text-muted' }}" href="/VerifikasiUser">
-          <i class="bi bi-person-fill-check me-2"></i> Verifikasi User
-        </a>
+    <div id="sidebar" class="d-flex flex-column shadow-sm">
+      <div class="text-center mb-4">
+        <img src="{{ asset('img/logo/smk.png') }}" alt="Logo" style="width: 60px;">
+        <h5 class="mt-4 fw-bold text-success" style="font-size: 19px;">MY PERPUSTAKAAN</h5>
+        <p class="text-muted small" style="font-size: 12px; font-weight: 500;">Sistem Informasi Perpustakaan</p>
       </div>
+
+      <nav class="nav flex-column flex-grow-1">
+        <a class="nav-link mb-2 fw-semibold rounded py-2 px-3 {{ $active == 'dashboard' ? 'bg-success text-white' : 'text-muted' }}" href="/">
+          <i class="bi bi-grid-fill me-2"></i> Dashboard
+        </a>
+
+        <!-- User Dropdown -->
+        <div class="nav-item mb-2">
+          <a class="nav-link d-flex justify-content-between align-items-center text-muted fw-semibold px-3 py-2 rounded" data-bs-toggle="collapse" href="#menuUser" role="button" aria-expanded="false">
+            <span><i class="bi bi-people-fill me-2"></i> Kelola Siswa</span>
+            <i class="bi bi-caret-down-fill small"></i>
+          </a>
+          <div class="collapse ps-4" id="menuUser">
+            <a class="nav-link rounded {{ $active == 'user' ? 'bg-success text-white' : 'text-muted' }}" href="/user">
+              <i class="bi bi-person-fill-gear me-2"></i> Daftar Siswa
+            </a>
+            <a class="nav-link rounded {{ $active == 'verifikasiuser' ? 'bg-success text-white' : 'text-muted' }}" href="/VerifikasiUser">
+              <i class="bi bi-person-fill-check me-2"></i> Verifikasi Siswa
+            </a>
+          </div>
+        </div>
+
+        <!-- Buku Dropdown -->
+        <div class="nav-item mb-2">
+          <a class="nav-link d-flex justify-content-between align-items-center text-muted fw-semibold px-3 py-2 rounded" data-bs-toggle="collapse" href="#menuBuku" role="button" aria-expanded="false">
+            <span><i class="bi bi-journal-bookmark-fill me-2"></i> Kelola Buku</span>
+            <i class="bi bi-caret-down-fill small"></i>
+          </a>
+          <div class="collapse ps-4" id="menuBuku">
+            <a class="nav-link rounded {{ $active == 'veriv' ? 'bg-success text-white' : 'text-muted' }}" href="/bukuveriv">
+              <i class="bi bi-clipboard2-check-fill me-2"></i> Verifikasi Peminjaman
+            </a>
+            <a class="nav-link rounded {{ $active == 'rakbuku' ? 'bg-success text-white' : 'text-muted' }}" href="/rakbuku">
+              <i class="bi bi-collection-fill me-2"></i> Rak Buku
+            </a>
+          </div>
+        </div>
+
+        <a class="nav-link d-flex align-items-center text-muted fw-semibold px-3 py-2 rounded {{ $active == 'laporan' ? 'bg-success text-white' : 'text-muted' }}" href="/laporan">
+          <i class="bi bi-file-earmark-text-fill me-2"></i> Laporan
+        </a>
+      </nav>
     </div>
 
-    <!-- Buku Dropdown -->
-    <div class="nav-item mb-2">
-      <a class="nav-link d-flex justify-content-between align-items-center text-muted fw-semibold px-3 py-2 rounded"
-         data-bs-toggle="collapse" href="#menuBuku" role="button" aria-expanded="false">
-        <span><i class="bi bi-journal-bookmark-fill me-2"></i> Buku</span>
-        <i class="bi bi-caret-down-fill small"></i>
-      </a>
-      <div class="collapse ps-4" id="menuBuku">
-        <a class="nav-link rounded {{ $active == 'veriv' ? 'bg-success text-white' : 'text-muted' }}" href="/bukuveriv">
-          <i class="bi bi-clipboard2-check-fill me-2"></i> Verifikasi Peminjaman
-        </a>
-        <a class="nav-link rounded {{ $active == 'rakbuku' ? 'bg-success text-white' : 'text-muted' }}" href="/rakbuku">
-          <i class="bi bi-collection-fill me-2"></i> Rak Buku
-        </a>
-      </div>
+    <!-- Main Content -->
+    <div id="main-content">
+      <main>@yield("konten")</main>
     </div>
-
-    <!-- Laporan -->
-    <a class="nav-link d-flex align-items-center text-muted fw-semibold px-3 py-2 rounded {{ $active == 'laporan' ? 'bg-success text-white' : 'text-dark' }}" href="/laporan">
-      <i class="bi bi-file-earmark-text-fill me-2"></i> Laporan
-    </a>
-  </nav>
-</div>
-
-<!-- Main Content -->
-<div id="main-content" style="padding-left: 25px; padding-top:107px;">
-  <main id="app-content">@yield("konten")</main>
-</div>
-
 
     <!-- Modal Pengaturan -->
-    <div
-      class="modal fade"
-      id="pengaturanModal"
-      tabindex="-1"
-      aria-labelledby="pengaturanModalLabel"
-      aria-hidden="true"
-    >
+    <div class="modal fade" id="pengaturanModal" tabindex="-1" aria-labelledby="pengaturanModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content border-0 shadow-lg rounded-4">
           <div class="modal-header bg-success text-white rounded-top-4">
-            <h5 class="modal-title fw-bold" id="pengaturanModalLabel">
-              <i class="bi bi-gear me-2"></i> Pengaturan Profil
-            </h5>
-            <button
-              type="button"
-              class="btn-close btn-close-white"
-              data-bs-dismiss="modal"
-              aria-label="Close"
-            ></button>
+            <h5 class="modal-title fw-bold" id="pengaturanModalLabel"><i class="bi bi-gear me-2"></i> Pengaturan Profil</h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
           </div>
           <div class="modal-body p-4">
             <form>
-              <!-- Upload Foto Profil -->
               <div class="mb-4 text-center">
-                <img
-                  id="previewFoto"
-                  src="../img/photos/user.jpg"
-                  alt="Foto Profil"
-                  class="rounded-circle mb-3"
-                  style="width: 100px; height: 100px; object-fit: cover; border: 3px solid #3b8763;"
-                />
-                <div>
-                  <input
-                    type="file"
-                    class="form-control d-inline-block"
-                    style="max-width: 300px;"
-                    accept="image/*"
-                    onchange="previewImage(event)"
-                  />
-                </div>
+                <img id="previewFoto" src="{{ asset('img/photos/user.jpg') }}" alt="Foto Profil" class="rounded-circle mb-3" style="width: 100px; height: 100px; object-fit: cover; border: 3px solid #3b8763;"/>
+                <input type="file" class="form-control d-inline-block mt-2" style="max-width: 300px;" accept="image/*" onchange="previewImage(event)"/>
               </div>
-
-              <!-- Nama Lengkap -->
               <div class="mb-3">
                 <label class="form-label fw-semibold">Nama Lengkap</label>
-                <input type="text" class="form-control" value="Admin" />
+                <input type="text" class="form-control" value="{{ auth()->user()->name ?? 'Admin' }}"/>
               </div>
-
-              <!-- Email -->
               <div class="mb-3">
                 <label class="form-label fw-semibold">Email</label>
-                <input
-                  type="email"
-                  class="form-control"
-                  value="admin@contoh.com"
-                />
+                <input type="email" class="form-control" value="{{ auth()->user()->email ?? 'admin@contoh.com' }}"/>
               </div>
-
-              <!-- Password -->
               <div class="mb-3">
                 <label class="form-label fw-semibold">Password Baru</label>
-                <input
-                  type="password"
-                  class="form-control"
-                  placeholder="••••••••"
-                />
+                <input type="password" class="form-control" placeholder="••••••••"/>
               </div>
             </form>
           </div>
           <div class="modal-footer border-0">
-            <button
-              type="button"
-              class="btn btn-danger"
-              data-bs-dismiss="modal"
-            >
-              Batal
-            </button>
-            <button type="button" class="btn btn-success">
-              Simpan Perubahan
-            </button>
+            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Batal</button>
+            <button type="button" class="btn btn-success">Simpan Perubahan</button>
           </div>
         </div>
       </div>
@@ -389,20 +259,15 @@
 
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js"></script>
     <script src="{{ asset('js/datatables-simple-demo.js') }}"></script>
-
     <script>
-      // Preview Foto Profil
       function previewImage(event) {
         const input = event.target;
         const preview = document.getElementById("previewFoto");
         if (input.files && input.files[0]) {
           const reader = new FileReader();
-          reader.onload = function (e) {
-            preview.src = e.target.result;
-          };
+          reader.onload = e => preview.src = e.target.result;
           reader.readAsDataURL(input.files[0]);
         }
       }
