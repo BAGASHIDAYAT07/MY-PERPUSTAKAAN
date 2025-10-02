@@ -100,11 +100,11 @@
         <div class="modal-body">
           <div class="row">
             <!-- Foto Buku -->
-            <div class="col-md-4 text-center mb-3">
+            <div class="col-md-4 text-center mb-1">
               <img src="{{ asset('storage/' . $item->foto) }}" 
                    class="rounded shadow img-fluid" 
                    alt="Foto Buku" 
-                   style="max-height: 250px; object-fit: cover;">
+                   style="width: 550px; object-fit: cover;">
             </div>
 
             <!-- Detail Buku -->
@@ -133,7 +133,7 @@
         </div>
 
         <div class="modal-footer">
-          <button class="btn btn-secondary" data-bs-dismiss="modal">
+          <button class="btn btn-danger" data-bs-dismiss="modal">
             <i class="bi bi-x-circle"></i> Tutup
           </button>
         </div>

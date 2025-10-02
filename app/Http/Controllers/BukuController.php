@@ -7,13 +7,27 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use App\Models\Buku;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
 
 class BukuController extends Controller
 {
-    public function tambahbuku(Request $request)
+
+public function tambahbuku(Request $request)
 {
     $request->validate([
-        'judul' => 'required|string|max:255',
+        'judul' => [
+            'required',
+            'string',
+            'max:255',
+            Rule::unique('bukus')->where(function ($query) use ($request) {
+                return $query->where('JenisBuku', $request->JenisBuku)
+                             ->where('Penerbit', $request->Penerbit)
+                             ->where('Pencipta', $request->Pencipta)
+                             ->where('TahunTerbit', $request->TahunTerbit)
+                             ->where('namarak', $request->namarak)
+                             ->where('norak', $request->norak);
+            }),
+        ],
         'deskripsi' => 'required|string|max:255',
         'JenisBuku' => 'required|string|max:255',
         'Penerbit' => 'required|string|max:255',
@@ -25,38 +39,14 @@ class BukuController extends Controller
         'norak' => 'required|string|max:255',
         'status' => 'required|boolean',
         'foto' => 'required|image|mimes:jpg,jpeg,png|max:2048',
+    ], [
+        'judul.unique' => 'Kombinasi data buku (judul, jenis buku, penerbit, pencipta, tahun terbit, rak) sudah ada.',
     ]);
 
     if ($request->hasFile('foto')) {
         $file = $request->file('foto');
-
-        // Nama file unik
         $fileName = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
-
-         $path = $file->storeAs('uploads', $fileName, 'public');
-        //  dd($path);
-
-        // Upload ke Supabase dengan upsert=true
-        // $response = Http::withHeaders([
-        //     'apikey' => config('services.supabase.key'),
-        //     'Authorization' => 'Bearer ' . config('services.supabase.key'),
-        // ])->attach(
-        //     'file',
-        //     file_get_contents($file),
-        //     $fileName
-        // )->post(
-        //     config('services.supabase.url') . "/storage/v1/object/" 
-        //     . config('services.supabase.bucket') 
-        //     . "/" . $fileName . "?upsert=true"
-        // );
-
-        // if ($response->successful()) {
-        //     $fotoUrl = config('services.supabase.url') . "/storage/v1/object/public/"
-        //         . config('services.supabase.bucket') . "/" . $fileName;
-        // } else {
-        //     // Debug kalau error
-        //     return back()->withErrors(['foto' => 'Upload gagal: ' . $response->body()]);
-        // }
+        $path = $file->storeAs('uploads', $fileName, 'public');
     }
 
     Buku::create([
@@ -71,7 +61,7 @@ class BukuController extends Controller
         'namarak' => $request->namarak,
         'norak' => $request->norak,
         'status' => $request->status,
-        'foto' => $path, // 🚀 sudah pasti link public supabase
+        'foto' => $path,
     ]);
 
     return redirect()->route('rakbuku')->with('success', 'Buku berhasil ditambahkan!');

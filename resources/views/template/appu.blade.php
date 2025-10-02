@@ -176,13 +176,13 @@
           
           <!-- Nama + Role -->
           <div class="text-end me-2">
-            <div class="fw-semibold text-dark">BangNino</div>
-            <small class="text-muted">User</small>
+            <div class="fw-semibold text-dark">{{ Auth::user()->name }}</div>
+            <small class="text-muted">{{ Auth::user()->role }}</small>
           </div>
 
           <!-- Foto Admin -->
-          <img src="../img/photos/user.jpg"
-               alt="User"
+          <img src="{{ asset('img/photos/' . (Auth::user()->foto ?? 'default.png')) }}"
+               alt="{{ Auth::user()->name }}"
                class="rounded-circle"
                style="width: 38px; height: 38px; object-fit: cover; cursor: pointer;">
         </a>
@@ -242,10 +242,6 @@
           <i class="bi bi-journal-bookmark-fill me-2"></i> Buku
         </a>
 
-        <a class="nav-link d-flex align-items-center mb-2 fw-semibold rounded py-2 px-3 {{ $active == 'Favorit' ? 'bg-success text-white' : 'text-muted' }}" href="/Favorit">
-          <i class="bi bi-heart me-2"></i> Favorit
-        </a>
-
         <a class="nav-link d-flex align-items-center mb-2 fw-semibold rounded py-2 px-3 {{ $active == 'Peminjaman' ? 'bg-success text-white' : 'text-muted' }}" href="/Peminjaman">
           <i class="bi bi-journal-arrow-down me-2"></i> Peminjaman
         </a>
@@ -254,9 +250,6 @@
           <i class="bi bi-clock-history me-2"></i> History
         </a>
 
-        <a class="nav-link d-flex align-items-center mb-2 fw-semibold rounded py-2 px-3" href="/help">
-          <i class="bi bi-question-circle me-2"></i> Help
-        </a>
   </nav>
 </div>
 
@@ -288,66 +281,53 @@
             ></button>
           </div>
           <div class="modal-body p-4">
-            <form>
-              <!-- Upload Foto Profil -->
-              <div class="mb-4 text-center">
-                <img
-                  id="previewFoto"
-                  src="../img/photos/user.jpg"
-                  alt="Foto Profil"
-                  class="rounded-circle mb-3"
-                  style="width: 100px; height: 100px; object-fit: cover; border: 3px solid #3b8763;"
-                />
-                <div>
-                  <input
-                    type="file"
-                    class="form-control d-inline-block"
-                    style="max-width: 300px;"
-                    accept="image/*"
-                    onchange="previewImage(event)"
-                  />
-                </div>
-              </div>
+            <form action="{{ route('profile.update') }}" method="POST" enctype="multipart/form-data">
+  @csrf
 
-              <!-- Nama Lengkap -->
-              <div class="mb-3">
-                <label class="form-label fw-semibold">Nama Lengkap</label>
-                <input type="text" class="form-control" value="Admin" />
-              </div>
+  <!-- Upload Foto Profil -->
+  <div class="mb-4 text-center">
+    <img
+      id="previewFoto"
+      src="{{ asset('storage/users/' . Auth::user()->foto) }}"
+      alt="Foto Profil"
+      class="rounded-circle mb-3"
+      style="width: 100px; height: 100px; object-fit: cover; border: 3px solid #3b8763;"
+    />
+    <div>
+      <input
+        type="file"
+        name="foto"
+        class="form-control d-inline-block"
+        style="max-width: 300px;"
+        accept="image/*"
+        onchange="previewImage(event)"
+      />
+    </div>
+  </div>
 
-              <!-- Email -->
-              <div class="mb-3">
-                <label class="form-label fw-semibold">Email</label>
-                <input
-                  type="email"
-                  class="form-control"
-                  value="admin@contoh.com"
-                />
-              </div>
+  <!-- Nama Lengkap -->
+  <div class="mb-3">
+    <label class="form-label fw-semibold">Nama Lengkap</label>
+    <input type="text" name="nama" class="form-control" value="{{ Auth::user()->name }}" />
+  </div>
 
-              <!-- Password -->
-              <div class="mb-3">
-                <label class="form-label fw-semibold">Password Baru</label>
-                <input
-                  type="password"
-                  class="form-control"
-                  placeholder="••••••••"
-                />
-              </div>
-            </form>
-          </div>
-          <div class="modal-footer border-0">
-            <button
-              type="button"
-              class="btn btn-secondary"
-              data-bs-dismiss="modal"
-            >
-              Batal
-            </button>
-            <button type="button" class="btn btn-success">
-              Simpan Perubahan
-            </button>
-          </div>
+  <!-- Email -->
+  <div class="mb-3">
+    <label class="form-label fw-semibold">Email</label>
+    <input type="email" name="email" class="form-control" value="{{ Auth::user()->email }}" />
+  </div>
+
+  <!-- Password -->
+  <div class="mb-3">
+    <label class="form-label fw-semibold">Password Baru</label>
+    <input type="password" name="password" class="form-control" placeholder="Kosongkan jika tidak diubah" />
+  </div>
+
+  <div class="modal-footer border-0">
+    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+    <button type="submit" class="btn btn-success">Simpan Perubahan</button>
+  </div>
+</form>
         </div>
       </div>
     </div>
@@ -378,18 +358,14 @@
       });
     }
 
-      // Preview Foto Profil
-      function previewImage(event) {
-        const input = event.target;
-        const preview = document.getElementById("previewFoto");
-        if (input.files && input.files[0]) {
-          const reader = new FileReader();
-          reader.onload = function (e) {
-            preview.src = e.target.result;
-          };
-          reader.readAsDataURL(input.files[0]);
-        }
-      }
+  function previewImage(event) {
+    let reader = new FileReader();
+    reader.onload = function () {
+      document.getElementById("previewFoto").src = reader.result;
+    };
+    reader.readAsDataURL(event.target.files[0]);
+  }
+
     </script>
   </body>
 </html>
