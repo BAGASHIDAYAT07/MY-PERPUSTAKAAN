@@ -211,10 +211,6 @@
             </a>
           </div>
         </div>
-
-        <a class="nav-link d-flex align-items-center text-muted fw-semibold px-3 py-2 rounded {{ $active == 'laporan' ? 'bg-success text-white' : 'text-muted' }}" href="/laporan">
-          <i class="bi bi-file-earmark-text-fill me-2"></i> Laporan
-        </a>
       </nav>
     </div>
 

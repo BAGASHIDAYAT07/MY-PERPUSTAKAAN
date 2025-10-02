@@ -40,9 +40,15 @@ class AuthController extends Controller{
         ]);
 
         if (Auth::attempt($credentials)) {
-            $request->session()->regenerate();
-            return redirect()->intended('/')
-                             ->with('success', 'Berhasil login');
+            session(['role' => $user->role]);
+            session(['id' => $user->id]);
+            if($user->role == 'admin'){
+                return redirect()->intended('/')
+                                 ->with('success', 'Berhasil login');
+            } else {
+                return redirect()->intended('/buku')
+                                 ->with('success', 'Berhasil login');
+            }
         }
 
         return back()->withErrors([
