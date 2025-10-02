@@ -132,16 +132,21 @@
 
         <!-- Notifikasi + User -->
         <div class="d-flex align-items-center">
-          <a href="#" class="text-dark me-4"><i class="bi bi-bell fs-5"></i></a>
 
           <!-- User Dropdown -->
           <div class="dropdown">
             <a class="d-flex align-items-center text-decoration-none" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
               <div class="text-end me-2">
-                <div class="fw-semibold text-dark">{{ auth()->user()->name ?? 'BangGazz' }}</div>
-                <small class="text-muted">{{ auth()->user()->role ?? 'Admin' }}</small>
+                <div class="fw-semibold text-dark">{{ Auth::user()->name }}</div>
+                <small class="text-muted">{{ Auth::user()->role }}</small>
               </div>
-              <img src="{{ asset('img/photos/admin.jpg') }}" alt="User" class="rounded-circle" style="width: 38px; height: 38px; object-fit: cover; cursor: pointer;">
+              <img src="{{ Auth::user()->foto != 'default.jpeg'
+            ? asset('storage/' . Auth::user()->foto) 
+            : asset('img/photos/'. Auth::user()->foto) }}"
+               alt="{{ Auth::user()->name }}"
+               class="rounded-circle"
+               style="width: 38px; height: 38px; object-fit: cover; cursor: pointer;">
+               </a>
             </a>
 
             <ul class="dropdown-menu dropdown-menu-end shadow rounded-3 border-0" aria-labelledby="userDropdown" style="min-width: 200px;">
@@ -228,29 +233,56 @@
             <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
           </div>
           <div class="modal-body p-4">
-            <form>
-              <div class="mb-4 text-center">
-                <img id="previewFoto" src="{{ asset('img/photos/user.jpg') }}" alt="Foto Profil" class="rounded-circle mb-3" style="width: 100px; height: 100px; object-fit: cover; border: 3px solid #3b8763;"/>
-                <input type="file" class="form-control d-inline-block mt-2" style="max-width: 300px;" accept="image/*" onchange="previewImage(event)"/>
-              </div>
-              <div class="mb-3">
-                <label class="form-label fw-semibold">Nama Lengkap</label>
-                <input type="text" class="form-control" value="{{ auth()->user()->name ?? 'Admin' }}"/>
-              </div>
-              <div class="mb-3">
-                <label class="form-label fw-semibold">Email</label>
-                <input type="email" class="form-control" value="{{ auth()->user()->email ?? 'admin@contoh.com' }}"/>
-              </div>
-              <div class="mb-3">
-                <label class="form-label fw-semibold">Password Baru</label>
-                <input type="password" class="form-control" placeholder="••••••••"/>
-              </div>
-            </form>
-          </div>
-          <div class="modal-footer border-0">
-            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Batal</button>
-            <button type="button" class="btn btn-success">Simpan Perubahan</button>
-          </div>
+            <form action="{{ route('profile.update') }}" method="POST" enctype="multipart/form-data">
+  @csrf
+
+  <!-- Upload Foto Profil -->
+  <div class="mb-4 text-center">
+    <img
+      id="previewFoto"
+      src="{{ Auth::user()->foto != 'default.jpeg'
+            ? asset('storage/' . Auth::user()->foto) 
+            : asset('img/photos/'. Auth::user()->foto) }}"
+      alt="Foto Profil"
+      class="rounded-circle mb-3"
+      style="width: 100px; height: 100px; object-fit: cover; border: 3px solid #3b8763;"
+    />
+    <div>
+      <input
+        type="file"
+        name="foto"
+        class="form-control d-inline-block"
+        style="max-width: 300px;"
+        accept="image/*"
+        onchange="previewImage(event)"
+      />
+    </div>
+  </div>
+
+  <!-- Nama Lengkap -->
+  <div class="mb-3">
+    <label class="form-label fw-semibold">Nama Lengkap</label>
+    <input type="text" name="nama" class="form-control" value="{{ Auth::user()->name }}" />
+  </div>
+
+  <!-- Email -->
+  <div class="mb-3">
+    <label class="form-label fw-semibold">Email</label>
+    <input type="email" name="email" class="form-control" value="{{ Auth::user()->email }}" />
+  </div>
+
+  <!-- Password -->
+  <div class="mb-3">
+    <label class="form-label fw-semibold">Password Baru</label>
+    <input type="password" name="password" class="form-control" placeholder="Kosongkan jika tidak diubah" />
+  </div>
+
+  <div class="modal-footer border-0">
+    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+    <button type="submit" class="btn btn-success">Simpan Perubahan</button>
+  </div>
+</form>
+        </div>
         </div>
       </div>
     </div>
@@ -261,14 +293,12 @@
     <script src="{{ asset('js/datatables-simple-demo.js') }}"></script>
     <script>
       function previewImage(event) {
-        const input = event.target;
-        const preview = document.getElementById("previewFoto");
-        if (input.files && input.files[0]) {
-          const reader = new FileReader();
-          reader.onload = e => preview.src = e.target.result;
-          reader.readAsDataURL(input.files[0]);
-        }
-      }
+    let reader = new FileReader();
+    reader.onload = function () {
+      document.getElementById("previewFoto").src = reader.result;
+    };
+    reader.readAsDataURL(event.target.files[0]);
+  }
     </script>
   </body>
 </html>

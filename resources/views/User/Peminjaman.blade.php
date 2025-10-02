@@ -1,4 +1,4 @@
-@extends('template.app')
+@extends('template.appu')
 
 @section("kontenU")
 <div class="container">

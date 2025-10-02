@@ -160,10 +160,6 @@
 
     <!-- Kanan: Notifikasi + User -->
     <div class="d-flex align-items-center">
-      <!-- Ikon Notifikasi -->
-      <a href="#" class="text-dark me-4">
-        <i class="bi bi-bell fs-5"></i>
-      </a>
 
       <!-- User Dropdown -->
       <div class="dropdown">
@@ -181,7 +177,9 @@
           </div>
 
           <!-- Foto Admin -->
-          <img src="{{ asset('img/photos/' . (Auth::user()->foto ?? 'default.png')) }}"
+          <img src="{{ Auth::user()->foto != 'default.jpeg'
+            ? asset('storage/' . Auth::user()->foto) 
+            : asset('img/photos/'. Auth::user()->foto) }}"
                alt="{{ Auth::user()->name }}"
                class="rounded-circle"
                style="width: 38px; height: 38px; object-fit: cover; cursor: pointer;">
@@ -242,7 +240,7 @@
           <i class="bi bi-journal-bookmark-fill me-2"></i> Buku
         </a>
 
-        <a class="nav-link d-flex align-items-center mb-2 fw-semibold rounded py-2 px-3 {{ $active == 'Peminjaman' ? 'bg-success text-white' : 'text-muted' }}" href="/Peminjaman">
+        <a class="nav-link d-flex align-items-center mb-2 fw-semibold rounded py-2 px-3 {{ $active == 'Peminjaman' ? 'bg-success text-white' : 'text-muted' }}" href="/pinjaman">
           <i class="bi bi-journal-arrow-down me-2"></i> Peminjaman
         </a>
 
@@ -288,7 +286,9 @@
   <div class="mb-4 text-center">
     <img
       id="previewFoto"
-      src="{{ asset('storage/users/' . Auth::user()->foto) }}"
+      src="{{ Auth::user()->foto != 'default.jpeg'
+            ? asset('storage/' . Auth::user()->foto) 
+            : asset('img/photos/'. Auth::user()->foto) }}"
       alt="Foto Profil"
       class="rounded-circle mb-3"
       style="width: 100px; height: 100px; object-fit: cover; border: 3px solid #3b8763;"

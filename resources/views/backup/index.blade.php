@@ -1,6 +1,6 @@
-@extends('template.app')
+@extends('template.appu')
 
-@section("konten")
+@section("kontenU")
 <div class="container">
     <h1>Daftar Peminjaman</h1>
     <a href="{{ route('peminjaman.create') }}" class="btn btn-primary mb-3">Tambah Peminjaman</a>
@@ -12,7 +12,7 @@
     <table class="table table-bordered">
         <thead>
             <tr>
-                <th>User</th>
+                <th>halo dunia</th>
                 <th>Buku</th>
                 <th>Tanggal Pinjam</th>
                 <th>Tanggal Kembali</th>
