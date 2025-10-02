@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Auth;
 class PinjamanController extends Controller
 {
     // Halaman daftar peminjaman
-    public function index()
+    public function pinjamanUser()
     {
                 if (!Auth::check()) {
             session(['redirect_after_login' => url()->current()]);
@@ -29,7 +29,11 @@ class PinjamanController extends Controller
     {
         $users = User::all();
         $bukus = Buku::all();
-        return view('peminjaman.create', compact('users', 'bukus'));
+        return view('peminjaman.create', [
+        "active" => "rakbuku",
+        "users" => $users,
+        "bukus" => $bukus
+    ]);
     }
 
     // Simpan data baru
@@ -51,7 +55,10 @@ class PinjamanController extends Controller
     {
         $users = User::all();
         $bukus = Buku::all();
-        return view('peminjaman.update', compact('peminjaman', 'users', 'bukus'));
+        return view('peminjaman.update', [
+        "active" => "rakbuku",
+        
+    ]);
     }
 
     // Update data peminjaman
@@ -67,13 +74,13 @@ class PinjamanController extends Controller
 
         $peminjaman->update($request->all());
 
-        return redirect()->route('peminjaman.index')->with('success', 'Peminjaman berhasil diperbarui');
+        return redirect()->route('User.Peminjaman')->with('success', 'Peminjaman berhasil diperbarui');
     }
 
     // Hapus data peminjaman
     public function destroy(Pinjaman $peminjaman)
     {
         $peminjaman->delete();
-        return redirect()->route('peminjaman.index')->with('success', 'Peminjaman berhasil dihapus');
+        return redirect()->route('User.Peminjaman')->with('success', 'Peminjaman berhasil dihapus');
     }
 }

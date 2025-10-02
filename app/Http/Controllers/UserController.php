@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Pinjaman;
 use App\Models\Buku;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {

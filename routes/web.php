@@ -39,9 +39,9 @@ Route::post('/logins', [AuthController::class, 'login'])->name('login.post');
 
 
 //pinjaman
-Route::get('/pinjaman',[PinjamanController::class, 'index']);
-Route::get('/peminjaman/create', [PinjamanController::class, 'create'])->name('peminjaman.create' );
-Route::get('/pinjaman_update/{id}',[PinjamanController::class, 'edit']);
+Route::get('/pinjaman',[PinjamanController::class, 'pinjamanUser'])->name('User.Peminjaman');
+Route::post('/peminjaman/create', [PinjamanController::class, 'create'])->name('peminjaman.create' );
+Route::put('/pinjaman_update/{id}',[PinjamanController::class, 'edit']);
 Route::get('/bukuveriv',[VerivPinjamanAdminController::class, 'veriv']);
 
 // untuk user

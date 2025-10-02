@@ -1,4 +1,4 @@
-@extends('template.app')
+@extends('template.appu')
 
 @section("kontenU")
 <div class="container">
@@ -14,6 +14,7 @@
             <tr>
                 <th>User</th>
                 <th>Buku</th>
+                <th>Jenis Buku</th>
                 <th>Tanggal Pinjam</th>
                 <th>Tanggal Kembali</th>
                 <th>Status</th>
@@ -21,27 +22,23 @@
             </tr>
         </thead>
         <tbody>
-            @forelse($peminjamans as $peminjaman)
-                <tr>
-                    <td>{{ $peminjaman->user->name }}</td>
-                    <td>{{ $peminjaman->buku->judul }}</td>
-                    <td>{{ $peminjaman->tanggal_pinjam }}</td>
-                    <td>{{ $peminjaman->tanggal_kembali ?? '-' }}</td>
-                    <td>{{ ucfirst($peminjaman->status) }}</td>
-                    <td>
-                        <a href="{{ route('peminjaman.edit', $peminjaman) }}" class="btn btn-warning btn-sm">Edit</a>
-                        <form action="{{ route('peminjaman.destroy', $peminjaman) }}" method="POST" class="d-inline">
-                            @csrf
-                            @method('DELETE')
-                            <button onclick="return confirm('Yakin ingin hapus?')" class="btn btn-danger btn-sm">Hapus</button>
-                        </form>
-                    </td>
-                </tr>
-            @empty
-                <tr>
-                    <td colspan="6" class="text-center">Belum ada data peminjaman</td>
-                </tr>
-            @endforelse
+            @foreach($peminjamans as $peminjaman)
+            <tr>
+                <td>{{ $peminjaman->user->name }}</td>
+                <td>{{ $peminjaman->buku->judul }}</td>
+                <td>{{ $peminjaman->tanggal_pinjam }}</td>
+                <td>{{ $peminjaman->tanggal_kembali ?? '-' }}</td>
+                <td>{{ ucfirst($peminjaman->status) }}</td>
+                <td>
+                    <a href="{{ route('peminjaman.edit', $peminjaman) }}" class="btn btn-warning btn-sm">Edit</a>
+                    <form action="{{ route('peminjaman.destroy', $peminjaman) }}" method="POST" class="d-inline">
+                        @csrf
+                        @method('DELETE')
+                        <button onclick="return confirm('Yakin ingin hapus?')" class="btn btn-danger btn-sm">Hapus</button>
+                    </form>
+                </td>
+            </tr>
+            @endforeach
         </tbody>
     </table>
 
