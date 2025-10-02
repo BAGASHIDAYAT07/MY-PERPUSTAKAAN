@@ -26,7 +26,7 @@ class ProfileController extends Controller
         $user->email = $request->email;
 
         // Update password kalau diisi
-        if ($request->filled('password')) {
+        if ($request->filled('password')) { 
             $user->password = Hash::make($request->password);
         }
 

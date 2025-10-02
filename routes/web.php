@@ -47,7 +47,6 @@ Route::get('/bukuveriv',[VerivPinjamanAdminController::class, 'veriv']);
 // untuk user
 Route::get('/Home',[UserController::class, 'Home']);
 Route::get('/Favorit',[UserController::class, 'Favorit']);
-Route::resource('peminjaman', PinjamanController::class);
 Route::get('/pinjaman_detail',[PinjamanController::class, 'detail']);
 Route::get('/History', [UserController::class, 'History'])->name('User.History');
 

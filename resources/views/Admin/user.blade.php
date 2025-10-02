@@ -91,7 +91,9 @@
               <tr>
                   <td>{{ $loop->iteration }}</td>
                   <td class="text-start">
-                      <img src="{{ asset('img/photos/' . ($u->foto ?? 'default.jpeg')) }}" 
+                      <img src="{{ $u->foto != 'default.jpeg'
+            ? asset('storage/' .  $u->foto) 
+            : asset('img/photos/'. $u->foto) }}" 
                           class="rounded-circle me-2" width="32" height="32">
                       {{ $u->name }}
                   </td>
@@ -140,7 +142,9 @@
                     </div>
                     <div class="modal-body">
                       <div class="text-center mb-3">
-                        <img src="{{ asset('img/photos/' . ($u->foto ?? 'default.jpeg')) }}" 
+                        <img src="{{ $u->foto != 'default.jpeg'
+            ? asset('storage/' .  $u->foto) 
+            : asset('img/photos/'. $u->foto) }}" 
                             class="rounded-circle mb-2" width="80" height="80">
                         <h5 class="mb-0">{{ $u->name }}</h5>
                         <small class="text-muted">{{ $u->NIS }}</small>
