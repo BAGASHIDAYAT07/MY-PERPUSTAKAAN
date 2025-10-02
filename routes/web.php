@@ -59,3 +59,5 @@ Route::put('/user/{id}', [AdminController::class, 'update'])->name('user.update'
 
 //profil
 // Route::put('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
+Route::post('/profile/update', [App\Http\Controllers\ProfileController::class, 'update'])
+    ->name('profile.update');

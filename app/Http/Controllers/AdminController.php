@@ -16,6 +16,10 @@ class AdminController extends Controller
             session(['redirect_after_login' => url()->current()]);
             return redirect('/login');
         }
+        $ses = session()->all();
+        if($ses['role'] != 'admin'){
+            return redirect('/buku');
+        } 
         return view('admin.dashboard', ["active" => "dashboard"]);
     }
 
