@@ -26,9 +26,13 @@ class AdminController extends Controller
     // USER
     public function User()
     {
-                if (!Auth::check()) {
+            if (!Auth::check()) {
             session(['redirect_after_login' => url()->current()]);
             return redirect('/login');
+        }
+        $ses = session()->all();
+        if($ses['role'] != 'admin'){
+            return redirect('/buku');
         }
         $user = User::all();
         return view('admin.user', ["active" => "user", "user" => $user]);
@@ -36,9 +40,13 @@ class AdminController extends Controller
 
     public function VerifikasiUser()
     {
-                if (!Auth::check()) {
+             if (!Auth::check()) {
             session(['redirect_after_login' => url()->current()]);
             return redirect('/login');
+        }
+        $ses = session()->all();
+        if($ses['role'] != 'admin'){
+            return redirect('/buku');
         }
         return view('admin.user.VerifikasiUser', ["active" => "verifikasiuser"]);
     }
