@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Pinjaman;
+use App\Models\Peminjamans;
 use App\Models\Buku;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -17,7 +17,7 @@ class PinjamanController extends Controller
             session(['redirect_after_login' => url()->current()]);
             return redirect('/login');
         }
-        $peminjamans = Pinjaman::with(['user', 'buku'])->latest()->paginate(10);
+        $peminjamans = Peminjamans::with(['user', 'buku'])->latest()->paginate(10);
         return view("User.Peminjaman", [
             "active" => "Peminjaman",
             "peminjamans" => $peminjamans
@@ -45,13 +45,13 @@ class PinjamanController extends Controller
             'tanggal_pinjam' => 'required|date',
         ]);
 
-        Pinjaman::create($request->all());
+        Peminjamans::create($request->all());
 
-        return redirect()->route('peminjaman.index')->with('success', 'Peminjaman berhasil ditambahkan');
+        return redirect()->route('User.Peminjaman')->with('success', 'Peminjaman berhasil ditambahkan');
     }
 
     // Form edit peminjaman
-    public function edit(Pinjaman $peminjaman)
+    public function edit(Peminjamans $peminjaman)
     {
         $users = User::all();
         $bukus = Buku::all();
@@ -62,7 +62,7 @@ class PinjamanController extends Controller
     }
 
     // Update data peminjaman
-    public function update(Request $request, Pinjaman $peminjaman)
+    public function update(Request $request, Peminjamans $peminjaman)
     {
         $request->validate([
             'user_id' => 'required|exists:users,id',
@@ -78,7 +78,7 @@ class PinjamanController extends Controller
     }
 
     // Hapus data peminjaman
-    public function destroy(Pinjaman $peminjaman)
+    public function destroy(Peminjamans $peminjaman)
     {
         $peminjaman->delete();
         return redirect()->route('User.Peminjaman')->with('success', 'Peminjaman berhasil dihapus');
