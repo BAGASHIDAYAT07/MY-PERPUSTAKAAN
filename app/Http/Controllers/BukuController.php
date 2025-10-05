@@ -75,6 +75,10 @@ public function RakBuku()
             session(['redirect_after_login' => url()->current()]);
             return redirect('/login');
         }
+        $ses = session()->all();
+        if($ses['role'] != 'admin'){
+            return redirect('/buku');
+        }
     // Ambil semua data buku dari database
     $buku = Buku::all();
 

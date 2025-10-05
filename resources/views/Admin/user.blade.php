@@ -7,17 +7,17 @@
     <div class="d-flex align-items-center">
       <i class="bi bi-people text-primary fs-1 me-3"></i>
       <div>
-        <h3 class="fw-bold mb-0">Manajemen User</h3>
-        <small class="text-muted">Kelola akun pengguna & status keanggotaan</small>
+        <h3 class="fw-bold mb-0">Manajemen Siswa</h3>
+        <small class="text-muted">Kelola Akun Siswa & status keanggotaan</small>
       </div>
     </div>
   </div>
 
   <!-- Header Aksi -->
   <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2">
-    <h5 class="fw-semibold text-secondary mb-0">Daftar User</h5>
+    <h5 class="fw-semibold text-secondary mb-0">Daftar Siswa</h5>
     <button class="btn btn-success shadow-sm" data-bs-toggle="modal" data-bs-target="#tambahUserModal">
-      <i class="bi bi-plus-circle me-1"></i> Tambah User
+      <i class="bi bi-plus-circle me-1"></i> Tambah Siswa
     </button>
   </div>
 

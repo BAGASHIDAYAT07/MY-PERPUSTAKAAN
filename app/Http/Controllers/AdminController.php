@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash; // ✅ untuk hash password
 use Illuminate\Support\Facades\Http;
 use App\Models\User;
+use App\Models\Buku;
 use Illuminate\Support\Facades\Auth;
 
 class AdminController extends Controller
@@ -20,15 +21,22 @@ class AdminController extends Controller
         if($ses['role'] != 'admin'){
             return redirect('/buku');
         } 
-        return view('admin.dashboard', ["active" => "dashboard"]);
+        $jumlahUser = User::count();
+        $jumlahBuku = Buku::count();
+
+        return view('admin.dashboard', ["active" => "dashboard"], compact('jumlahUser', 'jumlahBuku'));
     }
 
     // USER
     public function User()
     {
-                if (!Auth::check()) {
+            if (!Auth::check()) {
             session(['redirect_after_login' => url()->current()]);
             return redirect('/login');
+        }
+        $ses = session()->all();
+        if($ses['role'] != 'admin'){
+            return redirect('/buku');
         }
         $user = User::all();
         return view('admin.user', ["active" => "user", "user" => $user]);
@@ -36,9 +44,13 @@ class AdminController extends Controller
 
     public function VerifikasiUser()
     {
-                if (!Auth::check()) {
+             if (!Auth::check()) {
             session(['redirect_after_login' => url()->current()]);
             return redirect('/login');
+        }
+        $ses = session()->all();
+        if($ses['role'] != 'admin'){
+            return redirect('/buku');
         }
         return view('admin.user.VerifikasiUser', ["active" => "verifikasiuser"]);
     }

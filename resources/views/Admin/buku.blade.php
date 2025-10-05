@@ -20,7 +20,7 @@
       <span class="input-group-text bg-white border-end-0">
         <i class="bi bi-search text-muted"></i>
       </span>
-      <input type="search" id="searchInput" class="form-control border-start-0" placeholder="Cari buku...">
+      <input type="search" id="searchInput" class="form-control border-start-0 p-2" placeholder="Cari buku...">
     </div>
   </div>
 

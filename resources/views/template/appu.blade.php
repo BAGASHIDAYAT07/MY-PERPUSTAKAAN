@@ -143,6 +143,16 @@
         background-color: #e6f4ea;
         color: #2e7d32;
       }
+
+      .merah {
+        color: #DC3545;
+        font-weight: 500;
+        transition: background 0.2s ease, color 0.2s ease;
+      }
+      .merah:hover {
+        background-color: #DC3545;
+        color: #ffffff;
+      }
     </style>
   </head>
 
@@ -208,7 +218,7 @@
           <li><hr class="dropdown-divider" /></li>
 
           <li>
-            <a class="dropdown-item d-flex align-items-center gap-2 py-2 fw-bold text-success" href="/logout">
+            <a class="merah d-flex align-items-center gap-2 py-2 fw-bold" style="padding-left: 17px; text-decoration: none;" href="/logout">
               <i class="bi bi-box-arrow-right"></i> Keluar
             </a>
           </li>
@@ -315,6 +325,12 @@
   <div class="mb-3">
     <label class="form-label fw-semibold">Email</label>
     <input type="email" name="email" class="form-control" value="{{ Auth::user()->email }}" />
+  </div>
+
+  <!-- NIs -->
+  <div class="mb-3">
+    <label class="form-label fw-semibold">Nis</label>
+    <input type="text" name="nis" class="form-control" value="{{ Auth::user()->NIS }}" />
   </div>
 
   <!-- Password -->
