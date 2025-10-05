@@ -1,10 +1,10 @@
-@extends('template.app')
+@extends('template.appu')
 
-@section("konten")
+@section("kontenU")
 <div class="container">
     <h1>Tambah Peminjaman</h1>
 
-    <form action="{{ route('peminjaman.store') }}" method="POST">
+    <form action="{{ route('User.Peminjaman') }}" method="POST">
         @csrf
 
         <div class="mb-3">
@@ -35,8 +35,24 @@
             @error('tanggal_pinjam') <div class="text-danger">{{ $message }}</div> @enderror
         </div>
 
+        <div class="mb-3">
+            <label for="tanggal_kembali" class="form-label">Tanggal Kembali</label>
+            <input type="date" name="tanggal_kembali" id="tanggal_kembali" class="form-control" required>
+            @error('tanggal_kembali') <div class="text-danger">{{ $message }}</div> @enderror
+        </div>
+
+        <!-- <div class="mb-3">
+            <label for="status" class="form-label">Status</label>
+            <select name="status" id="status" class="form-select" required>
+                <option value="">-- Pilih Status --</option>
+                <option value="Dipinjam">Dipinjam</option>
+                <option value="Kembali">Kembali</option>
+            </select>
+            @error('status') <div class="text-danger">{{ $message }}</div> @enderror
+        </div> -->
+
         <button type="submit" class="btn btn-success">Simpan</button>
-        <a href="{{ route('peminjaman.index') }}" class="btn btn-secondary">Kembali</a>
+        <a href="{{ route('User.Peminjaman') }}" class="btn btn-secondary">Kembali</a>
     </form>
 </div>
 @endsection
