@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash; // ✅ untuk hash password
 use Illuminate\Support\Facades\Http;
 use App\Models\User;
+use App\Models\Buku;
 use Illuminate\Support\Facades\Auth;
 
 class AdminController extends Controller
@@ -20,7 +21,10 @@ class AdminController extends Controller
         if($ses['role'] != 'admin'){
             return redirect('/buku');
         } 
-        return view('admin.dashboard', ["active" => "dashboard"]);
+        $jumlahUser = User::count();
+        $jumlahBuku = Buku::count();
+
+        return view('admin.dashboard', ["active" => "dashboard"], compact('jumlahUser', 'jumlahBuku'));
     }
 
     // USER

@@ -31,15 +31,15 @@
     <div class="d-flex align-items-center">
       <i class="bi bi-people text-primary fs-1 me-3"></i>
       <div>
-        <h3 class="fw-bold mb-0">Verifikasi User</h3>
-        <small class="text-muted">Kelola verifikasi akun pengguna baru</small>
+        <h3 class="fw-bold mb-0">Verifikasi Siswa</h3>
+        <small class="text-muted">Kelola verifikasi akun Siswa baru</small>
       </div>
     </div>
   </div>
 
   <!-- Header Aksi -->
   <div class="d-flex justify-content-between align-items-center mb-3">
-    <h5 class="fw-semibold text-secondary mb-0">Daftar Pengguna</h5>
+    <h5 class="fw-semibold text-secondary mb-0">Daftar Akun Siswa</h5>
   </div>
 
   <!-- Card Table -->

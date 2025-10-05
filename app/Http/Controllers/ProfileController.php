@@ -17,6 +17,7 @@ class ProfileController extends Controller
         $request->validate([
             'nama' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email,' . $user->id,
+            'nis' => 'required|string|max:255',
             'password' => 'nullable|min:6',
             'foto' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
@@ -24,6 +25,7 @@ class ProfileController extends Controller
         // Update nama & email
         $user->name = $request->nama;
         $user->email = $request->email;
+        $user->nis = $request->nis;
 
         // Update password kalau diisi
         if ($request->filled('password')) { 
