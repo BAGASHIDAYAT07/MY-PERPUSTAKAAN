@@ -7,9 +7,21 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
 
+  <!-- AOS ANIMATED -->
+   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
   <style>
+    html, body {
+    height: 100%;
+    margin: 0;
+    overflow: hidden; /* cegah scroll */
+    }
     body {
       background-color: #f5f6f7;
+    }
+    .vh-100 {
+    height: 100vh !important;
+    overflow: hidden;
     }
     .register-card {
       max-width: 850px;
@@ -33,14 +45,15 @@
       text-align: center;
     }
     .register-right img.logo {
-      width: 80px;
+      width: 70px;
       margin-bottom: 15px;
     }
     .register-right h3 {
+      font-size: 1.4rem;
       margin-bottom: 5px;
     }
     .register-right h6 {
-      font-weight: 600;
+      font-weight: 500;
       margin-bottom: 30px;
       line-height: 1.5;
       font-size: 0.95rem;
@@ -108,7 +121,7 @@
   </style>
 </head>
 <body>
-  <div class="d-flex justify-content-center align-items-center min-vh-100 p-3">
+  <div class="d-flex justify-content-center align-items-center min-vh-100 p-3" data-aos="fade-up">
     <div class="card register-card">
       <div class="row g-0">
         
@@ -123,56 +136,57 @@
           <h3>Selamat Datang</h3>
           <h6>Buat akun baru untuk My-perpustakaan</h6>
 
-          <form class="w-100">
-            <div class="row">
-              <div class="col-md-6">
-                <div class="input-group">
-                  <input type="text" class="form-control" placeholder="Masukkan Nama" required>
-                  <span class="input-group-text"><i class="bi bi-person"></i></span>
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="input-group">
-                  <input type="email" class="form-control" placeholder="Masukkan Email" required>
-                  <span class="input-group-text"><i class="bi bi-envelope"></i></span>
-                </div>
-              </div>
-            </div>
+          <form class="w-100" method="POST" action="{{ url('/register') }}">
+  @csrf
 
-            <div class="row">
-              <div class="col-md-6">
-                <div class="input-group">
-                  <input type="password" class="form-control" id="passwordInput" placeholder="Masukkan Password" required>
-                  <button class="input-group-text" type="button" id="togglePassword">
-                    <i class="bi bi-eye-slash" id="toggleIcon"></i>
-                  </button>
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="input-group">
-                  <input type="text" class="form-control" placeholder="Masukkan NIS" required>
-                  <span class="input-group-text"><i class="bi bi-card-text"></i></span>
-                </div>
-              </div>
-            </div>
+  <div class="row">
+    <div class="col-md-6">
+      <div class="input-group">
+        <input type="text" name="name" class="form-control" placeholder="Masukkan Nama" required>
+        <span class="input-group-text"><i class="bi bi-person"></i></span>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="input-group">
+        <input type="email" name="email" class="form-control" placeholder="Masukkan Email" required>
+        <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+      </div>
+    </div>
+  </div>
 
-            <!-- Select tanpa icon -->
-            <select class="form-select w-100">
-              <option selected disabled>Pilih jenis kelamin</option>
-              <option value="Laki-laki">Laki-laki</option>
-              <option value="Perempuan">Perempuan</option>
-            </select>
+  <div class="row">
+    <div class="col-md-6">
+      <div class="input-group">
+        <input type="password" name="password" class="form-control" id="passwordInput" placeholder="Masukkan Password" required>
+        <button class="input-group-text" type="button" id="togglePassword">
+          <i class="bi bi-eye-slash" id="toggleIcon"></i>
+        </button>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="input-group">
+        <input type="text" name="NIS" class="form-control" placeholder="Masukkan NIS" required>
+        <span class="input-group-text"><i class="bi bi-card-text"></i></span>
+      </div>
+    </div>
+  </div>
 
-            <button type="submit" class="btn btn-register w-100">Daftar</button>
+  <select class="form-select w-100" name="jenisKelamin" required>
+    <option selected disabled>Pilih jenis kelamin</option>
+    <option value="Laki-laki">Laki-laki</option>
+    <option value="Perempuan">Perempuan</option>
+  </select>
 
-            <!-- Teks bawah button -->
-            <p class="mt-3 mb-0 text-center">
-              Sudah punya akun? 
-              <a href="/login" class="text-decoration-none" style="color: #8cc84b; font-weight: 600;">
-                Login
-              </a>
-            </p>
-          </form>
+  <button type="submit" class="btn btn-register w-100">Daftar</button>
+
+  <p class="mt-3 mb-0 text-center">
+    Sudah punya akun? 
+    <a href="/login" class="text-decoration-none" style="color: #8cc84b; font-weight: 600;">
+      Login
+    </a>
+  </p>
+</form>
+
         </div>
 
       </div>
@@ -181,6 +195,7 @@
 
   <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
   <script>
     // Toggle password
     const togglePassword = document.querySelector("#togglePassword");
@@ -192,6 +207,13 @@
       passwordInput.setAttribute("type", type);
       toggleIcon.classList.toggle("bi-eye");
       toggleIcon.classList.toggle("bi-eye-slash");
+    });
+
+
+    // Inisialisasi AOS
+    AOS.init({
+      duration: 800,
+      once: true
     });
   </script>
 </body>

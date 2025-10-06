@@ -9,6 +9,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\BukuController; // 🔑 jangan lupa import
 use App\Http\Controllers\VerivPinjamanAdminController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\VerivUserAdminController;
 
 
 // admin
@@ -20,7 +21,12 @@ Route::post('/user/post', [AdminController::class, 'UserCreates'])->name('user.p
 //user
 Route::get('/usecreate', [AdminController::class, 'Usecreate']);
 Route::get('/useupdate', [AdminController::class, 'UserUpdate']);
-Route::get('/VerifikasiUser', [AdminController::class,'VerifikasiUser']);
+
+//Verifikasi User
+// Route::get('/VerifikasiUser', [AdminController::class,'VerifikasiUser']);
+Route::get('/verifikasiuser', [VerivUserAdminController::class, 'index'])->name('verifikasi.index');
+Route::post('/verifikasiuser/terima/{id}', [VerivUserAdminController::class, 'terima'])->name('verifikasi.terima');
+Route::delete('/verifikasiuser/tolak/{id}', [VerivUserAdminController::class, 'tolak'])->name('verifikasi.tolak');
 
 // buku (pindahkan ke BukuController)
 Route::post('/buku/tambah', [BukuController::class, 'tambahbuku'])->name('buku.tambahbuku');
@@ -33,6 +39,7 @@ Route::get('/rakbuku', [BukuController::class, 'RakBuku'])->name('rakbuku');
 
 // auth
 Route::get('/register', [AuthController::class, 'ViewRegister']);
+Route::post('/register', [AuthController::class, 'register']);
 Route::get('/login', [AuthController::class, 'ViewLogin']);
 Route::get('/logout', [AuthController::class, 'logout']);
 Route::post('/logins', [AuthController::class, 'login'])->name('login.post');

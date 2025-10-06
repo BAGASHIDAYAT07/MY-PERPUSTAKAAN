@@ -192,10 +192,10 @@
             <i class="bi bi-caret-down-fill small"></i>
           </a>
           <div class="collapse ps-4" id="menuUser">
-            <a class="nav-link rounded {{ $active == 'user' ? 'bg-success text-white' : 'text-muted' }}" href="/user">
+            <a class="nav-link rounded my-1 {{ $active == 'user' ? 'bg-success text-white' : 'text-muted' }}" href="/user">
               <i class="bi bi-person-fill-gear me-2"></i> Daftar Siswa
             </a>
-            <a class="nav-link rounded {{ $active == 'verifikasiuser' ? 'bg-success text-white' : 'text-muted' }}" href="/VerifikasiUser">
+            <a class="nav-link rounded {{ $active == 'verifikasiuser' ? 'bg-success text-white' : 'text-muted' }}" href="/verifikasiuser">
               <i class="bi bi-person-fill-check me-2"></i> Verifikasi Siswa
             </a>
           </div>
@@ -208,11 +208,11 @@
             <i class="bi bi-caret-down-fill small"></i>
           </a>
           <div class="collapse ps-4" id="menuBuku">
-            <a class="nav-link rounded {{ $active == 'veriv' ? 'bg-success text-white' : 'text-muted' }}" href="/bukuveriv">
+            <a class="nav-link rounded my-1 {{ $active == 'veriv' ? 'bg-success text-white' : 'text-muted' }}" href="/bukuveriv">
               <i class="bi bi-clipboard2-check-fill me-2"></i> Verifikasi Peminjaman
             </a>
             <a class="nav-link rounded {{ $active == 'rakbuku' ? 'bg-success text-white' : 'text-muted' }}" href="/rakbuku">
-              <i class="bi bi-collection-fill me-2"></i> Rak Buku
+              <i class="bi bi-collection-fill me-2"></i> Daftar Buku
             </a>
           </div>
         </div>

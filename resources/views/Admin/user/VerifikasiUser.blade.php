@@ -42,6 +42,31 @@
     <h5 class="fw-semibold text-secondary mb-0">Daftar Akun Siswa</h5>
   </div>
 
+  {{-- ✅ Pesan Validasi --}}
+    @if ($errors->any())
+      <div class="alert alert-danger">
+        <ul class="mb-0">
+          @foreach ($errors->all() as $error)
+            <li>{{ $error }}</li>
+          @endforeach
+        </ul>
+      </div>
+    @endif
+
+    {{-- ✅ Pesan Sukses --}}
+    @if (session('success'))
+      <div class="alert alert-success">
+        {{ session('success') }}
+      </div>
+    @endif
+
+    {{-- ✅ Pesan Error Umum --}}
+    @if (session('error'))
+      <div class="alert alert-danger">
+        {{ session('error') }}
+      </div>
+    @endif
+
   <!-- Card Table -->
   <div class="card shadow-sm border-0">
     <div class="card-body">
@@ -61,16 +86,15 @@
     <option value="1">Email</option>
     <option value="2">NIS</option>
     <option value="3">Jenis Kelamin</option>
-    <option value="4">Status</option>
   </select>
 </div>
-
 
       <!-- Table -->
       <div class="table-wrapper">
         <table class="table table-striped table-hover align-middle mb-0 table-bordered border-secondary-subtle">
           <thead class="table-primary text-center">
             <tr>
+              <th>No</th>
               <th>Nama</th>
               <th>Email</th>
               <th>NIS</th>
@@ -80,116 +104,68 @@
             </tr>
           </thead>
           <tbody class="text-center">
+  @foreach ($users as $user)
+    <tr>
+      <td>{{ $loop->iteration }}</td>
+      <td class="text-start">
+        <img src="{{ $user->foto != 'default.jpeg'
+            ? asset('storage/' .  $user->foto) 
+            : asset('img/photos/'. $user->foto) }}" 
+             class="rounded-circle me-2" width="32" height="32">
+        {{ $user->name }}
+      </td>
+      <td>{{ $user->email }}</td>
+      <td>{{ $user->NIS }}</td>
+      <td>{{ $user->jenisKelamin }}</td>
+      <td>
+        @if ($user->veriv == 0)
+          <span class="status-badge status-menunggu">
+            <i class="bi bi-clock me-1"></i> Menunggu
+          </span>
+        @elseif ($user->veriv == 1)
+          <span class="status-badge status-disetujui">
+            <i class="bi bi-check2-circle me-1"></i> Disetujui
+          </span>
+        @endif
+      </td>
+      <td>
+        <div class="dropdown">
+          <button class="btn btn-sm btn-light border" data-bs-toggle="dropdown">
+            <i class="bi bi-three-dots-vertical"></i>
+          </button>
+          <ul class="dropdown-menu">
+            <li>
+              <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#detailUserModal{{ $user->id }}">
+                <i class="bi bi-eye me-2"></i> Lihat Detail
+              </a>
+            </li>
 
-            <!-- User Belum Diverifikasi -->
-            <tr>
-              <td class="text-start">
-                <img src="https://ui-avatars.com/api/?name=Enggal" class="rounded-circle me-2" width="32" height="32">
-                Enggal
-              </td>
-              <td>enggal.@email.com</td>
-              <td>USR002</td>
-              <td>Laki-laki</td>
-              <td>
-                <span class="status-badge status-menunggu">
-                  <i class="bi bi-clock me-1"></i> Menunggu
-                </span>
-              </td>
-              <td>
-                <div class="dropdown">
-                  <button class="btn btn-sm btn-light border" data-bs-toggle="dropdown">
-                    <i class="bi bi-three-dots-vertical"></i>
+            @if ($user->veriv == 0)
+              <li>
+                <form action="{{ route('verifikasi.terima', $user->id) }}" method="POST">
+                  @csrf
+                  <button type="submit" class="dropdown-item text-success">
+                    <i class="bi bi-check2-circle me-2"></i> Setujui
                   </button>
-                  <ul class="dropdown-menu">
-                    <li>
-                      <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#detailUserModal">
-                        <i class="bi bi-eye me-2"></i> Lihat Detail
-                      </a>
-                    </li>
-                    <li>
-                      <a class="dropdown-item text-success" href="#">
-                        <i class="bi bi-check2-circle me-2"></i> Setujui
-                      </a>
-                    </li>
-                    <li>
-                      <a class="dropdown-item text-danger" href="#">
-                        <i class="bi bi-x-circle me-2"></i> Tolak
-                      </a>
-                    </li>
-                  </ul>
-                </div>
-              </td>
-            </tr>
-
-            <!-- User Ditolak -->
-            <tr>
-              <td class="text-start">
-                <img src="https://ui-avatars.com/api/?name=Bagas" class="rounded-circle me-2" width="32" height="32">
-                Bagas
-              </td>
-              <td>bagas.@email.com</td>
-              <td>USR001</td>
-              <td>Laki-laki</td>
-              <td>
-                <span class="status-badge status-ditolak">
-                  <i class="bi bi-x-circle me-1"></i> Ditolak
-                </span>
-              </td>
-              <td>
-                <div class="dropdown">
-                  <button class="btn btn-sm btn-light border" data-bs-toggle="dropdown">
-                    <i class="bi bi-three-dots-vertical"></i>
+                </form>
+              </li>
+              <li>
+                <form action="{{ route('verifikasi.tolak', $user->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menolak akun ini?')">
+                  @csrf
+                  @method('DELETE')
+                  <button type="submit" class="dropdown-item text-danger">
+                    <i class="bi bi-x-circle me-2"></i> Tolak
                   </button>
-                  <ul class="dropdown-menu">
-                    <li>
-                      <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#detailUserModal">
-                        <i class="bi bi-eye me-2"></i> Lihat Detail
-                      </a>
-                    </li>
-                  </ul>
-                </div>
-              </td>
-            </tr>
+                </form>
+              </li>
+            @endif
+          </ul>
+        </div>
+      </td>
+    </tr>
 
-            <!-- User Disetujui -->
-            <tr>
-              <td class="text-start">
-                <img src="https://ui-avatars.com/api/?name=Anto" class="rounded-circle me-2" width="32" height="32">
-                Anto
-              </td>
-              <td>anto.@email.com</td>
-              <td>USR003</td>
-              <td>Laki-laki</td>
-              <td>
-                <span class="status-badge status-disetujui">
-                  <i class="bi bi-check2-circle me-1"></i> Disetujui
-                </span>
-              </td>
-              <td>
-                <div class="dropdown">
-                  <button class="btn btn-sm btn-light border" data-bs-toggle="dropdown">
-                    <i class="bi bi-three-dots-vertical"></i>
-                  </button>
-                  <ul class="dropdown-menu">
-                    <li>
-                      <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#detailUserModal">
-                        <i class="bi bi-eye me-2"></i> Lihat Detail
-                      </a>
-                    </li>
-                  </ul>
-                </div>
-              </td>
-            </tr>
-
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Modal Detail User -->
-<div class="modal fade" id="detailUserModal" tabindex="-1">
+    <!-- Modal Detail User -->
+<div class="modal fade" id="detailUserModal{{ $user->id }}" tabindex="-1">
   <div class="modal-dialog modal-md modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
@@ -200,7 +176,9 @@
       </div>
       <div class="modal-body">
         <div class="text-center mb-3">
-          <img src="https://ui-avatars.com/api/?name=User+Demo" class="rounded-circle shadow" alt="Foto User" style="width: 100px; height: 100px;">
+          <img src="{{ $user->foto != 'default.jpeg'
+            ? asset('storage/' .  $user->foto) 
+            : asset('img/photos/'. $user->foto) }}" class="rounded-circle shadow" alt="Foto User" style="width: 100px; height: 100px;">
         </div>
         <ul class="list-group list-group-flush">
           <li class="list-group-item"><b>Nama:</b> Enggal</li>
@@ -211,7 +189,18 @@
         </ul>
       </div>
       <div class="modal-footer">
-        <button class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+        <button class="btn btn-danger" data-bs-dismiss="modal">Tutup</button>
+      </div>
+    </div>
+  </div>
+</div>
+  @endforeach
+</tbody>
+
+        </table>
+      </div>
+      <div class="mt-3 d-flex justify-content-end mx-3">
+       {{ $users->links('pagination::bootstrap-5') }}
       </div>
     </div>
   </div>

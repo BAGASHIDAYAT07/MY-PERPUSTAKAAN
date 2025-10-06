@@ -8,17 +8,33 @@
   <!-- Bootstrap 5 CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet" />
+  
+  <!-- AOS ANIMATED -->
+   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
 
   <style>
-    body {
-      background-color: #f5f6f7;
-    }
-    .login-card {
-      max-width: 950px;
-      border-radius: 20px;
-      overflow: hidden;
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-    }
+  html, body {
+    height: 100%;
+    margin: 0;
+    overflow: hidden; /* cegah scroll */
+  }
+
+  body {
+    background-color: #f5f6f7;
+  }
+
+  .vh-100 {
+    height: 100vh !important;
+    overflow: hidden;
+  }
+
+  .login-card {
+    max-width: 950px;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+  }
     .login-left {
       padding: 50px 40px;
       display: flex;
@@ -96,7 +112,7 @@
   </style>
 </head>
 <body>
-  <div class="d-flex justify-content-center align-items-center vh-100 p-3">
+  <div class="d-flex justify-content-center align-items-center vh-100 p-3" data-aos="fade-up">
     <div class="card login-card">
       <div class="row g-0">
         
@@ -152,8 +168,36 @@
     </div>
   </div>
 
+ <!-- Bootstrap Toast Notification -->
+<div class="position-fixed top-0 start-50 translate-middle-x p-3" style="z-index: 9999; margin-top: 20px;">
+  @if (session('success'))
+    <div class="toast align-items-center text-bg-success border-0 show shadow" role="alert" aria-live="assertive" aria-atomic="true">
+      <div class="d-flex">
+        <div class="toast-body">
+          <i class="bi bi-check-circle-fill me-2"></i> {{ session('success') }}
+        </div>
+        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+      </div>
+    </div>
+  @endif
+
+  @if (session('error'))
+    <div class="toast align-items-center text-bg-danger border-0 show shadow" role="alert" aria-live="assertive" aria-atomic="true">
+      <div class="d-flex">
+        <div class="toast-body">
+          <i class="bi bi-exclamation-triangle-fill me-2"></i> {{ session('error') }}
+        </div>
+        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+      </div>
+    </div>
+  @endif
+</div>
+
   <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
   <script>
     // Toggle password
     const togglePassword = document.querySelector("#togglePassword");
@@ -165,6 +209,22 @@
       passwordInput.setAttribute("type", type);
       toggleIcon.classList.toggle("bi-eye");
       toggleIcon.classList.toggle("bi-eye-slash");
+    });
+
+    // Tampilkan toast otomatis
+  document.addEventListener('DOMContentLoaded', function () {
+    const toastElList = [].slice.call(document.querySelectorAll('.toast'));
+    toastElList.map(function (toastEl) {
+      const toast = new bootstrap.Toast(toastEl, { delay: 4000 });
+      toast.show();
+    });
+  });
+
+
+  // Inisialisasi AOS
+    AOS.init({
+      duration: 800,
+      once: true
     });
   </script>
 </body>
