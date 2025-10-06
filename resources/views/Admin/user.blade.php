@@ -15,7 +15,7 @@
 
   <!-- Header Aksi -->
   <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2">
-    <h5 class="fw-semibold text-secondary mb-0">Daftar Siswa</h5>
+    <h5 class="fw-semibold text-secondary mb-0">Daftar Akun Siswa</h5>
     <button class="btn btn-success shadow-sm" data-bs-toggle="modal" data-bs-target="#tambahUserModal">
       <i class="bi bi-plus-circle me-1"></i> Tambah Siswa
     </button>
@@ -227,13 +227,16 @@
           @endforeach
         </tbody>
         </table>
-        <div class="d-flex justify-content-between align-items-center mt-3">
       </div>
+      <div class="mt-3 d-flex justify-content-end mx-3">
+         {{ $user->links('pagination::bootstrap-5') }}
       </div>
     </div>
   </div>
 </div>
+</div>
 
+<div class="d-flex justify-content-between align-items-center mt-3">
 <!-- Modal Tambah User -->
 <div class="modal fade" id="tambahUserModal" tabindex="-1">
   <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">

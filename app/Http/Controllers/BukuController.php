@@ -40,8 +40,48 @@ public function tambahbuku(Request $request)
         'status' => 'required|boolean',
         'foto' => 'required|image|mimes:jpg,jpeg,png|max:2048',
     ], [
-        'judul.unique' => 'Kombinasi data buku (judul, jenis buku, penerbit, pencipta, tahun terbit, rak) sudah ada.',
-    ]);
+    'deskripsi.required'     => 'Deskripsi buku tidak boleh kosong.',
+    'deskripsi.string'       => 'Deskripsi buku harus berupa teks.',
+    'deskripsi.max'          => 'Deskripsi buku maksimal 255 karakter.',
+
+    'JenisBuku.required'     => 'Jenis buku wajib diisi.',
+    'JenisBuku.string'       => 'Jenis buku harus berupa teks.',
+    'JenisBuku.max'          => 'Jenis buku maksimal 255 karakter.',
+
+    'Penerbit.required'      => 'Nama penerbit wajib diisi.',
+    'Penerbit.string'        => 'Nama penerbit harus berupa teks.',
+    'Penerbit.max'           => 'Nama penerbit maksimal 255 karakter.',
+
+    'Pencipta.required'      => 'Nama pencipta wajib diisi.',
+    'Pencipta.string'        => 'Nama pencipta harus berupa teks.',
+    'Pencipta.max'           => 'Nama pencipta maksimal 255 karakter.',
+
+    'TempatTerbit.required'  => 'Tempat terbit wajib diisi.',
+    'TempatTerbit.string'    => 'Tempat terbit harus berupa teks.',
+    'TempatTerbit.max'       => 'Tempat terbit maksimal 255 karakter.',
+
+    'TahunTerbit.required'   => 'Tahun terbit wajib diisi.',
+    'TahunTerbit.integer'    => 'Tahun terbit harus berupa angka.',
+
+    'JumlahHalaman.required' => 'Jumlah halaman wajib diisi.',
+    'JumlahHalaman.integer'  => 'Jumlah halaman harus berupa angka.',
+
+    'namarak.required'       => 'Nama rak wajib diisi.',
+    'namarak.string'         => 'Nama rak harus berupa teks.',
+    'namarak.max'            => 'Nama rak maksimal 255 karakter.',
+
+    'norak.required'         => 'Nomor rak wajib diisi.',
+    'norak.string'           => 'Nomor rak harus berupa teks.',
+    'norak.max'              => 'Nomor rak maksimal 255 karakter.',
+
+    'status.required'        => 'Status buku wajib dipilih.',
+    'status.boolean'         => 'Status buku harus berupa pilihan aktif atau nonaktif.',
+
+    'foto.required'          => 'Foto buku wajib diunggah.',
+    'foto.image'             => 'File yang diunggah harus berupa gambar.',
+    'foto.mimes'             => 'Format foto harus JPG, JPEG, atau PNG.',
+    'foto.max'               => 'Ukuran foto maksimal 2MB.',
+]);
 
     if ($request->hasFile('foto')) {
         $file = $request->file('foto');
@@ -80,7 +120,7 @@ public function RakBuku()
             return redirect('/buku');
         }
     // Ambil semua data buku dari database
-    $buku = Buku::all();
+    $buku = Buku::paginate(10);
 
 
        // Kirim ke view
@@ -109,37 +149,29 @@ public function update(Request $request, $id)
         'foto' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
     ]);
 
-    // Jika ada upload foto baru → upload ke Supabase
+    // ✅ Jika ada foto baru diupload, simpan ke lokal storage
     if ($request->hasFile('foto')) {
         $file = $request->file('foto');
         $fileName = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+        $path = $file->storeAs('uploads', $fileName, 'public');
 
-        $response = Http::withHeaders([
-            'apikey' => config('services.supabase.key'),
-            'Authorization' => 'Bearer ' . config('services.supabase.key'),
-        ])->attach(
-            'file',
-            file_get_contents($file),
-            $fileName
-        )->post(
-            config('services.supabase.url') . "/storage/v1/object/" 
-            . config('services.supabase.bucket') 
-            . "/" . $fileName . "?upsert=true"
-        );
-
-        if ($response->successful()) {
-            $buku->foto = config('services.supabase.url') . "/storage/v1/object/public/"
-                . config('services.supabase.bucket') . "/" . $fileName;
-        } else {
-            return back()->withErrors(['foto' => 'Upload gagal: ' . $response->body()]);
+        // Hapus foto lama kalau ada dan masih di storage lokal
+        if ($buku->foto && file_exists(storage_path('app/public/' . $buku->foto))) {
+            unlink(storage_path('app/public/' . $buku->foto));
         }
+
+        $buku->foto = $path; // simpan path baru
     }
 
-    // Update data lain
+    // ✅ Update data lain (selain foto)
     $buku->update($request->except('foto'));
+
+    // ✅ Simpan perubahan foto (kalau ada)
+    $buku->save();
 
     return redirect()->back()->with('success', 'Data buku berhasil diperbarui!');
 }
+
 
 public function toggleStatus($id)
 {

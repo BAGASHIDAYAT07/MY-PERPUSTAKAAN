@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Http;
 use App\Models\User;
 use App\Models\Buku;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule; 
 
 class AdminController extends Controller
 {
@@ -38,26 +39,14 @@ class AdminController extends Controller
         if($ses['role'] != 'admin'){
             return redirect('/buku');
         }
-        $user = User::all();
+
+        $user = User::where('veriv', 1)->paginate(10);
         return view('admin.user', ["active" => "user", "user" => $user]);
     }
 
-    public function VerifikasiUser()
-    {
-             if (!Auth::check()) {
-            session(['redirect_after_login' => url()->current()]);
-            return redirect('/login');
-        }
-        $ses = session()->all();
-        if($ses['role'] != 'admin'){
-            return redirect('/buku');
-        }
-        return view('admin.user.VerifikasiUser', ["active" => "verifikasiuser"]);
-    }
 
-    public function UserCreates(Request $request)
+public function UserCreates(Request $request)
 {
-    // ✅ Validasi form
     $request->validate([
         'namaLengkap' => 'required|string|max:255',
         'email'       => 'required|email|unique:users,email',
@@ -66,17 +55,23 @@ class AdminController extends Controller
         'status'      => 'required',
         'password'    => 'required|min:6',
     ], [
-        // Pesan khusus jika data kosong
-        'namaLengkap.required' => 'Nama lengkap tidak boleh kosong',
-        'email.required'       => 'Email tidak boleh kosong',
-        'nis.required'         => 'NIS tidak boleh kosong',
-        'gender.required'      => 'Jenis kelamin harus dipilih',
-        'status.required'      => 'Status harus dipilih',
-        'password.required'    => 'Password tidak boleh kosong',
-        'password.min'         => 'Password minimal 6 karakter',
-        'email.email'          => 'Format email tidak valid',
-        'email.unique'         => 'Email sudah terdaftar',
-        'nis.unique'           => 'NIS sudah digunakan',
+        // ✳️ Pesan error custom
+        'namaLengkap.required' => 'Nama lengkap tidak boleh kosong.',
+        'namaLengkap.string'   => 'Nama lengkap harus berupa teks.',
+        'namaLengkap.max'      => 'Nama lengkap maksimal 255 karakter.',
+
+        'email.required' => 'Email tidak boleh kosong.',
+        'email.email'    => 'Format email tidak valid.',
+        'email.unique'   => 'Email sudah terdaftar.',
+
+        'nis.required' => 'NIS tidak boleh kosong.',
+        'nis.unique'   => 'NIS sudah digunakan.',
+
+        'gender.required' => 'Jenis kelamin wajib dipilih.',
+        'status.required' => 'Status akun wajib dipilih.',
+
+        'password.required' => 'Password wajib diisi.',
+        'password.min'      => 'Password minimal 6 karakter.',
     ]);
 
     // ✅ Simpan data user ke database
@@ -86,16 +81,12 @@ class AdminController extends Controller
         'NIS'          => $request->nis,
         'jenisKelamin' => $request->gender,
         'status'       => $request->status,
-        'password'     => Hash::make($request->password), // password terenkripsi
+        'password'     => Hash::make($request->password),
     ]);
 
-    // ✅ Feedback ke user
-    if ($user) {
-        return redirect()->back()->with('success', 'Data berhasil ditambahkan');
-    } else {
-        return redirect()->back()->with('error', 'Data gagal ditambahkan');
-    }
+    return redirect()->back()->with('success', 'Data user berhasil ditambahkan!');
 }
+
 
 
 public function toggleStatus($id)

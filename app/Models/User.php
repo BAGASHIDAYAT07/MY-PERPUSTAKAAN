@@ -24,6 +24,8 @@ class User extends Authenticatable
         'NIS',
         'jenisKelamin',
         'status',
+        'role',
+        'veriv',
         'foto',
     ];
 

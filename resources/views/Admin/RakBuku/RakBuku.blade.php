@@ -76,6 +76,7 @@
   <table class="table table-striped table-hover align-middle mb-0 table-bordered border-secondary-subtle">
     <thead class="table-primary text-center">
       <tr>
+        <th>No</th>
         <th>Foto Buku</th>
         <th>Judul Buku</th>
         <th>Jenis Buku</th>
@@ -88,6 +89,7 @@
     <tbody class="text-center">
   @foreach ($buku as $item)
     <tr>
+      <td>{{ $loop->iteration }}</td>
       <td>
         <img src="{{ asset('storage/' . $item->foto) }}" 
              class="rounded shadow-sm img-fluid" 
@@ -143,7 +145,7 @@
       </div>
       <div class="modal-body">
         <div class="text-center mb-3">
-          <img src="{{ $item->foto }}" 
+          <img src="{{ asset('storage/' . $item->foto) }}" 
                class="rounded shadow img-fluid" 
                alt="Foto Buku" 
                style="max-width: 150px;">
@@ -169,7 +171,7 @@
         </ul>
       </div>
       <div class="modal-footer">
-        <button class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+        <button class="btn btn-danger" data-bs-dismiss="modal">Tutup</button>
       </div>
     </div>
   </div>
@@ -260,7 +262,7 @@
         </div>
 
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+          <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Batal</button>
           <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
         </div>
       </form>
@@ -271,6 +273,9 @@
 </tbody>
 
   </table>
+</div>
+<div class="mt-3 d-flex justify-content-end mx-3">
+  {{ $buku->links('pagination::bootstrap-5') }}
 </div>
     </div>
   </div>
@@ -292,67 +297,67 @@
     <!-- Judul -->
     <div class="col-md-6">
         <label class="form-label">Judul Buku</label>
-        <input type="text" name="judul" class="form-control">
+        <input type="text" name="judul" class="form-control" placeholder="Masukan Judul">
     </div>
 
     <!-- deskripsi -->
     <div class="col-md-6">
         <label class="form-label">Deskripsi Buku</label>
-        <input type="text" name="deskripsi" class="form-control">
+        <input type="text" name="deskripsi" class="form-control" placeholder="Masukan Deskripsi">
     </div>
 
     <!-- Jenis Buku -->
     <div class="col-md-6">
         <label class="form-label">Jenis Buku</label>
-        <input type="text" name="JenisBuku" class="form-control">
+        <input type="text" name="JenisBuku" class="form-control" placeholder="Masukan Jenis Buku">
     </div>
 
     <!-- Penerbit -->
     <div class="col-md-6">
         <label class="form-label">Penerbit</label>
-        <input type="text" name="Penerbit" class="form-control">
+        <input type="text" name="Penerbit" class="form-control" placeholder="Masukan Nama Penerbit">
     </div>
 
     <!-- Penulis (Pencipta) -->
     <div class="col-md-6">
         <label class="form-label">Pencipta</label>
-        <input type="text" name="Pencipta" class="form-control">
+        <input type="text" name="Pencipta" class="form-control" placeholder="Masukan Nama Pencipta">
     </div>
 
     <!-- Kota (TempatTerbit) -->
     <div class="col-md-6">
         <label class="form-label">Tempat Terbit</label>
-        <input type="text" name="TempatTerbit" class="form-control">
+        <input type="text" name="TempatTerbit" class="form-control" placeholder="Masukan Tempat Terbit">
     </div>
 
     <!-- Tahun -->
     <div class="col-md-6">
         <label class="form-label">Tahun Terbit</label>
-        <input type="text" name="TahunTerbit" class="form-control" placeholder="2024">
+        <input type="text" name="TahunTerbit" class="form-control" placeholder="Masukan Tahun Terbit">
     </div>
 
     <!-- Halaman -->
     <div class="col-md-6">
         <label class="form-label">Jumlah Halaman</label>
-        <input type="number" name="JumlahHalaman" class="form-control">
+        <input type="number" name="JumlahHalaman" class="form-control" placeholder="Masukan Jumlah Halaman">
     </div>
 
     <!-- Foto Buku -->
     <div class="col-md-6">
-        <label class="form-label">Foto Buku</label>
+        <label class="form-label">Foto Buku (9:16)</label>
         <input type="file" name="foto" class="form-control">
     </div>
 
     <!-- nama rak -->
     <div class="col-md-6">
         <label class="form-label">Nama Rak</label>
-        <input type="text" name="namarak" class="form-control">
+        <input type="text" name="namarak" class="form-control" placeholder="Masukan Nama Rak">
     </div>
 
     <!-- no rak -->
     <div class="col-md-6">
         <label class="form-label">No rak</label>
-        <input type="number" name="norak" class="form-control">
+        <input type="number" name="norak" class="form-control" placeholder="Masukan No Rak">
     </div>
 
     <!-- Status -->
@@ -365,7 +370,7 @@
     </div>
 
     <div class="modal-footer">
-        <button class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+        <button class="btn btn-danger" data-bs-dismiss="modal">Batal</button>
         <button class="btn btn-success">Simpan</button>
     </div>
 </form>
@@ -374,6 +379,8 @@
     </div>
   </div>
 </div>
+
+
 
 
 <!-- Script Toggle Status -->
