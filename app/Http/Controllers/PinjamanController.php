@@ -38,17 +38,25 @@ class PinjamanController extends Controller
 
     // Simpan data baru
     public function store(Request $request)
-    {
-        $request->validate([
-            'user_id' => 'required|exists:users,id',
-            'buku_id' => 'required|exists:bukus,id',
-            'tanggal_pinjam' => 'required|date',
-        ]);
+{
+    $request->validate([
+        'user_id' => 'required|exists:users,id',
+        'buku_id' => 'required|exists:bukus,id',
+        'tanggal_pinjam' => 'required|date',
+        'tanggal_kembali' => 'nullable|date',
+    ]);
 
-        Peminjamans::create($request->all());
+    Peminjamans::create([
+        'user_id' => $request->user_id,
+        'buku_id' => $request->buku_id,
+        'tanggal_pinjam' => $request->tanggal_pinjam,
+        'tanggal_kembali' => $request->tanggal_kembali,
+        'status' => 'dipinjam',
+    ]);
 
-        return redirect()->route('User.Peminjaman')->with('success', 'Peminjaman berhasil ditambahkan');
-    }
+    return redirect()->route('User.Peminjaman')->with('success', 'Peminjaman berhasil ditambahkan');
+}
+
 
     // Form edit peminjaman
     public function edit(Peminjamans $peminjaman)

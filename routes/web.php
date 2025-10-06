@@ -48,9 +48,11 @@ Route::post('/logins', [AuthController::class, 'login'])->name('login.post');
 //pinjaman
 Route::get('/pinjaman',[PinjamanController::class, 'pinjamanUser'])->name('User.Peminjaman');
 Route::get('/peminjaman/create', [PinjamanController::class, 'create'])->name('peminjaman.create' );
-Route::get('/pinjaman_update/{id}',[PinjamanController::class, 'edit']);
+Route::get('/peminjaman/{peminjaman}/edit', [PinjamanController::class, 'edit'])->name('peminjaman.edit');
 Route::get('/bukuveriv',[VerivPinjamanAdminController::class, 'veriv']);
-Route::post('/pinjaman', [PinjamanController::class, 'store'])->name('pinjaman.store');
+Route::post('/pinjamans', [PinjamanController::class, 'store'])->name('pinjaman.store');
+Route::put('/peminjaman/{peminjaman}', [PinjamanController::class, 'update'])->name('peminjaman.update');
+Route::delete('/peminjaman/{peminjaman}', [PinjamanController::class, 'destroy'])->name('peminjaman.destroy');
 
 // untuk user
 Route::get('/Home',[UserController::class, 'Home']);

@@ -56,7 +56,7 @@
         </div>
 
         <button type="submit" class="btn btn-primary">Update</button>
-        <a href="{{ route('peminjaman.index') }}" class="btn btn-secondary">Kembali</a>
+        <a href="{{ route('User.Peminjaman') }}" class="btn btn-secondary">Kembali</a>
     </form>
 </div>
 @endsection

@@ -3,45 +3,61 @@
 @section("kontenU")
 <div class="container">
     <h1>Daftar Peminjaman</h1>
-    <a href="{{ route('peminjaman.create') }}" class="btn btn-primary mb-3">Tambah Peminjaman</a>
-    
+
+    <!-- <a href="{{ route('peminjaman.create') }}" class="btn btn-primary mb-3">Tambah Peminjaman</a> -->
+
     @if(session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>
     @endif
-    
-    <table class="table table-bordered">
-        <thead>
+
+    <table class="table table-bordered align-middle">
+        <thead class="table-light">
             <tr>
                 <th>User</th>
                 <th>Buku</th>
-                <th>Jenis Buku</th>
                 <th>Tanggal Pinjam</th>
                 <th>Tanggal Kembali</th>
-                <th>Status</th>
                 <th>Aksi</th>
             </tr>
         </thead>
         <tbody>
             @foreach($peminjamans as $peminjaman)
-            <tr>
-                <td>{{ $peminjaman->user->name }}</td>
-                <td>{{ $peminjaman->buku->judul }}</td>
-                <td>{{ $peminjaman->tanggal_pinjam }}</td>
-                <td>{{ $peminjaman->tanggal_kembali ?? '-' }}</td>
-                <td>{{ ucfirst($peminjaman->status) }}</td>
-                <td>
-                    <a href="{{ route('peminjaman.edit', $peminjaman) }}" class="btn btn-warning btn-sm">Edit</a>
-                    <form action="{{ route('peminjaman.destroy', $peminjaman) }}" method="POST" class="d-inline">
-                        @csrf
-                        @method('DELETE')
-                        <button onclick="return confirm('Yakin ingin hapus?')" class="btn btn-danger btn-sm">Hapus</button>
-                    </form>
-                </td>
-            </tr>
+                <tr>
+                    <td>{{ $peminjaman->user->email ?? '-' }}</td>
+                    <td>{{ $peminjaman->buku->judul ?? '-' }}</td>
+                    <td>{{ $peminjaman->buku->jenis_buku ?? '-' }}</td>
+
+                    {{-- Format tanggal menjadi DD-MM-YYYY --}}
+                    <td>{{ \Carbon\Carbon::parse($peminjaman->tanggal_pinjam)->format('d-m-Y') }}</td>
+                    <td>{{ \Carbon\Carbon::parse($peminjaman->tanggal_kembali)->format('d-m-Y') }}</td>
+
+                    <td>
+                        {{-- Tombol titik tiga dropdown --}}
+                        <div class="dropdown">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="aksiDropdown{{ $peminjaman->id }}" data-bs-toggle="dropdown" aria-expanded="false">
+                                ⋮
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="aksiDropdown{{ $peminjaman->id }}">
+                                <li>
+                                    <a class="dropdown-item" href="{{ route('peminjaman.edit', $peminjaman->id) }}">
+                                        Edit
+                                    </a>
+                                </li>
+                                <li>
+                                    <form action="{{ route('peminjaman.destroy', $peminjaman->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus data ini?')">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button class="dropdown-item text-danger" type="submit">
+                                            Hapus
+                                        </button>
+                                    </form>
+                                </li>
+                            </ul>
+                        </div>
+                    </td>
+                </tr>
             @endforeach
         </tbody>
     </table>
-
-    {{ $peminjamans->links() }}
 </div>
 @endsection
