@@ -2,45 +2,25 @@
 
 @section("kontenU")
 <style>
-  /* Custom col for 5 per row in large screen */
-  @media (min-width: 992px) {
-    .col-lg-5ths {
-      width: 20%;
-      flex: 0 0 auto;
-    }
-  }
-
-  /* Card styling */
   .book-card {
     transition: transform 0.3s ease;
     height: 100%;
-    max-width: 260px; /* lebih besar dari sebelumnya */
+    max-width: 200px;
     margin: 0 auto;
   }
 
   .book-card:hover img {
-    transform: scale(1.03);
+    transform: scale(1.05);
   }
 
   .book-card img {
-    height: 350px; /* lebih tinggi untuk gambar */
+    height: 200px;
     object-fit: cover;
     transition: transform 0.3s ease;
   }
 
   .book-card .card-body {
     padding: 0.75rem;
-  }
-
-  /* Perkecil jarak antar card */
-  .row.tight-gutter {
-    margin-left: -6px;
-    margin-right: -6px;
-  }
-
-  .row.tight-gutter > [class*='col-'] {
-    padding-left: 6px;
-    padding-right: 6px;
   }
 
   .modal-body .detail-item {
@@ -58,7 +38,6 @@
     }
   }
 </style>
-
 
 <div class="container-fluid px-3" style="margin-top: -25px;">
 
@@ -85,9 +64,9 @@
   </div>
 
   <!-- Grid Buku -->
-  <div class="row tight-gutter g-3" id="bukuGrid">
+  <div class="row g-3" id="bukuGrid">
     @foreach ($buku as $item)
-    <div class="col-6 col-md-3 col-lg-4ths d-flex">
+    <div class="col-6 col-md-3 col-lg-2 d-flex">
       <div class="card shadow-sm border-0 overflow-hidden book-card rounded-3 w-100">
 
         <!-- Gambar Buku -->
