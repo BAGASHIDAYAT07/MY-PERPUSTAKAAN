@@ -177,11 +177,17 @@ public function toggleStatus($id)
 {
     $buku = Buku::findOrFail($id);
 
-    // Toggle status (0 -> 1 / 1 -> 0)
+    // 🔹 Cek apakah buku sedang dipinjam
+    if ($buku->status_pinjam === 'dipinjam' && $buku->status == 1) {
+        return redirect()->back()->with('error', 'Tidak dapat merubah status karena buku sedang dipinjam.');
+    }
+
+    // 🔹 Toggle status (0 -> 1 atau 1 -> 0)
     $buku->status = !$buku->status;
     $buku->save();
 
     return redirect()->back()->with('success', 'Status buku berhasil diubah!');
 }
+
 
 }

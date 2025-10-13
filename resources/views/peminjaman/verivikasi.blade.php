@@ -24,7 +24,78 @@
     background-color: #198754; /* hijau */
     color: #fff;
   }
+
+  .status-dikembalikan {
+  background-color: #0dcaf0; /* biru muda */
+  color: #fff;
+  }
+
+  /* 🌟 Samain style detail modal dengan halaman lain */
+  .modal-content {
+    border-radius: 1rem !important;
+    border: none !important;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+  }
+
+  .modal-header {
+    border-bottom: none !important;
+    background-color: #ffffff;
+  }
+
+  .modal-header h5 {
+    font-weight: 700;
+    color: #0d6efd;
+  }
+
+  .modal-body {
+    padding: 1.5rem 1.25rem;
+  }
+
+  /* 🔹 Setiap baris detail (biar sama jarak & border-nya) */
+  .detail-item {
+    padding: 0.6rem 0;
+    border-bottom: 1px solid #e9ecef;
+    font-size: 0.95rem;
+  }
+
+  .detail-item:last-child {
+    border-bottom: none;
+  }
+
+  /* 🔹 Gaya gambar buku */
+  .modal-body img {
+    border-radius: 0.75rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    transition: transform 0.25s ease;
+  }
+
+  /* .modal-body img:hover {
+    transform: scale(1.05);
+  } */
+
+  /* 🔹 Footer tombol tutup */
+  .modal-footer {
+    border-top: none !important;
+    background-color: #ffffff;
+  }
+
+  .modal-footer .btn {
+    border-radius: 0.5rem;
+    font-weight: 500;
+  }
+
+  /* 📱 Responsif kayak di modal buku & history */
+  @media (max-width: 768px) {
+    .modal-body .col-md-4 {
+      text-align: center;
+    }
+    .modal-body img {
+      max-width: 220px;
+      margin-bottom: 1rem;
+    }
+  }
 </style>
+
 
 <div class="container-fluid px-3" style="margin-top: -25px;">
   <!-- Judul Halaman -->
@@ -68,10 +139,10 @@
 </div>
 
       <!-- Table -->
-      <div class="table-responsive">
         <table class="table table-striped table-hover align-middle mb-0 table-bordered border-secondary-subtle">
           <thead class="table-primary text-center">
             <tr>
+              <th>No</th>
               <th>Nama Peminjam</th>
               <th>Judul Buku</th>
               <th>Email</th>
@@ -81,102 +152,142 @@
               <th>Aksi</th>
             </tr>
           </thead>
-          <tbody class="text-center">
+          <tbody>
+  @foreach($peminjamans as $p)
+    <tr class="align-middle text-start">
+      <td class="text-center">{{ $loop->iteration }}</td>
+      <td>
+        <img src="{{ $p->user->foto != 'default.jpeg'
+            ? asset('storage/' .  $p->user->foto) 
+            : asset('img/photos/'. $p->user->foto) }}" 
+             class="rounded-circle me-2" width="32" height="32">
+        {{ $p->user->name }}
+      </td>
+      <td>{{ $p->buku->judul }}</td>
+      <td>{{ $p->user->email }}</td>
+      <td>
+      @if($p->status == 'dipinjam' || $p->status == 'dikembalikan')
+        {{ \Carbon\Carbon::parse($p->tanggal_pinjam)->translatedFormat('d F Y') }}
+      @else
+        -
+      @endif
+    </td>
+      <td>{{ $p->tanggal_kembali ? \Carbon\Carbon::parse($p->tanggal_kembali)->translatedFormat('d F Y') : '-' }}</td>
+      <td>
+        @if($p->status == 'menunggu')
+          <span class="status-badge status-menunggu text-center"><i class="bi bi-clock me-1"></i> Menunggu</span>
+        @elseif($p->status == 'dipinjam')
+          <span class="status-badge status-disetujui text-center"><i class="bi bi-check2-circle me-1"></i> Dipinjam</span>
+        @elseif($p->status == 'dikembalikan')
+          <span class="status-badge status-dikembalikan text-center"><i class="bi bi-arrow-return-left me-1"></i> Dikembalikan</span>
+        @elseif($p->status == 'ditolak')
+          <span class="status-badge status-ditolak text-center"><i class="bi bi-x-circle me-1"></i> Ditolak</span>
+        @endif
+      </td>
+      <td>
+        <div class="dropdown">
+          <button class="btn btn-sm btn-light border" data-bs-toggle="dropdown">
+            <i class="bi bi-three-dots-vertical"></i>
+          </button>
+          <ul class="dropdown-menu">
+  @if($p->status == 'menunggu')
+    <li>
+      <a class="dropdown-item text-success" href="{{ route('veriv.setujui', $p->id) }}">
+        <i class="bi bi-check2-circle me-2"></i> Setujui
+      </a>
+    </li>
+    <li>
+      <a class="dropdown-item text-danger" href="{{ route('veriv.tolak', $p->id) }}">
+        <i class="bi bi-x-circle me-2"></i> Tolak
+      </a>
+    </li>
+    <li>
+      <button class="dropdown-item text-info" data-bs-toggle="modal" data-bs-target="#detailPinjamModal-{{ $p->id }}">
+          <i class="bi bi-eye me-2"></i> Detail
+        </button>
+    </li>
+  @elseif($p->status == 'dipinjam')
+    <li>
+      <a class="dropdown-item text-primary" href="{{ route('veriv.kembalikan', $p->id) }}">
+        <i class="bi bi-arrow-return-left me-2"></i> Kembalikan
+      </a>
+    </li>
+    <li>
+      <button class="dropdown-item text-info" data-bs-toggle="modal" data-bs-target="#detailPinjamModal-{{ $p->id }}">
+          <i class="bi bi-eye me-2"></i> Detail
+        </button>
+    </li>
+  @else
+    <li>
+      <button class="dropdown-item text-info" data-bs-toggle="modal" data-bs-target="#detailPinjamModal-{{ $p->id }}">
+          <i class="bi bi-eye me-2"></i> Detail
+        </button>
+    </li>
+  @endif
+</ul>
 
-            <!-- User Ditolak -->
-            <tr>
-              <td class="text-start">
-                <img src="https://ui-avatars.com/api/?name=Bagas" class="rounded-circle me-2" width="32" height="32">
-                Bagas
-              </td>
-              <td>PsikopatNew</td>
-              <td>bagas.@email.com</td>
-              <td>15 Januari 2024</td>
-              <td>15 Januari 2024</td>
-              <td>
-                <span class="status-badge status-ditolak">
-                  <i class="bi bi-x-circle me-1"></i> Ditolak
-                </span>
-              </td>
-              <td>
-                <div class="dropdown">
-                  <button class="btn btn-sm btn-light border" data-bs-toggle="dropdown">
-                    <i class="bi bi-three-dots-vertical"></i>
-                  </button>
-                  <ul class="dropdown-menu">
-                    <li>
-                      <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#detailBukuModal">
-                        <i class="bi bi-eye me-2"></i> Lihat Detail
-                      </a>
-                    </li>
-                  </ul>
+        </div>
+      </td>
+    </tr>
+
+    <!-- Modal Detail -->
+          <div class="modal fade" id="detailPinjamModal-{{ $p->id }}" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-centered modal-fullscreen-sm-down">
+              <div class="modal-content border-0 shadow-lg rounded-4">
+                <div class="modal-header bg-white border-0">
+                  <h5 class="modal-title fw-bold text-primary">
+                    <i class="bi bi-journal-text me-2"></i>Detail Peminjaman
+                  </h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
-              </td>
-            </tr>
 
-            <!-- User Menunggu -->
-            <tr>
-              <td class="text-start">
-                <img src="https://ui-avatars.com/api/?name=Enggal" class="rounded-circle me-2" width="32" height="32">
-                Enggal
-              </td>
-              <td>PsikopatNew</td>
-              <td>enggal.@email.com</td>
-              <td>14 Januari 2024</td>
-              <td>15 Januari 2024</td>
-              <td>
-                <span class="status-badge status-menunggu">
-                  <i class="bi bi-clock me-1"></i> Menunggu
-                </span>
-              </td>
-              <td>
-                <div class="dropdown">
-                  <button class="btn btn-sm btn-light border" data-bs-toggle="dropdown">
-                    <i class="bi bi-three-dots-vertical"></i>
-                  </button>
-                  <ul class="dropdown-menu">
-                    <li>
-                      <a class="dropdown-item text-success" href="#">
-                        <i class="bi bi-check2-circle me-2"></i> Setujui
-                      </a>
-                    </li>
-                    <li>
-                      <a class="dropdown-item text-danger" href="#">
-                        <i class="bi bi-x-circle me-2"></i> Tolak
-                      </a>
-                    </li>
-                  </ul>
+                <div class="modal-body">
+                  <div class="row g-3">
+                    <div class="col-md-4 text-center">
+                      <img src="{{ asset('storage/' . $p->buku->foto) }}" class="img-fluid rounded shadow-sm" alt="Foto Buku">
+                    </div>
+                    <div class="col-md-8">
+                      <div class="detail-item"><strong>Nama Peminjam:</strong><br>{{ $p->user->name }}</div>
+                      <div class="detail-item"><strong>Email:</strong><br>{{ $p->user->email }}</div>
+                      <div class="detail-item"><strong>Judul Buku:</strong><br>{{ $p->buku->judul }}</div>
+                      <div class="detail-item"><strong>Jenis Buku:</strong><br>{{ $p->buku->JenisBuku }}</div>
+                      <div class="detail-item">
+                      <strong>Tanggal Pinjam:</strong><br>
+                      @if($p->status == 'dipinjam' || $p->status == 'dikembalikan')
+                        {{ \Carbon\Carbon::parse($p->tanggal_pinjam)->translatedFormat('d F Y') }}
+                      @else
+                        -
+                      @endif
+                    </div>
+                      <div class="detail-item"><strong>Tanggal Kembali:</strong><br>{{ $p->tanggal_kembali ? \Carbon\Carbon::parse($p->tanggal_kembali)->translatedFormat('d F Y') : '-' }}</div>
+                      <div class="detail-item"><strong>Status:</strong><br>
+                        @if($p->status == 'menunggu')
+                          <span class="badge bg-warning text-dark">Menunggu</span>
+                        @elseif($p->status == 'dipinjam')
+                          <span class="badge bg-success">Dipinjam</span>
+                        @elseif($p->status == 'dikembalikan')
+                          <span class="badge bg-info">Dikembalikan</span>
+                        @elseif($p->status == 'ditolak')
+                          <span class="badge bg-danger">Ditolak</span>
+                        @endif
+                      </div>
+                    </div>
+                  </div>
                 </div>
-              </td>
-            </tr>
 
-            <!-- User Disetujui -->
-            <tr>
-              <td class="text-start">
-                <img src="https://ui-avatars.com/api/?name=Anto" class="rounded-circle me-2" width="32" height="32">
-                Anto
-              </td>
-              <td>PsikopatNew</td>
-              <td>anto.@email.com</td>
-              <td>13 Januari 2024</td>
-              <td>15 Januari 2024</td>
-              <td>
-                <span class="status-badge status-disetujui">
-                  <i class="bi bi-check2-circle me-1"></i> Disetujui
-                </span>
-              </td>
-              <td>
-                <div class="dropdown">
-                  <button class="btn btn-sm btn-light border" data-bs-toggle="dropdown" disabled>
-                    <i class="bi bi-three-dots-vertical"></i>
+                <div class="modal-footer border-0">
+                  <button type="button" class="btn btn-danger border" data-bs-dismiss="modal">
+                    <i class="bi bi-x-circle"></i> Tutup
                   </button>
                 </div>
-              </td>
-            </tr>
+              </div>
+            </div>
+          </div>
+  @endforeach
+</tbody>
 
-          </tbody>
+
         </table>
-      </div>
     </div>
   </div>
 </div>

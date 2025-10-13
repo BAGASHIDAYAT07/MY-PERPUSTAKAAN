@@ -9,12 +9,16 @@ class Peminjamans extends Model
 {
     use HasFactory;
 
+    // 👇 Tambahkan baris ini biar Laravel tahu nama tabel aslinya
+    protected $table = 'peminjaman';
+
     protected $fillable = [
         'user_id',
         'buku_id',
         'tanggal_pinjam',
         'tanggal_kembali',
-        'status',
+        'status'
+        // 'status_pinjam',
     ];
 
     public function user()
