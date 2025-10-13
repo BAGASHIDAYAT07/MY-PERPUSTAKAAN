@@ -96,7 +96,7 @@
           <span class="badge bg-warning text-dark position-absolute top-0 start-0 m-2">
             {{ $item->JenisBuku }}
           </span>
-          @if($item->status == 'dipinjam')
+          @if($item->status_pinjam == 'dipinjam')
           <span class="badge bg-danger position-absolute top-0 end-0 m-2">Dipinjam</span>
           @endif
         </div>
@@ -105,7 +105,7 @@
         <div class="card-body text-center">
           <h6 class="fw-bold mb-1 text-truncate">{{ $item->judul }}</h6>
           <p class="text-muted small mb-2 text-truncate">{{ $item->Pencipta ?? 'Anonim' }}</p>
-          <button class="btn btn-outline-primary btn-sm w-100" data-bs-toggle="modal"
+          <button class="btn btn-outline-success btn-sm w-100" data-bs-toggle="modal"
             data-bs-target="#detailBukuModal-{{ $item->id }}">
             <i class="bi bi-eye"></i> Detail
           </button>
@@ -140,7 +140,7 @@
                 <div class="detail-item"><strong>Halaman:</strong><br>{{ $item->JumlahHalaman }}</div>
                 <div class="detail-item"><strong>Rak:</strong><br>{{ $item->namarak ?? '-' }} / {{ $item->norak ?? '-' }}</div>
                 <div class="detail-item"><strong>Status:</strong><br>
-                  @if ($item->status == 'dipinjam')
+                  @if ($item->status_pinjam == 'dipinjam')
                     <span class="badge bg-danger">Dipinjam</span>
                   @else
                     <span class="badge bg-success">Tersedia</span>
@@ -151,13 +151,23 @@
           </div>
 
           <div class="modal-footer border-0">
-            <button type="button" class="btn btn-light border" data-bs-dismiss="modal">
+            <button type="button" class="btn btn-danger border" data-bs-dismiss="modal">
               <i class="bi bi-x-circle"></i> Tutup
             </button>
-            @if ($item->status != 'dipinjam')
-            <button class="btn btn-primary"><i class="bi bi-book"></i> Pinjam Buku</button>
+
+            @if ($item->status_pinjam == 'dipinjam')
+              <!-- Jika buku sedang dipinjam -->
+              <button class="btn btn-secondary" disabled>
+                <i class="bi bi-hourglass-split"></i> Sedang Dipinjam
+              </button>
             @else
-            <button class="btn btn-secondary" disabled><i class="bi bi-book"></i> Tidak Tersedia</button>
+              <!-- Jika buku tersedia -->
+              <form action="{{ route('pinjam.buku', $item->id) }}" method="POST" class="d-inline">
+                @csrf
+                <button type="submit" class="btn btn-success">
+                  <i class="bi bi-book"></i> Pinjam Buku
+                </button>
+              </form>
             @endif
           </div>
         </div>

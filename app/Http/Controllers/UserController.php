@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Pinjaman;
+use App\Models\Peminjamans;
 use App\Models\Buku;
 use Illuminate\Support\Facades\Auth;
 
@@ -35,15 +35,55 @@ class UserController extends Controller
         }
         return view("User.Favorit", ["active" => "Favorit"]);
     }
+    
+    // 🔹 Halaman history peminjaman
     public function History()
-{
-    $histories = Pinjaman::with(['buku','user'])
-        ->orderBy('created_at','desc')
-        ->get();
+    {
+        if (!Auth::check()) {
+            session(['redirect_after_login' => url()->current()]);
+            return redirect('/login');
+        }
 
-    return view('User.History', compact('histories')
-        , ["active" => "History"]
-);
+        if (Auth::user()->role !== 'user') {
+            return redirect('/');
+        }
+
+        // Ambil semua data peminjaman milik user yang sedang login
+        $histories = Peminjamans::with(['buku'])
+            ->where('user_id', Auth::id())
+            ->where('status', 'dikembalikan')
+            ->orderBy('created_at', 'desc')
+            ->paginate(5);
+
+        return view('User.History', [
+            'active' => 'History',
+            'histories' => $histories
+        ]);
+    }
+
+    public function destroy($id)
+{
+    // 🔒 Pastikan user login dan rolenya 'user'
+    if (!Auth::check() || Auth::user()->role !== 'user') {
+        return redirect('/');
+    }
+
+    // 🔍 Cari data peminjaman berdasarkan ID dan user yang sedang login
+    $pinjaman = Peminjamans::where('id', $id)
+        ->where('user_id', Auth::id())
+        ->first();
+
+    // ⚠️ Kalau tidak ditemukan
+    if (!$pinjaman) {
+        return redirect()->back()->with('error', 'Data tidak ditemukan.');
+    }
+
+    // 🗑️ Hapus data
+    $pinjaman->delete();
+
+    // ✅ Redirect kembali ke halaman history
+    return redirect()->route('history.index')->with('success', 'Riwayat berhasil dihapus.');
 }
+
 
 }

@@ -1,6 +1,69 @@
 @extends('template.app')
 
 @section("konten")
+<style>
+  /* ✨ Style Modal Detail Buku (Samain dengan versi User) */
+  .modal-content {
+    border-radius: 1rem;
+    border: none;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  }
+
+  .modal-header {
+    background-color: #fff;
+    border: none;
+    padding: 1rem 1.5rem;
+  }
+
+  .modal-header h5 {
+    font-weight: 700;
+    color: #0d6efd;
+  }
+
+  .modal-body {
+    padding: 1.5rem;
+  }
+
+  .modal-body img {
+    border-radius: 0.75rem;
+    height: 320px;
+    width: 100%;
+    object-fit: cover;
+  }
+
+  .modal-body .detail-item {
+    padding: 0.65rem 0;
+    border-bottom: 1px solid #dee2e6;
+    font-size: 0.95rem;
+  }
+
+  .modal-body .detail-item:last-child {
+    border-bottom: none;
+  }
+
+  .modal-body strong {
+    color: #212529;
+  }
+
+  .modal-footer {
+    border-top: none;
+    background-color: #fff;
+    padding: 1rem 1.5rem;
+  }
+
+  .modal-footer .btn {
+    border-radius: 0.6rem;
+    font-weight: 500;
+  }
+
+  @media (max-width: 768px) {
+    .modal-body img {
+      max-height: 250px;
+    }
+  }
+</style>
+
+
 <div class="container-fluid px-3" style="margin-top: -25px;">
   <!-- Judul Halaman -->
   <div class="d-flex align-items-center justify-content-between bg-white shadow-sm p-3 rounded mb-4">
@@ -133,46 +196,55 @@
       </td>
     </tr>
 
-    <!-- view buku -->
-    <div class="modal fade" id="detailBukuModal-{{ $item->id }}" tabindex="-1">
-  <div class="modal-dialog modal-md modal-dialog-centered modal-fullscreen-sm-down">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title fw-bold">
-          <i class="bi bi-journal-text me-2 text-primary"></i>Detail Buku
+    
+<!-- Modal Detail Buku -->
+<div class="modal fade" id="detailBukuModal-{{ $item->id }}" tabindex="-1">
+  <div class="modal-dialog modal-lg modal-dialog-centered modal-fullscreen-sm-down">
+    <div class="modal-content border-0 shadow-lg rounded-4">
+      <div class="modal-header bg-white border-0">
+        <h5 class="modal-title fw-bold text-primary">
+          <i class="bi bi-journal-text me-2"></i>Detail Buku
         </h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
+
       <div class="modal-body">
-        <div class="text-center mb-3">
-          <img src="{{ asset('storage/' . $item->foto) }}" 
-               class="rounded shadow img-fluid" 
-               alt="Foto Buku" 
-               style="max-width: 150px;">
+        <div class="row g-3">
+          <!-- Gambar Buku -->
+          <div class="col-md-4">
+            <img src="{{ asset('storage/' . $item->foto) }}" class="img-fluid rounded shadow-sm" alt="Foto Buku">
+          </div>
+
+          <!-- Detail Buku -->
+          <div class="col-md-8">
+            <div class="detail-item"><strong>Judul Buku:</strong><br>{{ $item->judul }}</div>
+            <div class="detail-item"><strong>Deskripsi Buku:</strong><br>{{ $item->deskripsi }}</div>
+            <div class="detail-item"><strong>Jenis Buku:</strong><br>{{ $item->JenisBuku }}</div>
+            <div class="detail-item"><strong>Penerbit:</strong><br>{{ $item->Penerbit }}</div>
+            <div class="detail-item"><strong>Pencipta:</strong><br>{{ $item->Pencipta }}</div>
+            <div class="detail-item"><strong>Kota:</strong><br>{{ $item->TempatTerbit }}</div>
+            <div class="detail-item"><strong>Tahun Terbit:</strong><br>{{ $item->TahunTerbit }}</div>
+            <div class="detail-item"><strong>Halaman:</strong><br>{{ $item->JumlahHalaman }}</div>
+            <div class="detail-item"><strong>Rak:</strong><br>{{ $item->namarak ?? '-' }} / {{ $item->norak ?? '-' }}</div>
+            <div class="detail-item"><strong>Status:</strong><br>
+              @if ($item->status)
+                <span class="badge bg-success">Aktif</span>
+              @else
+                <span class="badge bg-danger">Nonaktif</span>
+              @endif
+            </div>
+          </div>
         </div>
-        <ul class="list-group list-group-flush">
-          <li class="list-group-item"><b>Judul Buku:</b> {{ $item->judul }}</li>
-          <li class="list-group-item"><b>Deskripsi Buku:</b> {{ $item->deskripsi }}</li>
-          <li class="list-group-item"><b>Jenis:</b> {{ $item->JenisBuku }}</li>
-          <li class="list-group-item"><b>Penerbit:</b> {{ $item->Penerbit }}</li>
-          <li class="list-group-item"><b>Pencipta:</b> {{ $item->Pencipta }}</li>
-          <li class="list-group-item"><b>Kota:</b> {{ $item->TempatTerbit }}</li>
-          <li class="list-group-item"><b>Tahun:</b> {{ $item->TahunTerbit }}</li>
-          <li class="list-group-item"><b>Halaman:</b> {{ $item->JumlahHalaman }}</li>
-          <li class="list-group-item"><b>Nama Rak:</b> {{ $item->namarak ?? '-' }}</li>
-          <li class="list-group-item"><b>No Rak:</b> {{ $item->norak ?? '-' }}</li>
-          <li class="list-group-item"><b>Status:</b> 
-            @if ($item->status)
-              <span class="badge bg-success">Aktif</span>
-            @else
-              <span class="badge bg-danger">Nonaktif</span>
-            @endif
-          </li>
-        </ul>
       </div>
-      <div class="modal-footer">
-        <button class="btn btn-danger" data-bs-dismiss="modal">Tutup</button>
+
+      <div class="modal-footer border-0">
+        <button type="button" class="btn btn-danger border" data-bs-dismiss="modal">
+          <i class="bi bi-x-circle"></i> Tutup
+        </button>
       </div>
+    </div>
+  </div>
+</div>
     </div>
   </div>
 </div>

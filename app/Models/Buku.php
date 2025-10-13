@@ -19,5 +19,6 @@ class Buku extends Model
         'norak',
         'status',
         'foto',
+        'status_pinjam',
     ];
 }

@@ -1,0 +1,114 @@
+@extends('template.appu')
+
+@section("kontenU")
+<div class="container">
+    <h1>Daftar Peminjaman</h1>
+
+    <!-- <a href="{{ route('peminjaman.create') }}" class="btn btn-primary mb-3">Tambah Peminjaman</a> -->
+
+    <!-- @if(session('success'))
+        <div class="alert alert-success">{{ session('success') }}</div>
+    @endif -->
+
+    <table class="table table-bordered align-middle text-center">
+    <thead style="background-color: #d9f2d9;"> <!-- Warna hijau lembut -->
+        <tr>
+            <th>ID</th>
+            <th>Foto Buku</th>
+            <th>Nama Buku</th>
+            <th>Tanggal Peminjaman</th>
+            <th>Tanggal Pengembalian</th>
+            <th>Aksi</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach($peminjamans as $peminjaman)
+            <tr>
+                <td>{{ $peminjaman->id }}</td>
+                
+                <!-- Foto Buku -->
+                <td>
+                    @if($peminjaman->buku && $peminjaman->buku->foto)
+                        <img src="{{ asset('storage/' . $peminjaman->buku->foto) }}" 
+                             alt="Sampul Buku" 
+                             style="max-width: 130px; border-radius: 8px;">
+                    @else
+                        <span class="text-muted">Tidak ada foto</span>
+                    @endif
+                </td>
+
+                <!-- Nama Buku -->
+                <td>{{ $peminjaman->buku->judul ?? '-' }}</td>
+
+                <!-- Tanggal Pinjam -->
+                <td>
+                    @if($peminjaman->tanggal_pinjam)
+                        {{ \Carbon\Carbon::parse($peminjaman->tanggal_pinjam)->format('d-m-Y') }}
+                    @else
+                        <span class="text-muted">-</span>
+                    @endif
+                </td>
+
+                <!-- Tanggal Kembali -->
+                <td>
+                    @if($peminjaman->tanggal_kembali)
+                        {{ \Carbon\Carbon::parse($peminjaman->tanggal_kembali)->format('d-m-Y') }}
+                    @else
+                        <span class="text-muted">Belum dikembalikan</span>
+                    @endif
+                </td>
+
+                <!-- Aksi -->
+                <td>
+                    <form action="{{ route('peminjaman.destroy', $peminjaman->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus data ini?')">
+                        @csrf
+                        @method('DELETE')
+                        <button class="btn btn-sm btn-danger">
+                            <i class="bi bi-trash"></i> Hapus
+                        </button>
+                    </form>
+                </td>
+            </tr>
+        @endforeach
+    </tbody>
+</table>
+
+
+</div>
+
+<!-- Bootstrap Toast Notification -->
+<div class="position-fixed top-0 start-50 translate-middle-x p-3" style="z-index: 9999; margin-top: 20px;">
+  @if (session('success'))
+    <div class="toast align-items-center text-bg-success border-0 show shadow" role="alert" aria-live="assertive" aria-atomic="true">
+      <div class="d-flex">
+        <div class="toast-body">
+          <i class="bi bi-check-circle-fill me-2"></i> {{ session('success') }}
+        </div>
+        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+      </div>
+    </div>
+  @endif
+
+  @if (session('error'))
+    <div class="toast align-items-center text-bg-danger border-0 show shadow" role="alert" aria-live="assertive" aria-atomic="true">
+      <div class="d-flex">
+        <div class="toast-body">
+          <i class="bi bi-exclamation-triangle-fill me-2"></i> {{ session('error') }}
+        </div>
+        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+      </div>
+    </div>
+  @endif
+</div>
+
+<script>
+    // Tampilkan toast otomatis
+  document.addEventListener('DOMContentLoaded', function () {
+    const toastElList = [].slice.call(document.querySelectorAll('.toast'));
+    toastElList.map(function (toastEl) {
+      const toast = new bootstrap.Toast(toastEl, { delay: 4000 });
+      toast.show();
+    });
+  });
+</script>
+@endsection

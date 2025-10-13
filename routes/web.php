@@ -49,16 +49,33 @@ Route::post('/logins', [AuthController::class, 'login'])->name('login.post');
 Route::get('/pinjaman',[PinjamanController::class, 'pinjamanUser'])->name('User.Peminjaman');
 Route::get('/peminjaman/create', [PinjamanController::class, 'create'])->name('peminjaman.create' );
 Route::get('/peminjaman/{peminjaman}/edit', [PinjamanController::class, 'edit'])->name('peminjaman.edit');
-Route::get('/bukuveriv',[VerivPinjamanAdminController::class, 'veriv']);
 Route::post('/pinjamans', [PinjamanController::class, 'store'])->name('pinjaman.store');
 Route::put('/peminjaman/{peminjaman}', [PinjamanController::class, 'update'])->name('peminjaman.update');
 Route::delete('/peminjaman/{peminjaman}', [PinjamanController::class, 'destroy'])->name('peminjaman.destroy');
+Route::post('/pinjam-buku/{id}', [PinjamanController::class, 'pinjam'])->name('pinjam.buku');
+
+//pinjam buku admin
+// Route::get('/bukuveriv',[VerivPinjamanAdminController::class, 'veriv']);
+Route::middleware(['auth'])->group(function () {
+    Route::get('/bukuveriv', [VerivPinjamanAdminController::class, 'veriv'])->name('veriv.pinjaman');
+    Route::get('/bukuveriv/setujui/{id}', [VerivPinjamanAdminController::class, 'setujui'])->name('veriv.setujui');
+    Route::get('/bukuveriv/tolak/{id}', [VerivPinjamanAdminController::class, 'tolak'])->name('veriv.tolak');
+    Route::get('/verifikasi/kembalikan/{id}', [VerivPinjamanAdminController::class, 'kembalikan'])->name('veriv.kembalikan');
+});
+
 
 // untuk user
 Route::get('/Home',[UserController::class, 'Home']);
 Route::get('/Favorit',[UserController::class, 'Favorit']);
 Route::get('/pinjaman_detail',[PinjamanController::class, 'detail']);
-Route::get('/History', [UserController::class, 'History'])->name('User.History');
+
+//history
+// 🔹 History User (tambah fitur hapus)
+Route::middleware(['auth'])->group(function () {
+    Route::get('/History', [UserController::class, 'History'])->name('history.index');
+    Route::delete('/History/{id}', [UserController::class, 'destroy'])->name('history.destroy');
+});
+
 
 
 // user actions
