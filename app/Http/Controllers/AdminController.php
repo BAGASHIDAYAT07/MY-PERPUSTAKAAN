@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Peminjamans;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash; // ✅ untuk hash password
 use Illuminate\Support\Facades\Http;
@@ -9,24 +10,64 @@ use App\Models\User;
 use App\Models\Buku;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule; 
+use Illuminate\Support\Facades\DB; 
 
 class AdminController extends Controller
 {
-    public function Dashboard()
-    {
-        if (!Auth::check()) {
-            session(['redirect_after_login' => url()->current()]);
-            return redirect('/login');
-        }
-        $ses = session()->all();
-        if($ses['role'] != 'admin'){
-            return redirect('/buku');
-        } 
-        $jumlahUser = User::count();
-        $jumlahBuku = Buku::count();
-
-        return view('admin.dashboard', ["active" => "dashboard"], compact('jumlahUser', 'jumlahBuku'));
+public function Dashboard(Request $request)
+{
+    if (!Auth::check()) {
+        session(['redirect_after_login' => url()->current()]);
+        return redirect('/login');
     }
+
+    $ses = session()->all();
+    if ($ses['role'] != 'admin') {
+        return redirect('/buku');
+    }
+
+    // Tahun aktif (default = tahun sekarang)
+    $tahun = $request->get('tahun', date('Y'));
+
+    // Jumlah data dasar
+    $jumlahUser = User::count();
+    $jumlahBuku = Buku::count();
+
+    // Jumlah total peminjaman dan pengembalian per tahun
+    $jumlahPeminjaman = Peminjamans::whereYear('tanggal_pinjam', $tahun)->count();
+    $jumlahPengembalian = Peminjamans::whereYear('tanggal_kembali', $tahun)
+        ->where('status', 'Dikembalikan')
+        ->count();
+
+    // === 📊 Data Per Bulan untuk Chart ===
+    $peminjamanPerBulan = [];
+    $pengembalianPerBulan = [];
+
+    for ($bulan = 1; $bulan <= 12; $bulan++) {
+        $peminjamanPerBulan[] = Peminjamans::whereYear('tanggal_pinjam', $tahun)
+            ->whereMonth('tanggal_pinjam', $bulan)
+            ->count();
+
+        $pengembalianPerBulan[] = Peminjamans::whereYear('tanggal_kembali', $tahun)
+            ->whereMonth('tanggal_kembali', $bulan)
+            ->where('status', 'Dikembalikan')
+            ->count();
+    }
+
+    // Kirim ke view
+    return view('admin.dashboard', [
+        "active" => "dashboard",
+        "jumlahUser" => $jumlahUser,
+        "jumlahBuku" => $jumlahBuku,
+        "jumlahPeminjaman" => $jumlahPeminjaman,
+        "jumlahPengembalian" => $jumlahPengembalian,
+        "peminjamanPerBulan" => json_encode($peminjamanPerBulan),
+        "pengembalianPerBulan" => json_encode($pengembalianPerBulan), 
+        "tahun" => $tahun,
+    ]);
+}
+
+
 
     // USER
     public function User()
