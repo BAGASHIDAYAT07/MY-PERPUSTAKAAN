@@ -14,6 +14,59 @@ use Illuminate\Support\Facades\DB;
 
 class AdminController extends Controller
 {
+// public function Dashboard(Request $request)
+// {
+//     if (!Auth::check()) {
+//         session(['redirect_after_login' => url()->current()]);
+//         return redirect('/login');
+//     }
+
+//     $ses = session()->all();
+//     if ($ses['role'] != 'admin') {
+//         return redirect('/buku');
+//     }
+
+//     // Tahun aktif (default = tahun sekarang)
+//     $tahun = $request->get('tahun', date('Y'));
+
+//     // Jumlah data dasar
+//     $jumlahUser = User::count();
+//     $jumlahBuku = Buku::count();
+
+//     // Jumlah total peminjaman dan pengembalian per tahun
+//     $jumlahPeminjaman = Peminjamans::whereYear('tanggal_pinjam', $tahun)->count();
+//     $jumlahPengembalian = Peminjamans::whereYear('tanggal_kembali', $tahun)
+//         ->where('status', 'Dikembalikan')
+//         ->count();
+
+//     // === 📊 Data Per Bulan untuk Chart ===
+//     $peminjamanPerBulan = [];
+//     $pengembalianPerBulan = [];
+
+//     for ($bulan = 1; $bulan <= 12; $bulan++) {
+//         $peminjamanPerBulan[] = Peminjamans::whereYear('tanggal_pinjam', $tahun)
+//             ->whereMonth('tanggal_pinjam', $bulan)
+//             ->count();
+
+//         $pengembalianPerBulan[] = Peminjamans::whereYear('tanggal_kembali', $tahun)
+//             ->whereMonth('tanggal_kembali', $bulan)
+//             ->where('status', 'Dikembalikan')
+//             ->count();
+//     }
+
+//     // Kirim ke view
+//     return view('admin.dashboard', [
+//         "active" => "dashboard",
+//         "jumlahUser" => $jumlahUser,
+//         "jumlahBuku" => $jumlahBuku,
+//         "jumlahPeminjaman" => $jumlahPeminjaman,
+//         "jumlahPengembalian" => $jumlahPengembalian,
+//         "peminjamanPerBulan" => json_encode($peminjamanPerBulan),
+//         "pengembalianPerBulan" => json_encode($pengembalianPerBulan), 
+//         "tahun" => $tahun,
+//     ]);
+// }
+
 public function Dashboard(Request $request)
 {
     if (!Auth::check()) {
@@ -26,35 +79,35 @@ public function Dashboard(Request $request)
         return redirect('/buku');
     }
 
-    // Tahun aktif (default = tahun sekarang)
+    // Tahun & bulan aktif (default: sekarang)
     $tahun = $request->get('tahun', date('Y'));
+    $bulan = $request->get('bulan', date('m'));
 
-    // Jumlah data dasar
+    // Statistik utama
     $jumlahUser = User::count();
     $jumlahBuku = Buku::count();
-
-    // Jumlah total peminjaman dan pengembalian per tahun
     $jumlahPeminjaman = Peminjamans::whereYear('tanggal_pinjam', $tahun)->count();
     $jumlahPengembalian = Peminjamans::whereYear('tanggal_kembali', $tahun)
         ->where('status', 'Dikembalikan')
         ->count();
 
-    // === 📊 Data Per Bulan untuk Chart ===
+    // Data bulanan untuk chart
     $peminjamanPerBulan = [];
     $pengembalianPerBulan = [];
-
-    for ($bulan = 1; $bulan <= 12; $bulan++) {
+    for ($b = 1; $b <= 12; $b++) {
         $peminjamanPerBulan[] = Peminjamans::whereYear('tanggal_pinjam', $tahun)
-            ->whereMonth('tanggal_pinjam', $bulan)
+            ->whereMonth('tanggal_pinjam', $b)
             ->count();
 
         $pengembalianPerBulan[] = Peminjamans::whereYear('tanggal_kembali', $tahun)
-            ->whereMonth('tanggal_kembali', $bulan)
+            ->whereMonth('tanggal_kembali', $b)
             ->where('status', 'Dikembalikan')
             ->count();
     }
 
-    // Kirim ke view
+    // Data harian bulan aktif
+    $dataHarian = $this->getDataHarian($tahun, $bulan);
+
     return view('admin.dashboard', [
         "active" => "dashboard",
         "jumlahUser" => $jumlahUser,
@@ -62,10 +115,88 @@ public function Dashboard(Request $request)
         "jumlahPeminjaman" => $jumlahPeminjaman,
         "jumlahPengembalian" => $jumlahPengembalian,
         "peminjamanPerBulan" => json_encode($peminjamanPerBulan),
-        "pengembalianPerBulan" => json_encode($pengembalianPerBulan), 
+        "pengembalianPerBulan" => json_encode($pengembalianPerBulan),
+        "dataHarian" => $dataHarian,
         "tahun" => $tahun,
+        "bulan" => $bulan,
     ]);
 }
+
+//
+// === JSON API untuk AJAX dashboard (filter tahun & bulan) ===
+//
+public function DashboardData($tahun, $bulan = null)
+{
+    $jumlahPeminjaman = Peminjamans::whereYear('tanggal_pinjam', $tahun)->count();
+    $jumlahPengembalian = Peminjamans::whereYear('tanggal_kembali', $tahun)
+        ->where('status', 'Dikembalikan')
+        ->count();
+
+    // Data per bulan untuk chart
+    $peminjamanPerBulan = [];
+    $pengembalianPerBulan = [];
+    for ($b = 1; $b <= 12; $b++) {
+        $peminjamanPerBulan[] = Peminjamans::whereYear('tanggal_pinjam', $tahun)
+            ->whereMonth('tanggal_pinjam', $b)
+            ->count();
+
+        $pengembalianPerBulan[] = Peminjamans::whereYear('tanggal_kembali', $tahun)
+            ->whereMonth('tanggal_kembali', $b)
+            ->where('status', 'Dikembalikan')
+            ->count();
+    }
+
+    // Gunakan bulan terakhir yang punya data jika belum dipilih
+    $bulanAktif = $bulan ?? Peminjamans::whereYear('tanggal_pinjam', $tahun)
+        ->selectRaw('MONTH(tanggal_pinjam) as bulan')
+        ->orderByDesc('bulan')
+        ->value('bulan') ?? date('m');
+
+    // Ambil data harian berdasarkan bulan aktif
+    $dataHarian = $this->getDataHarian($tahun, $bulanAktif);
+
+    return response()->json([
+        'jumlahPeminjaman' => $jumlahPeminjaman,
+        'jumlahPengembalian' => $jumlahPengembalian,
+        'peminjamanPerBulan' => $peminjamanPerBulan,
+        'pengembalianPerBulan' => $pengembalianPerBulan,
+        'dataHarian' => $dataHarian,
+    ]);
+}
+
+//
+// === Fungsi bantu ambil data harian ===
+//
+private function getDataHarian($tahun, $bulan)
+{
+    $peminjaman = Peminjamans::selectRaw('DATE(tanggal_pinjam) as tanggal, COUNT(*) as total_peminjaman')
+        ->whereYear('tanggal_pinjam', $tahun)
+        ->whereMonth('tanggal_pinjam', $bulan)
+        ->groupBy('tanggal')
+        ->get();
+
+    $pengembalian = Peminjamans::selectRaw('DATE(tanggal_kembali) as tanggal, COUNT(*) as total_pengembalian')
+        ->whereYear('tanggal_kembali', $tahun)
+        ->whereMonth('tanggal_kembali', $bulan)
+        ->where('status', 'Dikembalikan')
+        ->groupBy('tanggal')
+        ->get();
+
+    $tanggalUnik = $peminjaman->pluck('tanggal')->merge($pengembalian->pluck('tanggal'))->unique()->sort();
+
+    $data = [];
+    foreach ($tanggalUnik as $tgl) {
+        $data[] = [
+            'tanggal' => $tgl,
+            'total_peminjaman' => $peminjaman->firstWhere('tanggal', $tgl)->total_peminjaman ?? 0,
+            'total_pengembalian' => $pengembalian->firstWhere('tanggal', $tgl)->total_pengembalian ?? 0,
+        ];
+    }
+
+    return $data;
+}
+
+
 
 
 

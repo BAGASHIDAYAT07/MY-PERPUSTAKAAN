@@ -14,7 +14,7 @@ use App\Http\Controllers\VerivUserAdminController;
 
 // admin
 Route::get('/', [AdminController::class, 'Dashboard'])->name('admin.dashboard');
-// Route::get('/dashboard/data/{tahun}', [AdminController::class, 'DashboardData'])->name('admin.dashboard.data');
+Route::get('/dashboard/data/{tahun}/{bulan?}', [AdminController::class, 'DashboardData'])->name('admin.dashboard.data');
 Route::get('/buku', [UserController::class, 'Buku']);
 Route::get('/user', [AdminController::class, 'User']);
 Route::post('/user/post', [AdminController::class, 'UserCreates'])->name('user.post');

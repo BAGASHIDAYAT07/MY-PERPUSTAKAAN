@@ -3,7 +3,7 @@
 @section("konten")
 <div class="container-fluid px-3 pb-3" style="margin-top: -25px;">
     <!-- Judul Halaman -->
-    <div class="d-flex align-items-center justify-content-between bg-white shadow-sm p-3 rounded mb-4">
+    <!-- <div class="d-flex align-items-center justify-content-between bg-white shadow-sm p-3 rounded mb-4">
         <div class="d-flex align-items-center">
             <i class="bi bi-speedometer2 fs-2 text-primary me-3"></i>
             <div>
@@ -11,6 +11,34 @@
                 <small class="fs-6 text-muted fw-normal">Ringkasan aktivitas & statistik</small>
             </div>
         </div>
+    </div> -->
+    <div class="d-flex align-items-center justify-content-between p-4 rounded"
+         style="background: linear-gradient(90deg, #2e7d32 0%, #4caf50 50%, #e8f5e9 100%);
+                color: white;
+                border-radius: 15px;
+                box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+
+      <!-- Teks Kiri -->
+      <div>
+        <h4 class="fw-bold mb-2">Halo Admin! Kelola perpustakaan dengan mudah di sini 📚</h4>
+        <p class="mb-0" style="color: #e8f5e9;">
+          Halaman ini adalah pusat kontrol untuk mengelola data perpustakaan<br>
+          mulai dari koleksi buku, data anggota, hingga laporan peminjaman.
+        </p>
+      </div>
+
+      <!-- Gambar Kanan -->
+      <!-- <img src="{{ asset('img/tumbuk/tumpukanBuku.png') }}"
+           alt="Books"
+           class="img-fluid"
+           style="width: 130px; height: auto;"> -->
+           <img src="{{ asset('img/tumbuk/tumpukanBuku.png') }}"
+       alt="Books"
+       class="img-fluid position-absolute"
+       style="width: 130px;
+              height: auto;
+              right:  20px;   /* keluar sedikit dari garis kanan */
+              bottom: 445px;"> <!-- bisa disesuaikan -->
     </div>
 
     <!-- Selector Tahun -->
@@ -19,6 +47,10 @@
             class="form-select fw-semibold shadow-sm w-100 fs-6 py-2 px-3 rounded">
             <option value="2025" selected>2025</option>
             <option value="2026">2026</option>
+            <option value="2027">2027</option>
+            <option value="2028">2028</option>
+            <option value="2029">2029</option>
+            <option value="2030">2030</option>
         </select>
     </div>
 
@@ -80,38 +112,45 @@
     </div>
 
     <!-- Tabel Data Harian -->
-    <div class="card shadow-sm border-0">
-        <div class="card-header bg-white border-bottom fw-bold fs-6">
-            <i class="bi bi-calendar-check me-1"></i> Data Harian
+
+    <div class="card mt-4">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <h5>Data Harian</h5>
+
+        <div>
+            <select id="filter-bulan" class="form-select d-inline w-auto">
+                @foreach ([
+                    1=>'Januari', 2=>'Februari', 3=>'Maret', 4=>'April',
+                    5=>'Mei', 6=>'Juni', 7=>'Juli', 8=>'Agustus',
+                    9=>'September', 10=>'Oktober', 11=>'November', 12=>'Desember'
+                ] as $key => $nama)
+                    <option value="{{ $key }}" {{ $key == date('n') ? 'selected' : '' }}>
+                        {{ $nama }}
+                    </option>
+                @endforeach
+            </select>
         </div>
-        <div class="card-body p-0">
-            <table class="table table-striped table-hover mb-0 align-middle text-center">
-                <thead class="table-light">
+    </div>
+
+    <div class="card-body p-0">
+        <table class="table table-striped mb-0">
+            <thead>
+                <tr>
+                    <th>Tanggal</th>
+                    <th>Peminjaman</th>
+                    <th>Pengembalian</th>
+                </tr>
+            </thead>
+            <tbody id="tabel-harian">
+                @foreach ($dataHarian as $row)
                     <tr>
-                        <th class="fw-semibold">Tanggal</th>
-                        <th class="fw-semibold">Peminjaman</th>
-                        <th class="fw-semibold">Pengembalian</th>
+                        <td>{{ $row['tanggal'] }}</td>
+                        <td><span class="badge bg-success">{{ $row['total_peminjaman'] }}</span></td>
+                        <td><span class="badge bg-primary">{{ $row['total_pengembalian'] }}</span></td>
                     </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>2025-09-01</td>
-                        <td><span class="badge bg-success">3</span></td>
-                        <td><span class="badge bg-info">2</span></td>
-                    </tr>
-                    <tr>
-                        <td>2025-09-02</td>
-                        <td><span class="badge bg-success">5</span></td>
-                        <td><span class="badge bg-info">3</span></td>
-                    </tr>
-                    <tr>
-                        <td>2025-09-03</td>
-                        <td><span class="badge bg-success">4</span></td>
-                        <td><span class="badge bg-info">4</span></td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+                @endforeach
+            </tbody>
+        </table>
     </div>
 </div>
 
@@ -174,14 +213,15 @@ let visitorChart = new Chart(ctx, {
     }
 });
 
-// Saat tahun diubah
+// ======== 📊 Update Data Saat Ganti Tahun ========
 document.getElementById("TahunSelector").addEventListener("change", function() {
     let tahun = this.value;
+    let bulan = document.getElementById("filter-bulan").value; // ambil bulan aktif juga
 
-    fetch(`/dashboard/data/${tahun}`)
+    fetch(`/dashboard/data/${tahun}/${bulan}`)
         .then(response => response.json())
         .then(data => {
-            // Update angka
+            // Update angka kartu
             document.querySelector("#jumlahPeminjaman").textContent = data.jumlahPeminjaman;
             document.querySelector("#jumlahPengembalian").textContent = data.jumlahPengembalian;
 
@@ -190,29 +230,56 @@ document.getElementById("TahunSelector").addEventListener("change", function() {
             visitorChart.data.datasets[1].data = data.pengembalianPerBulan;
             visitorChart.update();
 
-            // ✅ Update tabel Data Harian
-            const tbody = document.querySelector('#dataHarian tbody');
-            if (tbody) {
-                tbody.innerHTML = '';
+            // ✅ Update tabel harian
+            const tbody = document.getElementById('tabel-harian');
+            tbody.innerHTML = '';
 
-                if (data.dataHarian.length > 0) {
-                    data.dataHarian.forEach(row => {
-                        tbody.innerHTML += `
-                            <tr>
-                                <td>${row.tanggal}</td>
-                                <td><span class="badge bg-success">${row.total_peminjaman}</span></td>
-                                <td><span class="badge bg-info">${row.total_pengembalian}</span></td>
-                            </tr>`;
-                    });
-                } else {
-                    tbody.innerHTML = `<tr><td colspan="3" class="text-muted">Tidak ada data</td></tr>`;
-                }
+            if (data.dataHarian.length > 0) {
+                data.dataHarian.forEach(row => {
+                    tbody.innerHTML += `
+                        <tr>
+                            <td>${row.tanggal}</td>
+                            <td><span class="badge bg-success">${row.total_peminjaman}</span></td>
+                            <td><span class="badge bg-primary">${row.total_pengembalian}</span></td>
+                        </tr>`;
+                });
+            } else {
+                tbody.innerHTML = `<tr><td colspan="3" class="text-center text-muted">Tidak ada data</td></tr>`;
             }
         })
         .catch(error => console.error("Error fetch data:", error));
 });
 
-// Tampilkan toast otomatis
+
+// ======== 📅 Update Data Saat Ganti Bulan ========
+document.getElementById('filter-bulan').addEventListener('change', function() {
+    const bulan = this.value;
+    const tahun = document.getElementById("TahunSelector").value; // ambil tahun aktif juga
+
+    fetch(`/dashboard/data/${tahun}/${bulan}`)
+        .then(res => res.json())
+        .then(data => {
+            const tbody = document.getElementById('tabel-harian');
+            tbody.innerHTML = '';
+
+            if (data.dataHarian.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="3" class="text-center">Tidak ada data</td></tr>`;
+            } else {
+                data.dataHarian.forEach(row => {
+                    tbody.innerHTML += `
+                        <tr>
+                            <td>${row.tanggal}</td>
+                            <td><span class="badge bg-success">${row.total_peminjaman}</span></td>
+                            <td><span class="badge bg-primary">${row.total_pengembalian}</span></td>
+                        </tr>`;
+                });
+            }
+        })
+        .catch(err => console.error(err));
+});
+
+
+// ======== 🔔 Tampilkan Toast Otomatis ========
 document.addEventListener('DOMContentLoaded', function () {
     const toastElList = [].slice.call(document.querySelectorAll('.toast'));
     toastElList.map(function (toastEl) {
@@ -220,6 +287,8 @@ document.addEventListener('DOMContentLoaded', function () {
         toast.show();
     });
 });
+
+
 </script>
 
 @endsection
