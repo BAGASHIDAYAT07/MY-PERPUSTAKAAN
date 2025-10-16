@@ -23,6 +23,75 @@
       overflow-x: auto;   /* HP/tablet: aktifkan scroll kalau kepaksa */
     }
   }
+
+  /* 🌿 Style Modal User (Detail & Edit) */
+  .modal-content {
+    border-radius: 1rem; /* sudut bulat elegan */
+    border: none;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  }
+
+  .modal-header {
+    background-color: #fff;
+    border: none;
+    padding: 1rem 1.5rem;
+  }
+
+  .modal-title {
+    font-weight: 700;
+    font-size: 1.25rem;
+    color: #198754 !important; /* hijau bootstrap */
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .modal-body {
+    padding: 1.5rem;
+  }
+
+  .modal-footer {
+    border: none;
+    padding: 1rem 1.5rem;
+  }
+
+  /* Rapiin form input & tombol */
+  .form-control, .form-select {
+    border-radius: 0.5rem;
+  }
+
+  .btn {
+    border-radius: 0.5rem;
+  }
+
+  /* 🧾 Detail item agar rapi */
+  .detail-item {
+    margin-bottom: 0.75rem;
+  }
+
+  .detail-item strong {
+    color: #555;
+    width: 130px;
+    display: inline-block;
+  }
+
+  /* Biar foto user tampil rapi */
+  .foto-user {
+    width: 150px;
+    height: 150px;
+    border-radius: 0.75rem;
+    object-fit: cover;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Efek buka modal biar halus */
+  .modal.fade .modal-dialog {
+    transform: translate(0, -10px);
+    transition: transform 0.3s ease-out;
+  }
+  .modal.show .modal-dialog {
+    transform: translate(0, 0);
+  }
 </style>
 
 <div class="container-fluid px-3" style="margin-top: -25px;">
@@ -31,15 +100,15 @@
     <div class="d-flex align-items-center">
       <i class="bi bi-people text-primary fs-1 me-3"></i>
       <div>
-        <h3 class="fw-bold mb-0">Verifikasi Siswa</h3>
-        <small class="text-muted">Kelola verifikasi akun Siswa baru</small>
+        <h3 class="fw-bold mb-0">Verifikasi User</h3>
+        <small class="text-muted">Kelola verifikasi akun User baru</small>
       </div>
     </div>
   </div>
 
   <!-- Header Aksi -->
   <div class="d-flex justify-content-between align-items-center mb-3">
-    <h5 class="fw-semibold text-secondary mb-0">Daftar Akun Siswa</h5>
+    <h5 class="fw-semibold text-secondary mb-0">Daftar Akun User</h5>
   </div>
 
   {{-- ✅ Pesan Validasi --}}
@@ -78,15 +147,6 @@
     </span>
     <input type="search" id="searchInput" class="form-control border-start-0" placeholder="Cari user...">
   </div>
-
-  <!-- Dropdown Filter -->
-  <select id="searchFilter" class="form-select form-select-sm" style="max-width: 180px;">
-    <option value="all">Semua</option>
-    <option value="0">Nama</option>
-    <option value="1">Email</option>
-    <option value="2">NIS</option>
-    <option value="3">Jenis Kelamin</option>
-  </select>
 </div>
 
       <!-- Table -->
@@ -99,24 +159,22 @@
               <th>Email</th>
               <th>NIS</th>
               <th>Jenis Kelamin</th>
+              <th>No Whatsapp</th>
               <th>Status</th>
               <th>Aksi</th>
             </tr>
           </thead>
           <tbody class="text-center">
-  @foreach ($users as $user)
+  @forelse ($users as $user)
     <tr>
-      <td>{{ $loop->iteration }}</td>
+      <td>{{ $loop->iteration + ($users->currentPage() - 1) * $users->perPage() }}</td>
       <td class="text-start">
-        <img src="{{ $user->foto != 'default.jpeg'
-            ? asset('storage/' .  $user->foto) 
-            : asset('img/photos/'. $user->foto) }}" 
-             class="rounded-circle me-2" width="32" height="32">
         {{ $user->name }}
       </td>
       <td>{{ $user->email }}</td>
       <td>{{ $user->NIS }}</td>
       <td>{{ $user->jenisKelamin }}</td>
+      <td>{{ $user->nomorwa }}</td>
       <td>
         @if ($user->veriv == 0)
           <span class="status-badge status-menunggu">
@@ -165,36 +223,45 @@
     </tr>
 
     <!-- Modal Detail User -->
-<div class="modal fade" id="detailUserModal{{ $user->id }}" tabindex="-1">
-  <div class="modal-dialog modal-md modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title fw-bold">
-          <i class="bi bi-person-lines-fill me-2 text-primary"></i> Detail User
-        </h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-      </div>
-      <div class="modal-body">
-        <div class="text-center mb-3">
-          <img src="{{ $user->foto != 'default.jpeg'
+          <div class="modal fade" id="detailUserModal{{ $user->id }}" tabindex="-1">
+                <div class="modal-dialog modal-md modal-dialog-centered modal-dialog-scrollable">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title fw-bold">
+                        <i class="bi bi-person-badge me-2 text-success"></i>Detail User
+                      </h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                      <div class="text-center mb-3">
+                        <img src="{{ $user->foto != 'default.jpeg'
             ? asset('storage/' .  $user->foto) 
-            : asset('img/photos/'. $user->foto) }}" class="rounded-circle shadow" alt="Foto User" style="width: 100px; height: 100px;">
-        </div>
-        <ul class="list-group list-group-flush">
-          <li class="list-group-item"><b>Nama:</b> Enggal</li>
-          <li class="list-group-item"><b>Email:</b> enggal.@email.com</li>
-          <li class="list-group-item"><b>NIS:</b> USR002</li>
-          <li class="list-group-item"><b>Jenis Kelamin:</b> Laki-laki</li>
-          <li class="list-group-item"><b>Status:</b> Menunggu</li>
-        </ul>
-      </div>
-      <div class="modal-footer">
-        <button class="btn btn-danger" data-bs-dismiss="modal">Tutup</button>
-      </div>
-    </div>
-  </div>
-</div>
-  @endforeach
+            : asset('img/photos/'. $user->foto) }}" 
+                            class="rounded-circle mb-2" width="80" height="80">
+                      </div>
+                      <ul class="list-group list-group-flush">
+                        <li class="list-group-item"><b>Name:</b> {{ $user->name }}</li>
+                        <li class="list-group-item"><b>Nis:</b> {{ $user->NIS }}</li>
+                        <li class="list-group-item"><b>Email:</b> {{ $user->email }}</li>
+                        <li class="list-group-item"><b>Jenis Kelamin:</b> {{ $user->jenisKelamin }}</li>
+                        <li class="list-group-item"><b>No Whatsapp:</b> {{ $user->nomorwa }}</li>
+                        <li class="list-group-item"><b>Status:</b> {{ $user->status == 1 ? 'Aktif' : 'Nonaktif' }}</li>
+                      </ul>
+                    </div>
+                    <div class="modal-footer">
+                      <button class="btn btn-danger" data-bs-dismiss="modal">Tutup</button>
+                    </div>
+                  </div>
+                </div>
+          </div>
+    @empty
+  <tr>
+    <td colspan="8" class="text-muted py-3 text-center bg-light">
+      Belum ada data User yang registrasi
+    </td>
+  </tr>
+@endforelse
+
 </tbody>
 
         </table>
@@ -208,34 +275,14 @@
 
 <script>
   document.getElementById("searchInput").addEventListener("keyup", filterTable);
-  document.getElementById("searchFilter").addEventListener("change", filterTable);
 
   function filterTable() {
     let input = document.getElementById("searchInput").value.toLowerCase();
-    let filter = document.getElementById("searchFilter").value;
     let rows = document.querySelectorAll("table tbody tr");
 
-    rows.forEach(function(row) {
-      let cells = row.getElementsByTagName("td");
-      let match = false;
-
-      if (filter === "all") {
-        // cek semua kolom
-        for (let i = 0; i < cells.length; i++) {
-          let text = cells[i].innerText.toLowerCase().trim();
-          if (text.includes(input)) {
-            match = true;
-            break;
-          }
-        }
-      } else {
-        let colIndex = parseInt(filter);
-        if (cells[colIndex] && cells[colIndex].innerText.toLowerCase().includes(input)) {
-          match = true;
-        }
-      }
-
-      row.style.display = match ? "" : "none";
+    rows.forEach(function (row) {
+      let text = row.innerText.toLowerCase();
+      row.style.display = text.includes(input) ? "" : "none";
     });
   }
 </script>

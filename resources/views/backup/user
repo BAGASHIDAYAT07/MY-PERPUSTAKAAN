@@ -1,95 +1,23 @@
 @extends('template.app')
 
 @section("konten")
-<style>
-  /* 🌿 Style Modal User (Detail & Edit) */
-  .modal-content {
-    border-radius: 1rem; /* sudut bulat elegan */
-    border: none;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-  }
-
-  .modal-header {
-    background-color: #fff;
-    border: none;
-    padding: 1rem 1.5rem;
-  }
-
-  .modal-title {
-    font-weight: 700;
-    font-size: 1.25rem;
-    color: #198754 !important; /* hijau bootstrap */
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
-
-  .modal-body {
-    padding: 1.5rem;
-  }
-
-  .modal-footer {
-    border: none;
-    padding: 1rem 1.5rem;
-  }
-
-  /* Rapiin form input & tombol */
-  .form-control, .form-select {
-    border-radius: 0.5rem;
-  }
-
-  .btn {
-    border-radius: 0.5rem;
-  }
-
-  /* 🧾 Detail item agar rapi */
-  .detail-item {
-    margin-bottom: 0.75rem;
-  }
-
-  .detail-item strong {
-    color: #555;
-    width: 130px;
-    display: inline-block;
-  }
-
-  /* Biar foto user tampil rapi */
-  .foto-user {
-    width: 150px;
-    height: 150px;
-    border-radius: 0.75rem;
-    object-fit: cover;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-  }
-
-  /* Efek buka modal biar halus */
-  .modal.fade .modal-dialog {
-    transform: translate(0, -10px);
-    transition: transform 0.3s ease-out;
-  }
-  .modal.show .modal-dialog {
-    transform: translate(0, 0);
-  }
-</style>
-
-
 <div class="container-fluid px-3" style="margin-top: -25px;">
   <!-- Judul Halaman -->
   <div class="d-flex align-items-center justify-content-between bg-white shadow-sm p-3 rounded mb-4">
     <div class="d-flex align-items-center">
       <i class="bi bi-people text-primary fs-1 me-3"></i>
       <div>
-        <h3 class="fw-bold mb-0">Manajemen User</h3>
-        <small class="text-muted">Kelola Akun User</small>
+        <h3 class="fw-bold mb-0">Manajemen Siswa</h3>
+        <small class="text-muted">Kelola Akun Siswa & status keanggotaan</small>
       </div>
     </div>
   </div>
 
   <!-- Header Aksi -->
   <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2">
-    <h5 class="fw-semibold text-secondary mb-0">Daftar Akun User</h5>
+    <h5 class="fw-semibold text-secondary mb-0">Daftar Akun Siswa</h5>
     <button class="btn btn-success shadow-sm" data-bs-toggle="modal" data-bs-target="#tambahUserModal">
-      <i class="bi bi-plus-circle me-1"></i> Tambah User
+      <i class="bi bi-plus-circle me-1"></i> Tambah Siswa
     </button>
   </div>
 
@@ -126,7 +54,7 @@
     <tbody class="text-center">
           @forelse ($user as $u)
               <tr>
-                  <td>{{ $loop->iteration + ($user->currentPage() - 1) * $user->perPage() }}</td>
+                  <td>{{ $loop->iteration }}</td>
                   <td class="text-start">
                       {{ $u->name }}
                   </td>
@@ -170,7 +98,7 @@
                   <div class="modal-content">
                     <div class="modal-header">
                       <h5 class="modal-title fw-bold">
-                        <i class="bi bi-person-badge me-2 text-success"></i>Detail User
+                        <i class="bi bi-person-badge me-2 text-primary"></i>Detail User
                       </h5>
                       <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                     </div>
@@ -438,14 +366,43 @@
   });
 
   document.getElementById("searchInput").addEventListener("keyup", filterTable);
+  document.getElementById("searchFilter").addEventListener("change", filterTable);
 
   function filterTable() {
     let input = document.getElementById("searchInput").value.toLowerCase();
+    let filter = document.getElementById("searchFilter").value;
     let rows = document.querySelectorAll("table tbody tr");
 
-    rows.forEach(function (row) {
-      let text = row.innerText.toLowerCase();
-      row.style.display = text.includes(input) ? "" : "none";
+    rows.forEach(function(row) {
+      let cells = row.getElementsByTagName("td");
+      let match = false;
+
+      if (filter === "all") {
+        // cek semua kolom
+        for (let i = 0; i < cells.length; i++) {
+          let text = cells[i].innerText.toLowerCase().trim();
+          if (text.includes(input)) {
+            match = true;
+            break;
+          }
+        }
+      } else {
+        let colIndex = parseInt(filter);
+
+        // khusus kolom Nama (index 1), ambil teks tanpa gambar
+        if (colIndex === 1) {
+          let namaCell = row.querySelector("td:nth-child(2)");
+          if (namaCell && namaCell.innerText.toLowerCase().includes(input)) {
+            match = true;
+          }
+        } else {
+          if (cells[colIndex] && cells[colIndex].innerText.toLowerCase().includes(input)) {
+            match = true;
+          }
+        }
+      }
+
+      row.style.display = match ? "" : "none";
     });
   }
 </script>

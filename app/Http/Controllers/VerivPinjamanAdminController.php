@@ -3,28 +3,31 @@
 namespace App\Http\Controllers;
 
 use App\Models\Peminjamans;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 
 class VerivPinjamanAdminController extends Controller
 {
+    /**
+     * 🔹 Halaman verifikasi peminjaman (khusus admin)
+     */
     public function veriv()
     {
-        // Pastikan login
         if (!Auth::check()) {
             session(['redirect_after_login' => url()->current()]);
             return redirect('/login');
         }
 
-        // Hanya admin yang bisa masuk
         $user = Auth::user();
         if ($user->role !== 'admin') {
             return redirect('/buku')->with('error', 'Akses ditolak.');
         }
 
-        // 🔹 Ambil semua data peminjaman + relasi buku & user
         $peminjamans = Peminjamans::with(['user', 'buku'])
             ->latest()
+            ->orderBy('created_at', 'desc')
             ->paginate(10);
 
         return view('peminjaman.verivikasi', [
@@ -33,56 +36,165 @@ class VerivPinjamanAdminController extends Controller
         ]);
     }
 
-    // 🔹 Fungsi untuk setujui pinjaman
+    /**
+     * 🔹 Setujui peminjaman
+     */
     public function setujui($id)
-{
-    $pinjam = Peminjamans::findOrFail($id);
+    {
+        $pinjam = Peminjamans::findOrFail($id);
+        $user   = User::findOrFail($pinjam->user_id);
 
-    // Ubah status jadi dipinjam dan isi tanggal_pinjam
-    $pinjam->update([
-        'status' => 'dipinjam',
-        'tanggal_pinjam' => now() // otomatis tanggal hari ini
-    ]);
+        if (empty($user->nomorwa)) {
+            return back()->with('error', 'Nomor WhatsApp pengguna belum diisi.');
+        }
 
-    // Update status buku juga
-    $pinjam->buku->update(['status_pinjam' => 'dipinjam']);
+        // Hitung tanggal batas pengembalian (7 hari dari sekarang)
+        $tanggalPinjam = Carbon::now();
+        $batasWaktu = $tanggalPinjam->copy()->addDays(7);
 
-    return back()->with('success', 'Peminjaman telah disetujui.');
-}
+        // Format tanggal dalam bahasa Indonesia
+        $hari = $batasWaktu->translatedFormat('l'); // contoh: Selasa
+        $tanggalLengkap = $batasWaktu->translatedFormat('d F Y'); // contoh: 14 Oktober 2025
 
+        // Update status di database
+        $pinjam->update([
+            'status' => 'dipinjam',
+            'tanggal_pinjam' => $tanggalPinjam,
+            'batas_waktu' => $batasWaktu
+        ]);
 
-    // 🔹 Fungsi untuk tolak pinjaman
+        $pinjam->buku->update(['status_pinjam' => 'dipinjam']);
+
+        // Pesan WhatsApp
+        $pesan = "📚 *Peminjaman Diterima!*\n\n"
+               . "Halo {$user->name}, peminjaman buku kamu telah *disetujui* ✅\n\n"
+               . "📅 Tanggal Pinjam: " . $tanggalPinjam->translatedFormat('d F Y') . "\n"
+               . "⏰ Batas Pengembalian: {$hari}, {$tanggalLengkap}\n\n"
+               . "Mohon untuk mengembalikan buku tepat waktu ya. Terima kasih! 🙏";
+
+        // Kirim pesan
+        $hasil = $this->kirimPesanWA($user, $pesan);
+
+        if (!$hasil['success']) {
+            return back()->with('error', 'Disetujui, tapi gagal kirim WhatsApp.');
+        }
+
+        return back()->with('success', 'Peminjaman disetujui dan pesan WhatsApp dikirim.');
+    }
+
+    /**
+     * 🔹 Tolak peminjaman
+     */
     public function tolak($id)
     {
         $pinjam = Peminjamans::findOrFail($id);
-        $pinjam->update(['status' => 'ditolak']);
+        $user   = User::findOrFail($pinjam->user_id);
 
-        // Pastikan buku tersedia lagi
+        $pinjam->update(['status' => 'ditolak']);
         $pinjam->buku->update(['status_pinjam' => 'tersedia']);
 
-        return back()->with('success', 'Peminjaman telah ditolak.');
+        $pesan = "❌ *Peminjaman Ditolak*\n\n"
+               . "Maaf {$user->name}, pengajuan peminjaman buku kamu *ditolak*.\n"
+               . "Terima kasih sudah mengajukan ya!";
+
+        $this->kirimPesanWA($user, $pesan);
+
+        return back()->with('success', 'Peminjaman ditolak dan notifikasi dikirim.');
     }
 
-    // 🔹 Fungsi untuk pengembalian buku
-public function kembalikan($id)
-{
-    $pinjam = Peminjamans::findOrFail($id);
+    /**
+     * 🔹 Kembalikan buku
+     */
+    public function kembalikan($id)
+    {
+        $pinjam = Peminjamans::findOrFail($id);
 
-    // Pastikan status sebelumnya adalah "dipinjam"
-    if ($pinjam->status !== 'dipinjam') {
-        return back()->with('error', 'Buku ini belum dalam status dipinjam.');
+        if ($pinjam->status !== 'dipinjam') {
+            return back()->with('error', 'Buku ini belum dalam status dipinjam.');
+        }
+
+        $pinjam->update([
+            'status' => 'dikembalikan',
+            'tanggal_kembali' => now()
+        ]);
+        $pinjam->buku->update(['status_pinjam' => 'tersedia']);
+
+        $user = User::findOrFail($pinjam->user_id);
+
+        $pesan = "📗 *Buku Telah Dikembalikan*\n\n"
+               . "Terima kasih {$user->name}, buku yang kamu pinjam sudah dikembalikan. "
+               . "Sampai jumpa di peminjaman berikutnya! 🙌";
+
+        $this->kirimPesanWA($user, $pesan);
+
+        return back()->with('success', 'Buku dikembalikan dan notifikasi dikirim.');
     }
 
-    // Update status peminjaman dan buku
-    $pinjam->update([
-        'status' => 'dikembalikan',
-        'tanggal_kembali' => now() // otomatis isi tanggal hari ini
-    ]);
+    /**
+     * 🔹 Kirim pesan WA (Fonnte API)
+     */
+    private function kirimPesanWA($user, $pesan)
+    {
+        $curl = curl_init();
 
-    $pinjam->buku->update(['status_pinjam' => 'tersedia']);
+        curl_setopt_array($curl, [
+            CURLOPT_URL => 'https://api.fonnte.com/send',
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'POST',
+            CURLOPT_POSTFIELDS => [
+                'target' => "{$user->nomorwa}|{$user->name}",
+                'message' => $pesan,
+                'schedule' => 0,
+                'typing' => false,
+                'delay' => 2,
+                'countryCode' => '62',
+            ],
+            CURLOPT_HTTPHEADER => [
+                'Authorization: W7UwdDJWw5NzdcTsoeXC', // ganti token Fonnte kamu
+            ],
+        ]);
 
-    return back()->with('success', 'Buku telah dikembalikan dan tanggal pengembalian tercatat.');
-}
+        $response = curl_exec($curl);
 
+        if (curl_errno($curl)) {
+            $error = curl_error($curl);
+            curl_close($curl);
+            return ['success' => false, 'message' => $error];
+        }
 
+        curl_close($curl);
+        return ['success' => true, 'message' => $response];
+    }
+
+    /**
+     * 🔹 Kirim pesan peringatan keterlambatan
+     * (bisa dijalankan manual / lewat scheduler)
+     */
+    public function kirimPeringatanTerlambat()
+    {
+        $peminjamans = Peminjamans::with('user')
+            ->where('status', 'dipinjam')
+            ->whereDate('batas_waktu', '<', Carbon::now())
+            ->get();
+
+        foreach ($peminjamans as $pinjam) {
+            $user = $pinjam->user;
+            if (!$user || empty($user->nomorwa)) continue;
+
+            $batas = Carbon::parse($pinjam->batas_waktu)->translatedFormat('d F Y');
+            $pesan = "⚠️ *Peringatan Keterlambatan*\n\n"
+                   . "Halo {$user->name}, buku yang kamu pinjam sudah *melewati batas waktu pengembalian*.\n"
+                   . "Batas waktu: {$batas}\n\n"
+                   . "Mohon segera dikembalikan ke perpustakaan ya 🙏";
+
+            $this->kirimPesanWA($user, $pesan);
+        }
+
+        return back()->with('success', 'Pesan peringatan keterlambatan telah dikirim.');
+    }
 }

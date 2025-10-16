@@ -40,93 +40,123 @@ class AdminController extends Controller
             return redirect('/buku');
         }
 
-        $user = User::where('veriv', 1)->paginate(10);
+        $user = User::where('veriv', 1)
+            ->where('role', 'user') 
+            ->orderBy('created_at', 'desc')
+            ->paginate(10);
         return view('admin.user', ["active" => "user", "user" => $user]);
     }
 
 
-public function UserCreates(Request $request)
-{
-    $request->validate([
-        'namaLengkap' => 'required|string|max:255',
-        'email'       => 'required|email|unique:users,email',
-        'nis'         => 'required|unique:users,NIS',
-        'gender'      => 'required',
-        'status'      => 'required',
-        'password'    => 'required|min:6',
-    ], [
-        // ✳️ Pesan error custom
-        'namaLengkap.required' => 'Nama lengkap tidak boleh kosong.',
-        'namaLengkap.string'   => 'Nama lengkap harus berupa teks.',
-        'namaLengkap.max'      => 'Nama lengkap maksimal 255 karakter.',
+    public function UserCreates(Request $request)
+    {
+        try {
+            // ✅ Validasi input
+            $validated = $request->validate([
+                'namaLengkap' => 'required|string|max:255',
+                'email'       => 'required|email|unique:users,email',
+                'nis'         => 'required|digits:10|unique:users,nis',
+                'gender'      => 'required',
+                'status'      => 'required|in:0,1',
+                'password'    => 'required|min:6',
+                'nomorwa'     => ['required', 'regex:/^(?:\+62|0)8\d{8,11}$/'],
+            ], [
+                'namaLengkap.required' => 'Nama lengkap tidak boleh kosong.',
+                'email.required'       => 'Email wajib diisi.',
+                'email.email'          => 'Format email tidak valid.',
+                'email.unique'         => 'Email sudah terdaftar.',
+                'nis.required'         => 'NIS wajib diisi.',
+                'nis.digits'           => 'NIS harus terdiri dari 10 digit angka.',
+                'nis.unique'           => 'NIS sudah digunakan.',
+                'gender.required'      => 'Jenis kelamin wajib diisi.',
+                'status.required'      => 'Status wajib diisi.',
+                'password.required'    => 'Password wajib diisi.',
+                'password.min'         => 'Password minimal 6 karakter.',
+                'nomorwa.required'     => 'Nomor WhatsApp wajib diisi.',
+                'nomorwa.regex'        => 'Nomor WhatsApp harus diawali dengan 08 atau +62 dan terdiri dari 10–13 digit.',
+            ]);
 
-        'email.required' => 'Email tidak boleh kosong.',
-        'email.email'    => 'Format email tidak valid.',
-        'email.unique'   => 'Email sudah terdaftar.',
+            // ✅ Simpan user baru
+            User::create([
+                'name'         => $validated['namaLengkap'],
+                'email'        => $validated['email'],
+                'NIS'          => $validated['nis'],
+                'jenisKelamin' => $validated['gender'],
+                'status'       => $validated['status'],
+                'password'     => Hash::make($validated['password']),
+                'nomorwa'      => $validated['nomorwa'],
+                'veriv'        => 1
+            ]);
 
-        'nis.required' => 'NIS tidak boleh kosong.',
-        'nis.unique'   => 'NIS sudah digunakan.',
-
-        'gender.required' => 'Jenis kelamin wajib dipilih.',
-        'status.required' => 'Status akun wajib dipilih.',
-
-        'password.required' => 'Password wajib diisi.',
-        'password.min'      => 'Password minimal 6 karakter.',
-    ]);
-
-    // ✅ Simpan data user ke database
-    $user = User::create([
-        'name'         => $request->namaLengkap,
-        'email'        => $request->email,
-        'NIS'          => $request->nis,
-        'jenisKelamin' => $request->gender,
-        'status'       => $request->status,
-        'password'     => Hash::make($request->password),
-    ]);
-
-    return redirect()->back()->with('success', 'Data user berhasil ditambahkan!');
-}
-
-
-
-public function toggleStatus($id)
-{
-    $user = User::findOrFail($id);
-
-    // Ubah status: kalau 1 jadi 0, kalau 0 jadi 1
-    $user->status = $user->status == 1 ? 0 : 1;
-    $user->save();
-
-    return redirect()->back()->with('success', 'Status user berhasil diubah!');
-}
-
-public function update(Request $request, $id)
-{
-    $user = User::findOrFail($id);
-
-    $request->validate([
-        'namaLengkap' => 'required|string|max:255',
-        'email'       => 'required|email|unique:users,email,' . $id,
-        'nis'         => 'required|unique:users,NIS,' . $id,
-        'gender'      => 'required',
-        'status'      => 'required|in:0,1',
-    ]);
-
-    $user->name         = $request->namaLengkap;
-    $user->email        = $request->email;
-    $user->NIS          = $request->nis;
-    $user->jenisKelamin = $request->gender;
-    $user->status       = $request->status;
-
-    if ($request->filled('password')) {
-        $user->password = Hash::make($request->password);
+            return redirect()->back()->with('success', 'Data user berhasil ditambahkan!');
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            $errorMessages = implode(' ', $e->validator->errors()->all());
+            return back()->withInput()->with('error', $errorMessages);
+        }
     }
 
-    $user->save();
+    // =======================
+    // 🔹 UBAH STATUS USER
+    // =======================
+    public function toggleStatus($id)
+    {
+        $user = User::findOrFail($id);
+        $user->status = $user->status == 1 ? 0 : 1;
+        $user->save();
 
-    return redirect()->back()->with('success', 'Data user berhasil diperbarui');
-}
+        return redirect()->back()->with('success', 'Status user berhasil diubah!');
+    }
 
+    // =======================
+    // 🔹 UPDATE USER
+    // =======================
+    public function update(Request $request, $id)
+    {
+        $user = User::findOrFail($id);
+
+        try {
+            $validated = $request->validate([
+                'namaLengkap' => 'required|string|max:255',
+                'email'       => ['required', 'email', Rule::unique('users', 'email')->ignore($id)],
+                'nis'         => ['required', 'digits:10', Rule::unique('users', 'nis')->ignore($id)],
+                'gender'      => 'required',
+                'status'      => 'required|in:0,1',
+                'password'    => 'nullable|min:6',
+                'nomorwa'     => ['required', 'regex:/^(?:\+62|0)8\d{8,11}$/'],
+            ], [
+                'namaLengkap.required' => 'Nama lengkap wajib diisi.',
+                'email.required'       => 'Email wajib diisi.',
+                'email.email'          => 'Format email tidak valid.',
+                'email.unique'         => 'Email sudah digunakan oleh akun lain.',
+                'nis.required'         => 'NIS wajib diisi.',
+                'nis.digits'           => 'NIS harus terdiri dari 10 digit angka.',
+                'nis.unique'           => 'NIS sudah digunakan oleh akun lain.',
+                'gender.required'      => 'Jenis kelamin wajib diisi.',
+                'status.required'      => 'Status wajib diisi.',
+                'password.min'         => 'Password minimal 6 karakter.',
+                'nomorwa.required'     => 'Nomor WhatsApp wajib diisi.',
+                'nomorwa.regex'        => 'Nomor WhatsApp harus diawali dengan 08 atau +62 dan terdiri dari 10–13 digit.',
+            ]);
+
+            // ✅ Update data user
+            $user->update([
+                'name'         => $validated['namaLengkap'],
+                'email'        => $validated['email'],
+                'NIS'          => $validated['nis'],
+                'jenisKelamin' => $validated['gender'],
+                'status'       => $validated['status'],
+                'nomorwa'      => $validated['nomorwa'],
+                'password'     => $request->filled('password')
+                    ? Hash::make($validated['password'])
+                    : $user->password,
+            ]);
+
+            return redirect()->back()->with('success', 'Data user berhasil diperbarui!');
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            $errorMessages = implode(' ', $e->validator->errors()->all());
+            return back()->withInput()->with('error', $errorMessages);
+        }
+    }
 }
 
 

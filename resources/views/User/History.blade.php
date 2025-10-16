@@ -98,26 +98,24 @@
     </div>
   </div>
 
-  <!-- 🔹 Pencarian -->
-  <div class="d-flex justify-content-between align-items-center mb-3">
-    <h5 class="fw-semibold text-secondary mb-0">Riwayat Buku yang Pernah Dipinjam</h5>
-    <div class="input-group input-group-sm" style="max-width: 300px;">
-      <span class="input-group-text bg-white border-end-0">
-        <i class="bi bi-search text-muted"></i>
-      </span>
-      <input type="search" id="searchInput" class="form-control border-start-0" placeholder="Cari berdasarkan buku...">
-    </div>
-  </div>
-
   <!-- 🔹 Tabel Riwayat -->
   <div class="card shadow-sm border-0">
     <div class="card-body">
+      <!-- Search dengan Filter -->
+      <div class="mb-3 d-flex gap-2">
+        <div class="input-group input-group-sm" style="max-width: 300px;">
+          <span class="input-group-text bg-white border-end-0">
+            <i class="bi bi-search text-muted"></i>
+          </span>
+          <input type="search" id="searchInput" class="form-control border-start-0" placeholder="Cari user...">
+        </div>
+      </div>
 
-      <table class="table table-striped table-hover align-middle mb-0 table-bordered border-secondary-subtle">
+      <div class="table-responsive">
+<table class="table table-striped table-hover align-middle mb-0 table-bordered border-secondary-subtle">
         <thead class="table-info text-center">
           <tr>
             <th>No</th>
-            <th>Foto Buku</th>
             <th>Judul Buku</th>
             <th>Tanggal Pinjam</th>
             <th>Tanggal Kembali</th>
@@ -129,18 +127,8 @@
         <tbody class="text-center">
           @forelse($histories as $h)
           <tr>
-            <td>{{ $loop->iteration }}</td>
-            <td>
-              @if($h->buku && $h->buku->foto)
-                <img src="{{ asset('storage/' . $h->buku->foto) }}" 
-                     class="rounded shadow-sm img-fluid" 
-                     style="max-width: 90px;">
-              @else
-                <span class="text-muted">Tidak ada foto</span>
-              @endif
-            </td>
+            <td>{{ $loop->iteration + ($histories->currentPage() - 1) * $histories->perPage() }}</td>
             <td class="text-start">
-              <i class="bi bi-journal-bookmark-fill text-info me-2"></i>
               {{ $h->buku->judul ?? '-' }}
             </td>
             <td>
@@ -204,7 +192,7 @@
             <div class="modal-dialog modal-lg modal-dialog-centered">
               <div class="modal-content border-0 shadow-lg rounded-4">
                 <div class="modal-header bg-white border-0">
-                  <h5 class="modal-title fw-bold text-primary">
+                  <h5 class="modal-title fw-bold text-success">
                     <i class="bi bi-journal-text me-2"></i>Detail Riwayat Peminjaman
                   </h5>
                   <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
@@ -214,15 +202,16 @@
                   <div class="row g-3">
                     <div class="col-md-4 text-center">
                       <img src="{{ asset('storage/' . ($h->buku->foto ?? 'img/photos/default.jpeg')) }}" 
-                           class="img-fluid rounded shadow-sm" 
-                           alt="Foto Buku">
+                           alt="Foto Buku" 
+     class="img-fluid rounded shadow-sm"
+     style="border-radius: 0.75rem; height: 320px; width: 100%; object-fit: cover;">
                     </div>
                     <div class="col-md-8">
-                      <div class="mb-2"><strong>Judul Buku:</strong><br>{{ $h->buku->judul ?? '-' }}</div>
-                      <div class="mb-2"><strong>Peminjam:</strong><br>{{ $h->user->name ?? '-' }}</div>
-                      <div class="mb-2"><strong>Tanggal Pinjam:</strong><br>{{ \Carbon\Carbon::parse($h->tgl_pinjam)->translatedFormat('d F Y') }}</div>
-                      <div class="mb-2"><strong>Tanggal Kembali:</strong><br>{{ $h->tanggal_kembali ? \Carbon\Carbon::parse($h->tanggal_kembali)->translatedFormat('d F Y') : '-' }}</div>
-                      <div class="mb-2"><strong>Status:</strong><br>
+                      <div class="mb-2"><strong>Judul Buku:</strong>{{ $h->buku->judul ?? '-' }}</div>
+                      <div class="mb-2"><strong>Peminjam:</strong>{{ $h->user->name ?? '-' }}</div>
+                      <div class="mb-2"><strong>Tanggal Pinjam:</strong>{{ \Carbon\Carbon::parse($h->tgl_pinjam)->translatedFormat('d F Y') }}</div>
+                      <div class="mb-2"><strong>Tanggal Kembali:</strong>{{ $h->tanggal_kembali ? \Carbon\Carbon::parse($h->tanggal_kembali)->translatedFormat('d F Y') : '-' }}</div>
+                      <div class="mb-2"><strong>Status:</strong>
                         @if($h->status == 'menunggu')
                           <span class="badge bg-warning text-dark">Menunggu</span>
                         @elseif($h->status == 'dipinjam')
@@ -252,7 +241,8 @@
           </tr>
           @endforelse
         </tbody>
-      </table>
+</table>
+      </div>
 
       <!-- 🔹 Pagination -->
       <div class="mt-3 d-flex justify-content-end mx-3">

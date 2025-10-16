@@ -149,18 +149,12 @@
                </a>
             </a>
 
-            <ul class="dropdown-menu dropdown-menu-end shadow rounded-3 border-0" aria-labelledby="userDropdown" style="min-width: 200px;">
+            <ul class="dropdown-menu dropdown-menu-end shadow rounded-3 border-0" aria-labelledby="userDropdown" style="min-width: 180px;">
               <li>
                 <a class="dropdown-item d-flex align-items-center gap-2 py-2" href="#" data-bs-toggle="modal" data-bs-target="#pengaturanModal">
                   <i class="bi bi-gear text-success"></i> Pengaturan
                 </a>
               </li>
-              <li>
-                <a class="dropdown-item d-flex align-items-center gap-2 py-2" href="#!">
-                  <i class="bi bi-clock-history text-success"></i> Riwayat Aktivitas
-                </a>
-              </li>
-              <li><hr class="dropdown-divider" /></li>
               <li>
                 <a class="merah d-flex align-items-center gap-2 py-2" style="padding-left: 17px; text-decoration: none;" href="/logout">
                   <i class="bi bi-box-arrow-right"></i> Keluar
@@ -188,15 +182,15 @@
         <!-- User Dropdown -->
         <div class="nav-item mb-2">
           <a class="nav-link d-flex justify-content-between align-items-center text-muted fw-semibold px-3 py-2 rounded" data-bs-toggle="collapse" href="#menuUser" role="button" aria-expanded="false">
-            <span><i class="bi bi-people-fill me-2"></i> Kelola Siswa</span>
+            <span><i class="bi bi-people-fill me-2"></i> Kelola User</span>
             <i class="bi bi-caret-down-fill small"></i>
           </a>
           <div class="collapse ps-4" id="menuUser">
             <a class="nav-link rounded my-1 {{ $active == 'user' ? 'bg-success text-white' : 'text-muted' }}" href="/user">
-              <i class="bi bi-person-fill-gear me-2"></i> Daftar Siswa
+              <i class="bi bi-person-fill-gear me-2"></i> Daftar User
             </a>
             <a class="nav-link rounded {{ $active == 'verifikasiuser' ? 'bg-success text-white' : 'text-muted' }}" href="/verifikasiuser">
-              <i class="bi bi-person-fill-check me-2"></i> Verifikasi Siswa
+              <i class="bi bi-person-fill-check me-2"></i> Verifikasi User
             </a>
           </div>
         </div>
@@ -225,12 +219,12 @@
     </div>
 
     <!-- Modal Pengaturan -->
-    <div class="modal fade" id="pengaturanModal" tabindex="-1" aria-labelledby="pengaturanModalLabel" aria-hidden="true">
-      <div class="modal-dialog modal-lg modal-dialog-centered">
+<div class="modal fade" id="pengaturanModal" tabindex="-1" aria-labelledby="pengaturanModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content border-0 shadow-lg rounded-4">
-          <div class="modal-header bg-success text-white rounded-top-4">
-            <h5 class="modal-title fw-bold" id="pengaturanModalLabel"><i class="bi bi-gear me-2"></i> Pengaturan Profil</h5>
-            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+          <div class="modal-header text-white rounded-top-4">
+            <h5 class="modal-title text-success fw-bold" id="pengaturanModalLabel"><i class="bi bi-gear me-2"></i> Pengaturan Profil</h5>
+            <button type="button" class="btn-close btn-close-secondary" data-bs-dismiss="modal"></button>
           </div>
           <div class="modal-body p-4">
             <form action="{{ route('profile.update') }}" method="POST" enctype="multipart/form-data">
@@ -245,7 +239,7 @@
             : asset('img/photos/'. Auth::user()->foto) }}"
       alt="Foto Profil"
       class="rounded-circle mb-3"
-      style="width: 100px; height: 100px; object-fit: cover; border: 3px solid #3b8763;"
+      style="width: 100px; height: 100px; object-fit: cover;"
     />
     <div>
       <input
@@ -271,6 +265,18 @@
     <input type="email" name="email" class="form-control" value="{{ Auth::user()->email }}" />
   </div>
 
+  <!-- NIS -->
+  <div class="mb-3">
+    <label class="form-label fw-semibold">NIS</label>
+    <input type="text" name="nis" class="form-control" value="{{ Auth::user()->NIS }}" />
+  </div>
+
+  <!-- No WhatsApp -->
+  <div class="mb-3">
+    <label class="form-label fw-semibold">No WhatsApp</label>
+    <input type="text" name="wa" class="form-control" value="{{ Auth::user()->nomorwa }}" />
+  </div>
+
   <!-- Password -->
   <div class="mb-3">
     <label class="form-label fw-semibold">Password Baru</label>
@@ -278,14 +284,14 @@
   </div>
 
   <div class="modal-footer border-0">
-    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Batal</button>
     <button type="submit" class="btn btn-success">Simpan Perubahan</button>
   </div>
-</form>
+ </form>
         </div>
         </div>
       </div>
-    </div>
+</div>
 
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
