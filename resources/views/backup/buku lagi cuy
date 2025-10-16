@@ -1,0 +1,327 @@
+@extends('template.appu')
+
+@section("kontenU")
+<style>
+  /* Custom col for 5 per row in large screen */
+  @media (min-width: 992px) {
+    .col-lg-5ths {
+      width: 20%;
+      flex: 0 0 auto;
+    }
+  }
+
+  /* Card styling */
+  .book-card {
+    transition: transform 0.3s ease;
+    height: 100%;
+    max-width: 260px; /* lebih besar dari sebelumnya */
+    margin: 0 auto;
+  }
+
+  .book-card:hover img {
+    transform: scale(1.03);
+  }
+
+  .book-card img {
+    height: 350px; /* lebih tinggi untuk gambar */
+    object-fit: cover;
+    transition: transform 0.3s ease;
+  }
+
+  .book-card .card-body {
+    padding: 0.75rem;
+  }
+
+  /* Perkecil jarak antar card */
+  .row.tight-gutter {
+    margin-left: -6px;
+    margin-right: -6px;
+  }
+
+  .row.tight-gutter > [class*='col-'] {
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+
+  .modal-body .detail-item {
+    padding: .75rem 0;
+    border-bottom: 1px solid #dee2e6;
+  }
+
+  .modal-body .detail-item:last-child {
+    border-bottom: none;
+  }
+  
+  /* 🌿 Style utama */
+  .hero-banner {
+    background: linear-gradient(135deg, #f0fff2 0%, #e8f5e9 100%);
+    box-shadow: 0 4px 25px rgba(0, 128, 0, 0.08);
+    border: 1px solid #d8f0dc;
+    border-radius: 1rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* 📘 Ilustrasi kiri & kanan */
+  .hero-img-left,
+  .hero-img-right {
+    width: 160px;
+    height: auto;
+    animation: floaty 5s ease-in-out infinite;
+  }
+
+  /* ✨ Efek melayang lembut */
+  @keyframes floaty {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0px); }
+  }
+
+    @media (max-width: 768px) {
+      .book-card {
+        max-width: 100%;
+      }
+      .hero-banner {
+      text-align: center;
+      padding: 2rem 1rem;
+    }
+    .hero-img-left, .hero-img-right {
+      display: none !important;
+    }
+    }
+    /* 🌈 Efek dekorasi bulat kecil */
+  .hero-banner::before,
+  .hero-banner::after {
+    content: '';
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(0, 200, 83, 0.1);
+    z-index: 0;
+  }
+  .hero-banner::before {
+    width: 90px; height: 90px;
+    top: 15px; left: 40px;
+  }
+  .hero-banner::after {
+    width: 120px; height: 120px;
+    bottom: 20px; right: 60px;
+  }
+</style>
+
+
+<div class="container-fluid px-3" style="margin-top: -25px;">
+
+  <!-- 🌿 Banner Profesional Hijau Putih -->
+<div class="hero-banner d-flex align-items-center justify-content-between flex-wrap px-4 py-1 rounded-4 mb-4">
+  
+  <!-- 📚 Ilustrasi kiri -->
+  <img src="{{ asset('img/logo/book1.png') }}" 
+       alt="Books Illustration"
+       class="hero-img-left d-none d-md-block">
+
+  <!-- 🟩 Teks tengah -->
+  <div class="text-center flex-fill px-3">
+    <h2 class="fw-semibold text-dark mb-2" style="font-size: 1.8rem;">
+      <span id="typing" class="text-success fw-bold"></span>
+      <span id="cursor" style="font-weight: 700; color: #198754;">|</span>
+    </h2>
+    <p class="text-muted mb-4" style="max-width: 500px; margin: 0 auto;">
+      Perpustakaan digital yang menjadi rumah bagi para pencari ilmu dan pembaca setia.  
+      Temukan, baca, dan nikmati buku favoritmu dengan mudah.
+    </p>
+    <!-- <a href="#koleksi" class="btn btn-outline-success rounded-pill px-4 py-2 fw-semibold shadow-sm">
+      Jelajahi Koleksi Buku
+    </a> -->
+  </div>
+
+  <!-- 📖 Ilustrasi kanan -->
+  <img src="{{ asset('img/logo/book2.png') }}" 
+       alt="Books Shelf"
+       class="hero-img-right d-none d-md-block">
+</div>
+
+  <!-- Header Aksi -->
+  <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2">
+    <h5 class="fw-semibold text-secondary mb-0">Daftar Buku</h5>
+    <div class="input-group input-group-sm" style="max-width: 300px;">
+      <span class="input-group-text bg-white border-end-0">
+        <i class="bi bi-search text-muted"></i>
+      </span>
+      <input type="search" id="searchInput" class="form-control border-start-0 p-2" placeholder="Cari buku...">
+    </div>
+  </div>
+
+  <!-- Grid Buku -->
+  <div class="row tight-gutter g-3" id="bukuGrid">
+    @foreach ($buku as $item)
+    <div class="col-6 col-md-3 col-lg-4ths d-flex">
+      <div class="card shadow-sm border-0 overflow-hidden book-card rounded-3 w-100">
+
+        <!-- Gambar Buku -->
+        <div class="position-relative">
+          <img src="{{ asset('storage/' . $item->foto) }}" class="card-img-top" alt="Sampul Buku">
+          <span class="badge bg-warning text-dark position-absolute top-0 start-0 m-2">
+            {{ $item->JenisBuku }}
+          </span>
+          @if($item->status_pinjam == 'dipinjam')
+          <span class="badge bg-danger position-absolute top-0 end-0 m-2">Dipinjam</span>
+          @endif
+        </div>
+
+        <!-- Info Buku -->
+        <div class="card-body text-center">
+          <h6 class="fw-bold mb-1 text-truncate">{{ $item->judul }}</h6>
+          <p class="text-muted small mb-2 text-truncate">{{ $item->Pencipta ?? 'Anonim' }}</p>
+          <button class="btn btn-outline-success btn-sm w-100" data-bs-toggle="modal"
+            data-bs-target="#detailBukuModal-{{ $item->id }}">
+            <i class="bi bi-eye"></i> Detail
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal Detail Buku -->
+    <div class="modal fade" id="detailBukuModal-{{ $item->id }}" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-lg modal-dialog-centered modal-fullscreen-sm-down">
+        <div class="modal-content border-0 shadow-lg rounded-4">
+          <div class="modal-header bg-white border-0">
+            <h5 class="modal-title fw-bold text-primary">
+              <i class="bi bi-journal-text me-2"></i>Detail Buku
+            </h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+          </div>
+
+          <div class="modal-body">
+            <div class="row g-3">
+              <div class="col-md-4">
+                <img src="{{ asset('storage/' . $item->foto) }}" class="img-fluid rounded shadow-sm" alt="Foto Buku">
+              </div>
+              <div class="col-md-8">
+                <div class="detail-item"><strong>Judul Buku:</strong>{{ $item->judul }}</div>
+                <div class="detail-item"><strong>Deskripsi:</strong>{{ $item->deskripsi }}</div>
+                <div class="detail-item"><strong>Jenis:</strong>{{ $item->JenisBuku }}</div>
+                <div class="detail-item"><strong>Penerbit:</strong>{{ $item->Penerbit }}</div>
+                <div class="detail-item"><strong>Pencipta:</strong>{{ $item->Pencipta }}</div>
+                <div class="detail-item"><strong>Kota:</strong>{{ $item->TempatTerbit }}</div>
+                <div class="detail-item"><strong>Tahun:</strong>{{ $item->TahunTerbit }}</div>
+                <div class="detail-item"><strong>Halaman:</strong>{{ $item->JumlahHalaman }}</div>
+                <div class="detail-item"><strong>Rak:</strong>{{ $item->namarak ?? '-' }} / {{ $item->norak ?? '-' }}</div>
+                <div class="detail-item"><strong>Status:</strong>
+                  @if ($item->status_pinjam == 'dipinjam')
+                    <span class="badge bg-danger">Dipinjam</span>
+                  @else
+                    <span class="badge bg-success">Tersedia</span>
+                  @endif
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-footer border-0">
+            <button type="button" class="btn btn-danger border" data-bs-dismiss="modal">
+              <i class="bi bi-x-circle"></i> Tutup
+            </button>
+
+            @if ($item->status_pinjam == 'dipinjam')
+              <!-- Jika buku sedang dipinjam -->
+              <button class="btn btn-secondary" disabled>
+                <i class="bi bi-hourglass-split"></i> Sedang Dipinjam
+              </button>
+            @else
+              <!-- Jika buku tersedia -->
+              <form action="{{ route('pinjam.buku', $item->id) }}" method="POST" class="d-inline">
+                @csrf
+                <button type="submit" class="btn btn-success">
+                  <i class="bi bi-book"></i> Pinjam Buku
+                </button>
+              </form>
+            @endif
+          </div>
+        </div>
+      </div>
+    </div>
+    @endforeach
+  </div>
+</div>
+
+<!-- Script -->
+<script>
+  // Filter pencarian buku
+  document.getElementById("searchInput").addEventListener("keyup", function () {
+    let filter = this.value.toLowerCase();
+    let cards = document.querySelectorAll("#bukuGrid .card");
+    cards.forEach(function (card) {
+      let title = card.querySelector(".fw-bold").textContent.toLowerCase();
+      card.parentElement.style.display = title.includes(filter) ? "" : "none";
+    });
+  });
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const element = document.getElementById("typing");
+    const cursor = document.getElementById("cursor");
+
+    // 🟩 Teks yang ingin ditampilkan
+    const text1 = "Selamat Datang di My Perpustakaan";
+    const text2 = "Halo, {{ Auth::user()->name }}!";
+    const text3 = "Silakan cari buku yang anda inginkan";
+
+    // 🕒 Pengaturan kecepatan
+    const typingSpeed = 130; // lebih lambat biar smooth
+    const eraseSpeed = 80;
+    const delayBeforeErase = 1800; // jeda sebelum hapus
+    const delayBeforeNext = 700;   // jeda antar kalimat
+
+    let index = 0;
+
+    // ✨ Efek kursor berkedip
+    setInterval(() => {
+      cursor.style.opacity = cursor.style.opacity === "0" ? "1" : "0";
+    }, 500);
+
+    // ✍️ Fungsi ketik teks
+    function typeText(text, callback) {
+      if (index < text.length) {
+        element.textContent += text.charAt(index);
+        index++;
+        setTimeout(() => typeText(text, callback), typingSpeed);
+      } else {
+        setTimeout(callback, delayBeforeErase);
+      }
+    }
+
+    // ⌫ Fungsi hapus teks
+    function eraseText(callback) {
+      if (index > 0) {
+        element.textContent = element.textContent.slice(0, -1);
+        index--;
+        setTimeout(() => eraseText(callback), eraseSpeed);
+      } else {
+        setTimeout(callback, delayBeforeNext);
+      }
+    }
+
+    // 🔁 Urutan animasi
+    function startAnimation() {
+      index = 0;
+      element.textContent = "";
+
+      // 1️⃣ Ketik “Selamat Datang di My Perpustakaan”
+      typeText(text1, () => {
+        eraseText(() => {
+          // 2️⃣ Ketik “Halo, [nama user]”
+          index = 0;
+          typeText(text2, () => {
+            eraseText(() => {
+              // 3️⃣ Ketik “Silakan cari buku...”
+              index = 0;
+              typeText(text3, () => {});
+            });
+          });
+        });
+      });
+    }
+
+    startAnimation();
+  });
+</script>
+@endsection

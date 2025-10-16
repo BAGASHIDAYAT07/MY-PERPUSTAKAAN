@@ -28,7 +28,6 @@
     border-radius: 0.75rem;
     height: 320px;
     width: 100%;
-    object-fit: cover;
   }
 
   .modal-body .detail-item {
@@ -124,16 +123,6 @@
     </span>
     <input type="search" id="searchInput" class="form-control border-start-0" placeholder="Cari buku...">
   </div>
-
-  <!-- Dropdown Filter -->
-  <select id="searchFilter" class="form-select form-select-sm" style="max-width: 180px;">
-    <option value="all">Semua</option>
-    <option value="1">Judul Buku</option>
-    <option value="2">Jenis Buku</option>
-    <option value="3">Nama Rak</option>
-    <option value="4">No Rak</option>
-    <option value="5">Status</option>
-  </select>
 </div>
   <!-- Table Responsive -->
   <table class="table table-striped table-hover align-middle mb-0 table-bordered border-secondary-subtle">
@@ -152,15 +141,15 @@
     <tbody class="text-center">
   @foreach ($buku as $item)
     <tr>
-      <td>{{ $loop->iteration }}</td>
+      <td>{{ $loop->iteration + ($buku->currentPage() - 1) * $buku->perPage() }}</td>
       <td>
         <img src="{{ asset('storage/' . $item->foto) }}" 
-             class="rounded shadow-sm img-fluid" 
-             alt="Foto Buku" 
-             style="max-width: 100px;">
+     alt="Foto Buku" 
+     class="rounded shadow-sm img-fluid" 
+     style="width: 100px; height: 160px; object-fit: cover; border-radius: 0.5rem;">
+
       </td>
       <td class="text-start">
-        <i class="bi bi-journal-bookmark-fill text-primary me-2"></i>
         {{ $item->judul }}
       </td>
       <td>{{ $item->JenisBuku }}</td>
@@ -199,10 +188,10 @@
     
 <!-- Modal Detail Buku -->
 <div class="modal fade" id="detailBukuModal-{{ $item->id }}" tabindex="-1">
-  <div class="modal-dialog modal-lg modal-dialog-centered modal-fullscreen-sm-down">
+  <div class="modal-dialog modal-lg modal-dialog-centered modal-fullscreen-sm-down modal-dialog-scrollable">
     <div class="modal-content border-0 shadow-lg rounded-4">
       <div class="modal-header bg-white border-0">
-        <h5 class="modal-title fw-bold text-primary">
+        <h5 class="modal-title fw-bold text-success">
           <i class="bi bi-journal-text me-2"></i>Detail Buku
         </h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
@@ -212,21 +201,25 @@
         <div class="row g-3">
           <!-- Gambar Buku -->
           <div class="col-md-4">
-            <img src="{{ asset('storage/' . $item->foto) }}" class="img-fluid rounded shadow-sm" alt="Foto Buku">
+            <img src="{{ asset('storage/' . $item->foto) }}" 
+     alt="Foto Buku" 
+     class="img-fluid rounded shadow-sm"
+     style="border-radius: 0.75rem; height: 320px; width: 100%; object-fit: cover;">
+
           </div>
 
           <!-- Detail Buku -->
           <div class="col-md-8">
-            <div class="detail-item"><strong>Judul Buku:</strong><br>{{ $item->judul }}</div>
-            <div class="detail-item"><strong>Deskripsi Buku:</strong><br>{{ $item->deskripsi }}</div>
-            <div class="detail-item"><strong>Jenis Buku:</strong><br>{{ $item->JenisBuku }}</div>
-            <div class="detail-item"><strong>Penerbit:</strong><br>{{ $item->Penerbit }}</div>
-            <div class="detail-item"><strong>Pencipta:</strong><br>{{ $item->Pencipta }}</div>
-            <div class="detail-item"><strong>Kota:</strong><br>{{ $item->TempatTerbit }}</div>
-            <div class="detail-item"><strong>Tahun Terbit:</strong><br>{{ $item->TahunTerbit }}</div>
-            <div class="detail-item"><strong>Halaman:</strong><br>{{ $item->JumlahHalaman }}</div>
-            <div class="detail-item"><strong>Rak:</strong><br>{{ $item->namarak ?? '-' }} / {{ $item->norak ?? '-' }}</div>
-            <div class="detail-item"><strong>Status:</strong><br>
+            <div class="detail-item"><strong>Judul Buku:</strong>{{ $item->judul }}</div>
+            <div class="detail-item"><strong>Deskripsi Buku:</strong>{{ $item->deskripsi }}</div>
+            <div class="detail-item"><strong>Jenis Buku:</strong>{{ $item->JenisBuku }}</div>
+            <div class="detail-item"><strong>Penerbit:</strong>{{ $item->Penerbit }}</div>
+            <div class="detail-item"><strong>Pencipta:</strong>{{ $item->Pencipta }}</div>
+            <div class="detail-item"><strong>Kota:</strong>{{ $item->TempatTerbit }}</div>
+            <div class="detail-item"><strong>Tahun Terbit:</strong>{{ $item->TahunTerbit }}</div>
+            <div class="detail-item"><strong>Halaman:</strong>{{ $item->JumlahHalaman }}</div>
+            <div class="detail-item"><strong>Rak:</strong>{{ $item->namarak ?? '-' }} / {{ $item->norak ?? '-' }}</div>
+            <div class="detail-item"><strong>Status:</strong>
               @if ($item->status)
                 <span class="badge bg-success">Aktif</span>
               @else
@@ -249,13 +242,13 @@
   </div>
 </div>
 
-<!-- edit buku -->
+<!-- Modal Edit Buku -->
 <div class="modal fade" id="editBukuModal-{{ $item->id }}" tabindex="-1">
-  <div class="modal-dialog modal-md modal-dialog-centered modal-fullscreen-sm-down">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title fw-bold">
-          <i class="bi bi-pencil-square me-2 text-warning"></i>Edit Buku
+  <div class="modal-dialog modal-lg modal-dialog-centered modal-fullscreen-sm-down modal-dialog-scrollable">
+    <div class="modal-content border-0 shadow-lg rounded-4">
+      <div class="modal-header bg-white border-0">
+        <h5 class="modal-title fw-bold text-success">
+          <i class="bi bi-pencil-square me-2"></i>Edit Buku
         </h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
@@ -265,82 +258,108 @@
         @csrf
         @method('PUT')
         <div class="modal-body">
-          <!-- Ganti Foto Buku -->
-          <div class="mb-3 text-center">
-            <img src="{{ $item->foto }}" 
-                 class="rounded shadow-sm mb-2 img-fluid" 
-                 alt="Foto Buku" 
-                 style="max-width: 120px;">
-            <input type="file" name="foto" class="form-control form-control-sm mt-2" value="{{ $item->judul }}" placeholder="Masukkan judul buku">
-          </div>
+          <div class="row g-3">
+            <!-- Gambar Buku -->
+            <div class="col-md-4">
+              <img src="{{ asset('storage/' . $item->foto) }}" 
+                   alt="Foto Buku" 
+                   class="img-fluid rounded shadow-sm" 
+                   style="border-radius: 0.75rem; height: 320px; width: 100%; object-fit: cover;">
+            </div>
 
-          <div class="mb-3">
-            <label class="form-label">Judul Buku</label>
-            <input type="text" name="judul" class="form-control" value="{{ $item->judul }}" placeholder="Tuliskan deskripsi singkat buku">
-          </div>
+            <!-- Form Input -->
+            <div class="col-md-8">
+              <div class="mb-3">
+                <label class="form-label fw-semibold">Foto Buku</label>
+                <input type="file" name="foto" class="form-control shadow-sm form-control-sm">
+              </div>
 
-          <div class="mb-3">
-            <label class="form-label">Deskripsi Buku</label>
-            <input type="text" name="deskripsi" class="form-control" value="{{ $item->deskripsi }}" placeholder="Contoh: Fiksi, Non-Fiksi, Sejarah">
-          </div>
+              <div class="mb-3">
+                <label class="form-label fw-semibold">Judul Buku</label>
+                <input type="text" name="judul" class="form-control shadow-sm" 
+                       value="{{ $item->judul }}" placeholder="Masukkan judul buku">
+              </div>
 
-          <div class="mb-3">
-            <label class="form-label">Jenis Buku</label>
-            <input type="text" name="JenisBuku" class="form-control" value="{{ $item->JenisBuku }}" placeholder="Masukkan nama penerbit">
-          </div>
+              <div class="mb-3">
+                <label class="form-label fw-semibold">Deskripsi Buku</label>
+                <input type="text" name="deskripsi" class="form-control shadow-sm" 
+                       value="{{ $item->deskripsi }}" placeholder="Tuliskan deskripsi singkat buku">
+              </div>
 
-          <div class="mb-3">
-            <label class="form-label">Penerbit</label>
-            <input type="text" name="Penerbit" class="form-control" value="{{ $item->Penerbit }}" placeholder="Masukkan nama penulis/pencipta">
-          </div>
+              <div class="mb-3">
+                <label class="form-label fw-semibold">Jenis Buku</label>
+                <input type="text" name="JenisBuku" class="form-control shadow-sm" 
+                       value="{{ $item->JenisBuku }}" placeholder="Contoh: Fiksi, Non-Fiksi, Sejarah">
+              </div>
 
-          <div class="mb-3">
-            <label class="form-label">Pencipta</label>
-            <input type="text" name="Pencipta" class="form-control" value="{{ $item->Pencipta }}" placeholder="Contoh: Jakarta, Bandung">
-          </div>
+              <div class="mb-3">
+                <label class="form-label fw-semibold">Penerbit</label>
+                <input type="text" name="Penerbit" class="form-control shadow-sm" 
+                       value="{{ $item->Penerbit }}" placeholder="Masukkan nama penerbit">
+              </div>
 
-          <div class="mb-3">
-            <label class="form-label">Kota (Tempat Terbit)</label>
-            <input type="text" name="TempatTerbit" class="form-control" value="{{ $item->TempatTerbit }}" placeholder="Masukkan tahun terbit (contoh: 2023)">
-          </div>
+              <div class="mb-3">
+                <label class="form-label fw-semibold">Pencipta</label>
+                <input type="text" name="Pencipta" class="form-control shadow-sm" 
+                       value="{{ $item->Pencipta }}" placeholder="Masukkan nama penulis/pencipta">
+              </div>
 
-          <div class="mb-3">
-            <label class="form-label">Tahun Terbit</label>
-            <input type="number" name="TahunTerbit" class="form-control" value="{{ $item->TahunTerbit }}">
-          </div>
+              <div class="mb-3">
+                <label class="form-label fw-semibold">Kota (Tempat Terbit)</label>
+                <input type="text" name="TempatTerbit" class="form-control shadow-sm" 
+                       value="{{ $item->TempatTerbit }}" placeholder="Contoh: Jakarta, Bandung">
+              </div>
 
-          <div class="mb-3">
-            <label class="form-label">Jumlah Halaman</label>
-            <input type="number" name="JumlahHalaman" class="form-control" value="{{ $item->JumlahHalaman }}">
-          </div>
+              <div class="mb-3">
+                <label class="form-label fw-semibold">Tahun Terbit</label>
+                <input type="number" name="TahunTerbit" class="form-control shadow-sm" 
+                       value="{{ $item->TahunTerbit }}" placeholder="Masukkan tahun terbit (contoh: 2023)">
+              </div>
 
-          <div class="mb-3">
-            <label class="form-label">Nama Rak</label>
-            <input type="text" name="namarak" class="form-control" value="{{ $item->namarak }}">
-          </div>
+              <div class="mb-3">
+                <label class="form-label fw-semibold">Jumlah Halaman</label>
+                <input type="number" name="JumlahHalaman" class="form-control shadow-sm" 
+                       value="{{ $item->JumlahHalaman }}" placeholder="Masukkan jumlah halaman">
+              </div>
 
-          <div class="mb-3">
-            <label class="form-label">No Rak</label>
-            <input type="text" name="norak" class="form-control" value="{{ $item->norak }}">
-          </div>
+              <div class="row g-2">
+                <div class="col-md-6">
+                  <label class="form-label fw-semibold">Nama Rak</label>
+                  <input type="text" name="namarak" class="form-control shadow-sm" 
+                         value="{{ $item->namarak }}" placeholder="Contoh: Rak A">
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label fw-semibold">No Rak</label>
+                  <input type="text" name="norak" class="form-control shadow-sm" 
+                         value="{{ $item->norak }}" placeholder="Contoh: 01">
+                </div>
+              </div>
 
-          <div class="mb-3">
-            <label class="form-label">Status</label>
-            <select name="status" class="form-select">
-              <option value="1" {{ $item->status ? 'selected' : '' }}>Aktif</option>
-              <option value="0" {{ !$item->status ? 'selected' : '' }}>Nonaktif</option>
-            </select>
+              <div class="mt-3">
+                <label class="form-label fw-semibold">Status</label>
+                <select name="status" class="form-select shadow-sm">
+                  <option value="1" {{ $item->status ? 'selected' : '' }}>Aktif</option>
+                  <option value="0" {{ !$item->status ? 'selected' : '' }}>Nonaktif</option>
+                </select>
+              </div>
+            </div>
           </div>
         </div>
 
-        <div class="modal-footer">
-          <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Batal</button>
-          <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+        <div class="modal-footer border-0">
+          <button type="button" class="btn btn-danger border" data-bs-dismiss="modal">
+            <i class="bi bi-x-circle"></i> Batal
+          </button>
+          <button type="submit" class="btn btn-success">
+            <i class="bi bi-save2"></i> Simpan Perubahan
+          </button>
         </div>
       </form>
     </div>
   </div>
 </div>
+
+
   @endforeach
 </tbody>
 
@@ -358,7 +377,7 @@
   <div class="modal-dialog modal-lg modal-dialog-centered modal-fullscreen-sm-down">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title fw-bold">
+        <h5 class="modal-title text-success fw-bold">
           <i class="bi bi-plus-circle text-success me-2"></i>Tambah Buku
         </h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
@@ -442,7 +461,7 @@
     </div>
 
     <div class="modal-footer">
-        <button class="btn btn-danger" data-bs-dismiss="modal">Batal</button>
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Batal</button>
         <button class="btn btn-success">Simpan</button>
     </div>
 </form>

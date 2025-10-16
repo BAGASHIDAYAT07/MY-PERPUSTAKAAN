@@ -411,7 +411,7 @@
 
     const text1 = "Selamat Datang di My Perpustakaan";
     const text2 = "Halo, {{ Auth::user()->name }}!";
-    const text3 = "Silakan cari buku yang kamu mau";
+    const text3 = "Silakan cari buku yang anda inginkan";
 
     const typingSpeed = 130;
     const eraseSpeed = 80;

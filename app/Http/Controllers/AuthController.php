@@ -69,27 +69,57 @@ class AuthController extends Controller{
 
     public function register(Request $request)
 {
-    // Validasi input
-    $request->validate([
-        'name'         => 'required|string|max:255',
-        'email'        => 'required|email|unique:users,email',
-        'password'     => 'required|min:6',
-        'NIS'          => 'required|string|max:20',
-        'jenisKelamin' => 'required|string',
-    ]);
+    try {
+        // 🔹 Validasi input
+        $validated = $request->validate([
+            'name'         => 'required|string|max:255',
+            'email'        => [
+                'required',
+                'email',
+                'unique:users,email',
+                'regex:/^[A-Za-z0-9._%+-]+@gmail\.com$/', // ✅ hanya @gmail.com
+            ],
+            'password'     => 'required|min:6',
+            'NIS'          => [
+                'required',
+                'digits:10', // ✅ harus tepat 10 digit
+            ],
+            'jenisKelamin' => 'required|string',
+            'nomorwa'      => [
+                'required',
+                'regex:/^(\+62|08)[0-9]{9,13}$/', // ✅ mulai +62 / 08 dan total 11–15 digit
+                'unique:users,nomorwa',
+            ],
+        ], [
+            // 🔹 Pesan error custom
+            'email.regex' => 'Email harus menggunakan domain @gmail.com.',
+            'NIS.digits' => 'NIS harus terdiri dari tepat 10 digit angka.',
+            'nomorwa.regex' => 'Nomor WhatsApp harus diawali dengan +62 atau 08 dan memiliki panjang 11–15 digit.',
+            'nomorwa.unique' => 'Nomor WhatsApp ini sudah terdaftar.',
+        ]);
 
-    // Simpan ke database
-    User::create([
-        'name'         => $request->name,
-        'email'        => $request->email,
-        'password'     => Hash::make($request->password),
-        'NIS'          => $request->NIS,
-        'jenisKelamin' => $request->jenisKelamin,
-        // 'role'         => 'admin', // bisa kamu ubah kalau mau register user biasa
-    ]);
+        // 🔹 Simpan ke database
+        User::create([
+            'name'         => $validated['name'],
+            'email'        => $validated['email'],
+            'password'     => Hash::make($validated['password']),
+            'NIS'          => $validated['NIS'],
+            'jenisKelamin' => $validated['jenisKelamin'],
+            'nomorwa'      => $validated['nomorwa'],
+            'status'       => 0, // belum aktif
+        ]);
 
-    // Arahkan ke login
-    return redirect('/login')->with('success', 'Registrasi berhasil. Silahkan tunggu admin untuk mengonfirmasi akun Anda.');
+        // 🔹 Arahkan ke login
+        return redirect('/login')->with('success', 'Registrasi berhasil! Silakan tunggu admin untuk mengonfirmasi akun Anda.');
+
+    } catch (\Illuminate\Validation\ValidationException $e) {
+        // 🔹 Ambil semua pesan error jadi satu string
+        $errorMessages = implode(' ', $e->validator->errors()->all());
+
+        // 🔹 Kirim balik ke halaman register dengan session error
+        return back()->withInput()->with('error', $errorMessages);
     }
+}
+
 
 }

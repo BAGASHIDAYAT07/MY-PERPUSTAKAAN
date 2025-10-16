@@ -2,124 +2,104 @@
 
 @section("konten")
 <style>
-  /* 🟩 Status Badge */
   .status-badge {
     display: inline-block;
-    font-size: 0.75rem;
-    padding: 0.25em 0.6em;
-    border-radius: 4px;
-    font-weight: 500;
+    font-size: 0.75rem;     /* lebih kecil */
+    padding: 0.25em 0.6em;  /* padding tipis */
+    border-radius: 4px;     /* sudut agak kotak */
+    font-weight: 500;       /* teks sedang */
   }
 
   .status-menunggu {
-    background-color: #ffc107;
+    background-color: #ffc107; /* kuning */
     color: #212529;
   }
 
   .status-ditolak {
-    background-color: #dc3545;
+    background-color: #dc3545; /* merah */
     color: #fff;
   }
 
   .status-disetujui {
-    background-color: #198754;
+    background-color: #198754; /* hijau */
     color: #fff;
   }
 
   .status-dikembalikan {
-    background-color: #0dcaf0;
-    color: #fff;
+  background-color: #0dcaf0; /* biru muda */
+  color: #fff;
   }
 
-  /* 🌟 Modal Container */
+  /* 🌟 Samain style detail modal dengan halaman lain */
   .modal-content {
-    border-radius: 1rem;
-    border: none;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-  }
+  border-radius: 1rem;
+  border: none;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+}
 
-  /* 🌟 Header Modal */
   .modal-header {
-    background-color: #fff;
-    border: none;
-    padding: 1.25rem 1.5rem;
-  }
+  background-color: #fff;
+  border: none;
+  padding: 1rem 1.5rem;
+}
 
   .modal-header h5 {
-    font-weight: 700;
-    color: #198754; /* hijau elegan */
-  }
+  font-weight: 700;
+  color: #0d6efd;
+}
 
-  /* 🌟 Body Modal */
   .modal-body {
-    padding: 1.5rem 2rem;
-    background-color: #fff;
-  }
+  padding: 1.5rem;
+}
 
-  /* Detail item seperti di screenshot */
+  /* 🔹 Setiap baris detail (biar sama jarak & border-nya) */
   .detail-item {
-    padding: 0.65rem 0;
-    border-bottom: 1px solid #dee2e6;
-    font-size: 0.95rem;
-  }
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #e9ecef;
+  font-size: 0.95rem;
+}
 
   .detail-item:last-child {
-    border-bottom: none;
-  }
+  border-bottom: none;
+}
 
-  .detail-item strong {
-    color: #212529;
-    /* width: 160px; */
-    display: inline-block;
-  }
+.detail-item strong {
+  color: #212529;
+}
 
-  /* 🌟 Gambar Buku */
+  /* 🔹 Gaya gambar buku */
   .modal-body img {
     border-radius: 0.75rem;
-    box-shadow: 0 3px 12px rgba(0,0,0,0.15);
-    width: 250px;
-    height: 320px;
-    object-fit: cover;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
     transition: transform 0.25s ease;
   }
 
-  .modal-body img:hover {
-    transform: scale(1.03);
-  }
+  /* .modal-body img:hover {
+    transform: scale(1.05);
+  } */
 
-  /* 🌟 Footer Modal */
+  /* 🔹 Footer tombol tutup */
   .modal-footer {
-    border-top: none;
-    background-color: #fff;
-    padding: 1rem 1.5rem;
-  }
+  border-top: none;
+  background-color: #fff;
+  padding: 1rem 1.5rem;
+}
 
   .modal-footer .btn {
-    border-radius: 0.6rem;
-    font-weight: 500;
-  }
+  border-radius: 0.6rem;
+  font-weight: 500;
+}
 
-  /* 🌟 Responsif */
+  /* 📱 Responsif kayak di modal buku & history */
   @media (max-width: 768px) {
-    .modal-body {
+    .modal-body .col-md-4 {
       text-align: center;
-      padding: 1rem;
     }
-
     .modal-body img {
-      max-width: 200px;
-      height: auto;
-      margin-bottom: 1rem;
-    }
-
-    .detail-item strong {
-      display: block;
-      width: 100%;
-      margin-bottom: 0.25rem;
-    }
+    max-height: 250px;
+  }
   }
 </style>
-
 
 
 <div class="container-fluid px-3" style="margin-top: -25px;">
@@ -169,8 +149,12 @@
           <tbody>
   @foreach($peminjamans as $p)
     <tr class="align-middle text-start">
-      <td class="text-center">{{ $loop->iteration + ($peminjamans->currentPage() - 1) * $peminjamans->perPage() }}</td>
+      <td class="text-center">{{ $loop->iteration }}</td>
       <td>
+        <img src="{{ $p->user->foto != 'default.jpeg'
+            ? asset('storage/' .  $p->user->foto) 
+            : asset('img/photos/'. $p->user->foto) }}" 
+             class="rounded-circle me-2" width="32" height="32">
         {{ $p->user->name }}
       </td>
       <td>{{ $p->buku->judul }}</td>
@@ -240,62 +224,57 @@
       </td>
     </tr>
 
-    <!-- ✅ Modal Detail Peminjaman (Gaya SAMA dengan Detail Buku User) -->
-<div class="modal fade" id="detailPinjamModal-{{ $p->id }}" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog modal-lg modal-dialog-centered modal-fullscreen-sm-down modal-dialog-scrollable">
+    <!-- ✅ Modal Detail Buku (Ukuran Teks Sama Seperti Versi Lama) -->
+<div class="modal fade" id="detailPinjamModal-{{ $p->id }}" tabindex="-1">
+  <div class="modal-dialog modal-lg modal-dialog-centered modal-fullscreen-sm-down">
     <div class="modal-content border-0 shadow-lg rounded-4">
       
       <!-- Header -->
       <div class="modal-header bg-white border-0">
-        <h5 class="modal-title fw-bold text-success">
-          <i class="bi bi-journal-text me-2"></i> Detail Peminjaman
+        <h5 class="modal-title fw-bold text-primary">
+          <i class="bi bi-journal-text me-2"></i> Detail Buku
         </h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
 
       <!-- Body -->
-      <div class="modal-body">
+      <div class="modal-body fs-6"> <!-- 🔥 ukuran teks disamakan -->
         <div class="row g-3 align-items-start">
           
           <!-- Foto Buku -->
-          <div class="col-md-4">
-            <img 
-              src="{{ asset('storage/' . $p->buku->foto) }}" 
-              alt="Foto Buku" 
-              class="img-fluid rounded shadow-sm"
-              style="border-radius: 0.75rem; height: 320px; width: 100%; object-fit: cover;">
+          <div class="col-md-4 text-center">
+            <div class="position-relative overflow-hidden rounded-3 shadow-sm mx-auto" style="width: 180px; height: 250px;">
+              <img 
+                src="{{ asset('storage/' . $p->foto) }}" 
+                alt="Foto Buku" 
+                class="img-fluid w-100 h-100" 
+                style="object-fit: cover; border-radius: 0.75rem;">
+            </div>
           </div>
 
-          <!-- Detail Buku & Peminjam -->
+          <!-- Detail Buku -->
           <div class="col-md-8">
-            <div class="detail-item"><strong>Nama Peminjam:</strong> {{ $p->user->name }}</div>
-            <div class="detail-item"><strong>Judul Buku:</strong> {{ $p->buku->judul }}</div>
-            <div class="detail-item"><strong>Jenis Buku:</strong> {{ $p->buku->JenisBuku }}</div>
-            <div class="detail-item"><strong>Tanggal Pinjam:</strong> 
-              @if($p->tanggal_pinjam)
-                {{ \Carbon\Carbon::parse($p->tanggal_pinjam)->translatedFormat('d F Y') }}
-              @else
-                -
-              @endif
-            </div>
-            <div class="detail-item"><strong>Tanggal Kembali:</strong> 
-              @if($p->tanggal_kembali)
-                {{ \Carbon\Carbon::parse($p->tanggal_kembali)->translatedFormat('d F Y') }}
-              @else
-                -
-              @endif
-            </div>
-            <div class="detail-item"><strong>Status:</strong> 
-              @if($p->status == 'menunggu')
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item py-2">
+                <strong>Nama Peminjam:</strong> Sugeng Riadi
+              </li>
+              <li class="list-group-item py-2">
+                <strong>Judul Buku:</strong> Tutor Sugieh
+              </li>
+              <li class="list-group-item py-2">
+                <strong>Jenis Buku:</strong> Mbuh
+              </li>
+              <li class="list-group-item py-2">
+                <strong>Tanggal Pinjam:</strong> 15 April 2025
+              </li>
+              <li class="list-group-item py-2">
+                <strong>Tanggal Kembali:</strong> 17 April 2025
+              </li>
+              <li class="list-group-item py-2">
+                <strong>Status:</strong> 
                 <span class="badge bg-warning text-dark">Menunggu</span>
-              @elseif($p->status == 'dipinjam')
-                <span class="badge bg-success">Dipinjam</span>
-              @elseif($p->status == 'dikembalikan')
-                <span class="badge bg-info text-dark">Dikembalikan</span>
-              @elseif($p->status == 'ditolak')
-                <span class="badge bg-danger">Ditolak</span>
-              @endif
-            </div>
+              </li>
+            </ul>
           </div>
 
         </div>
@@ -303,7 +282,7 @@
 
       <!-- Footer -->
       <div class="modal-footer border-0 bg-white">
-        <button type="button" class="btn btn-danger border" data-bs-dismiss="modal">
+        <button type="button" class="btn btn-secondary rounded-3 shadow-sm" data-bs-dismiss="modal">
           <i class="bi bi-x-circle me-1"></i> Tutup
         </button>
       </div>
@@ -323,46 +302,36 @@
   </div>
 </div>
 
-<!-- Modal Detail Buku -->
-<div class="modal fade" id="detailBukuModal" tabindex="-1">
-  <div class="modal-dialog modal-md modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title fw-bold">
-          <i class="bi bi-journal-text me-2 text-primary"></i> Detail Buku
-        </h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-      </div>
-      <div class="modal-body">
-        <div class="text-center mb-3">
-          <img src="../img/photos/buku1.jpeg" class="rounded shadow" alt="Foto Buku" style="width: 150px;">
-        </div>
-        <ul class="list-group list-group-flush">
-          <li class="list-group-item"><b>Nama Peminjam:</b> Sugeng Riadi</li>
-          <li class="list-group-item"><b>Judul Buku:</b> Tutor Sugieh</li>
-          <li class="list-group-item"><b>Jenis Buku:</b> Mbuh</li>
-          <li class="list-group-item"><b>Tanggal Pinjam:</b> 15 April 2025</li>
-          <li class="list-group-item"><b>Tanggal Kembali:</b> 17 April 2025</li>
-          <li class="list-group-item"><b>Status:</b> Menunggu</li>
-        </ul>
-      </div>
-      <div class="modal-footer">
-        <button class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
-      </div>
-    </div>
-  </div>
-</div>
-
 <script>
   document.getElementById("searchInput").addEventListener("keyup", filterTable);
+  document.getElementById("searchFilter").addEventListener("change", filterTable);
 
   function filterTable() {
     let input = document.getElementById("searchInput").value.toLowerCase();
+    let filter = document.getElementById("searchFilter").value;
     let rows = document.querySelectorAll("table tbody tr");
 
-    rows.forEach(function (row) {
-      let text = row.innerText.toLowerCase();
-      row.style.display = text.includes(input) ? "" : "none";
+    rows.forEach(function(row) {
+      let cells = row.getElementsByTagName("td");
+      let match = false;
+
+      if (filter === "all") {
+        // cek semua kolom (kecuali aksi)
+        for (let i = 0; i < cells.length - 1; i++) {
+          let text = cells[i].innerText.toLowerCase().trim();
+          if (text.includes(input)) {
+            match = true;
+            break;
+          }
+        }
+      } else {
+        let colIndex = parseInt(filter);
+        if (cells[colIndex] && cells[colIndex].innerText.toLowerCase().includes(input)) {
+          match = true;
+        }
+      }
+
+      row.style.display = match ? "" : "none";
     });
   }
 </script>

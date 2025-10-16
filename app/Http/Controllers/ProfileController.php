@@ -26,6 +26,7 @@ class ProfileController extends Controller
         $user->name = $request->nama;
         $user->email = $request->email;
         $user->nis = $request->nis;
+        $user->nomorwa = $request->wa;
 
         // Update password kalau diisi
         if ($request->filled('password')) { 

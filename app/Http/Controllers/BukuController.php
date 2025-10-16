@@ -120,7 +120,8 @@ public function RakBuku()
             return redirect('/buku');
         }
     // Ambil semua data buku dari database
-    $buku = Buku::paginate(10);
+    $buku = Buku::orderBy('created_at', 'desc')
+            ->paginate(10);
 
 
        // Kirim ke view

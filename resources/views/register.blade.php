@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Register Admin My-perpustakaan</title>
+  <title>Register My-perpustakaan</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
 
@@ -24,7 +24,7 @@
     overflow: hidden;
     }
     .register-card {
-      max-width: 850px;
+      max-width: 900px;
       border-radius: 20px;
       overflow: hidden;
       box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
@@ -136,9 +136,10 @@
           <h3>Selamat Datang</h3>
           <h6>Buat akun baru untuk My-perpustakaan</h6>
 
-          <form class="w-100" method="POST" action="{{ url('/register') }}">
+<form class="w-100" method="POST" action="{{ url('/register') }}">
   @csrf
 
+  <!-- 🔹 Baris 1: Nama & Email -->
   <div class="row">
     <div class="col-md-6">
       <div class="input-group">
@@ -154,6 +155,7 @@
     </div>
   </div>
 
+  <!-- 🔹 Baris 2: Password & NIS -->
   <div class="row">
     <div class="col-md-6">
       <div class="input-group">
@@ -171,12 +173,24 @@
     </div>
   </div>
 
-  <select class="form-select w-100" name="jenisKelamin" required>
-    <option selected disabled>Pilih jenis kelamin</option>
-    <option value="Laki-laki">Laki-laki</option>
-    <option value="Perempuan">Perempuan</option>
-  </select>
+  <!-- 🔹 Baris 3: Nomor WhatsApp & Jenis Kelamin -->
+  <div class="row">
+    <div class="col-md-6">
+      <div class="input-group">
+        <input type="text" name="nomorwa" class="form-control" placeholder="Masukkan Nomor WhatsApp Aktif" required>
+        <span class="input-group-text"><i class="bi bi-whatsapp"></i></span>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <select class="form-select w-100" name="jenisKelamin" required>
+        <option selected disabled>Pilih jenis kelamin</option>
+        <option value="Laki-laki">Laki-laki</option>
+        <option value="Perempuan">Perempuan</option>
+      </select>
+    </div>
+  </div>
 
+  <!-- 🔹 Tombol -->
   <button type="submit" class="btn btn-register w-100">Daftar</button>
 
   <p class="mt-3 mb-0 text-center">
@@ -187,11 +201,37 @@
   </p>
 </form>
 
+
         </div>
 
       </div>
     </div>
   </div>
+
+  <!-- Bootstrap Toast Notification -->
+<div class="position-fixed top-0 start-50 translate-middle-x p-3" style="z-index: 9999; margin-top: 20px;">
+  @if (session('success'))
+    <div class="toast align-items-center text-bg-success border-0 show shadow" role="alert" aria-live="assertive" aria-atomic="true">
+      <div class="d-flex">
+        <div class="toast-body">
+          <i class="bi bi-check-circle-fill me-2"></i> {{ session('success') }}
+        </div>
+        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+      </div>
+    </div>
+  @endif
+
+  @if (session('error'))
+    <div class="toast align-items-center text-bg-danger border-0 show shadow" role="alert" aria-live="assertive" aria-atomic="true">
+      <div class="d-flex">
+        <div class="toast-body">
+          <i class="bi bi-exclamation-triangle-fill me-2"></i> {{ session('error') }}
+        </div>
+        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+      </div>
+    </div>
+  @endif
+</div>
 
   <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -209,6 +249,15 @@
       toggleIcon.classList.toggle("bi-eye-slash");
     });
 
+
+    // Tampilkan toast otomatis
+  document.addEventListener('DOMContentLoaded', function () {
+    const toastElList = [].slice.call(document.querySelectorAll('.toast'));
+    toastElList.map(function (toastEl) {
+      const toast = new bootstrap.Toast(toastEl, { delay: 4000 });
+      toast.show();
+    });
+  });
 
     // Inisialisasi AOS
     AOS.init({
